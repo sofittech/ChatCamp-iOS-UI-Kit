@@ -17,10 +17,10 @@ s.license = { :type => "MIT", :file => "LICENSE" }
 s.author = { "Saurabh Gupta" => "saurabh.gupta@iflylabs.com" }
 
 # 5 - Replace this URL with your own Github page's URL (from the address bar)
-s.homepage = "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit"
+s.homepage = "https://github.com/ChatCamp/ChatCamp-iOS-UIKit"
 
 # 6 - Replace this URL with your own Git URL from "Quick Setup"
-s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "#{s.version}"}
+s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UIKit.git", :tag => "#{s.version}"}
 
 # 7
 s.framework = "UIKit"
