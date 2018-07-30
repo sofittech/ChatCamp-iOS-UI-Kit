@@ -28,12 +28,7 @@ class CreateChannelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView?.register(ChatTableViewCell.nib(), forCellReuseIdentifier: ChatTableViewCell.identifier)
-        tableView?.estimatedRowHeight = 100
-        tableView?.rowHeight = UITableViewAutomaticDimension
-        tableView?.allowsMultipleSelection = true
-        tableView?.dataSource = viewModel
-        tableView?.delegate = viewModel
+        setupTableView()
         
         usersQuery = CCPClient.createUserListQuery()
         loadUsers(limit: usersToFetch)
@@ -47,6 +42,15 @@ class CreateChannelViewController: UIViewController {
                 self.loadUsers(limit: self.usersToFetch)
             }
         }
+    }
+    
+    func setupTableView() {
+        tableView?.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.identifier)
+        tableView?.estimatedRowHeight = 100
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.allowsMultipleSelection = true
+        tableView?.dataSource = viewModel
+        tableView?.delegate = viewModel
     }
     
     fileprivate func loadUsers(limit: Int) {

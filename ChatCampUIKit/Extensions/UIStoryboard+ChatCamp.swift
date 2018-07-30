@@ -9,15 +9,13 @@
 import UIKit
 
 extension UIStoryboard {
-//    static func login() -> UIStoryboard {
-//        return UIStoryboard(name: "Login", bundle: nil)
-//    }
     
     static func home() -> UIStoryboard {
         return UIStoryboard(name: "Home", bundle: nil)
     }
     
     static func createChannel() -> UIStoryboard {
-        return UIStoryboard(name: "CreateChannel", bundle: nil)
+        let bundle = Bundle(for: CreateChannelViewController.self)
+        return UIStoryboard(name: "CreateChannel", bundle: bundle)
     }
 }
