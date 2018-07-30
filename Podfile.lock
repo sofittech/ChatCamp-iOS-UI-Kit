@@ -1,21 +1,35 @@
 PODS:
   - Alamofire (4.7.2)
   - ChatCamp (0.1.13)
-  - DKCamera (1.5.1)
-  - DKImagePickerController/Camera (4.0.0-beta):
-    - DKCamera (= 1.5.1)
+  - CLImageEditor (0.2.0):
+    - CLImageEditor/Core (= 0.2.0)
+  - CLImageEditor/Core (0.2.0)
+  - DKCamera (1.5.2)
+  - DKImagePickerController (4.0.0-beta2):
+    - DKImagePickerController/Camera (= 4.0.0-beta2)
+    - DKImagePickerController/Core (= 4.0.0-beta2)
+    - DKImagePickerController/ImageDataManager (= 4.0.0-beta2)
+    - DKImagePickerController/InlineCamera (= 4.0.0-beta2)
+    - DKImagePickerController/PhotoEditor (= 4.0.0-beta2)
+    - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
+    - DKImagePickerController/Resource (= 4.0.0-beta2)
+  - DKImagePickerController/Camera (4.0.0-beta2):
+    - DKCamera
     - DKImagePickerController/Core
-  - DKImagePickerController/Core (4.0.0-beta):
+  - DKImagePickerController/Core (4.0.0-beta2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.0.0-beta)
-  - DKImagePickerController/InlineCamera (4.0.0-beta):
-    - DKCamera (= 1.5.1)
+  - DKImagePickerController/ImageDataManager (4.0.0-beta2)
+  - DKImagePickerController/InlineCamera (4.0.0-beta2):
+    - DKCamera
     - DKImagePickerController/Core
-  - DKImagePickerController/PhotoGallery (4.0.0-beta):
+  - DKImagePickerController/PhotoEditor (4.0.0-beta2):
+    - CLImageEditor (= 0.2.0)
+    - DKImagePickerController/Core
+  - DKImagePickerController/PhotoGallery (4.0.0-beta2):
     - DKImagePickerController/Core
     - DKPhotoGallery
-  - DKImagePickerController/Resource (4.0.0-beta)
+  - DKImagePickerController/Resource (4.0.0-beta2)
   - DKPhotoGallery (0.0.6):
     - DKPhotoGallery/Core (= 0.0.6)
     - DKPhotoGallery/Model (= 0.0.6)
@@ -45,23 +59,35 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - ChatCamp (= 0.1.13)
-  - DKImagePickerController/Camera (= 4.0.0-beta)
-  - DKImagePickerController/InlineCamera (= 4.0.0-beta)
-  - DKImagePickerController/PhotoGallery (= 4.0.0-beta)
+  - DKImagePickerController (~> 4.0.0-beta)
   - MBProgressHUD (~> 1.1.0)
   - SwiftyCam
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - ChatCamp
+    - CLImageEditor
+    - DKCamera
+    - DKImagePickerController
+    - DKPhotoGallery
+    - FLAnimatedImage
+    - MBProgressHUD
+    - SDWebImage
+    - SwiftyCam
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   ChatCamp: 43bd023dcbfacc341827b57c7e52f47966e9c212
-  DKCamera: 59e2879aa034264fd316111812a1ca9001b75a9f
-  DKImagePickerController: 8abb5370913beced68cac281a0e2eee82000e832
+  CLImageEditor: ec5ae50b3a54c9818c0bdb243b20665a1c6718e3
+  DKCamera: bc3cf80a80167cea61ab2a539b9d64a10b7ed361
+  DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
   DKPhotoGallery: 3eb2402aa9b9b12ef863f494140712baf54e9fae
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
-PODFILE CHECKSUM: d07a383c132447c359b1b9113f2e0948d3914c62
+PODFILE CHECKSUM: 040381979a443fa782dc1cd6e98b222f13fc9867
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

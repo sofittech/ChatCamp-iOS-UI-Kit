@@ -18,7 +18,7 @@ class SettingsViewController: UITableViewController {
             UserDefaults.standard.setUserID(userID: nil)
             UserDefaults.standard.setUsername(username: nil)
             CCPClient.disconnect() { (error) in
-                WindowManager.shared.showLoginWithAnimation()
+//                WindowManager.shared.showLoginWithAnimation()
             }
         }
         alertController.addAction(cancelAction)

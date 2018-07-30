@@ -22,5 +22,5 @@ enum TabName: String {
     case users = "Users"
 }
 
-let DefaultAnimationDuration: TimeInterval = 0.3
+public let DefaultAnimationDuration: TimeInterval = 0.3
 let gradientTransitionDuration: TimeInterval = 1.5

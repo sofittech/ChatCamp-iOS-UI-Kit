@@ -15,27 +15,27 @@ extension UserDefaults {
         case deviceTokenKey = "deviceTokenKey"
     }
     
-    func userID() -> String? {
+    public func userID() -> String? {
         return string(forKey: Keys.userIDKey.rawValue)
     }
     
-    func setUserID(userID: String?) {
+    public func setUserID(userID: String?) {
         set(userID, forKey: Keys.userIDKey.rawValue)
     }
     
-    func username() -> String? {
+    public func username() -> String? {
         return string(forKey: Keys.usernameKey.rawValue)
     }
     
-    func setUsername(username: String?) {
+    public func setUsername(username: String?) {
         set(username, forKey: Keys.usernameKey.rawValue)
     }
     
-    func deviceToken() -> String? {
+    public func deviceToken() -> String? {
         return string(forKey: Keys.deviceTokenKey.rawValue)
     }
     
-    func setDeviceToken(deviceToken: String?) {
+    public func setDeviceToken(deviceToken: String?) {
         set(deviceToken, forKey: Keys.deviceTokenKey.rawValue)
     }
 }

@@ -9,9 +9,9 @@
 import UIKit
 
 extension UIStoryboard {
-    static func login() -> UIStoryboard {
-        return UIStoryboard(name: "Login", bundle: nil)
-    }
+//    static func login() -> UIStoryboard {
+//        return UIStoryboard(name: "Login", bundle: nil)
+//    }
     
     static func home() -> UIStoryboard {
         return UIStoryboard(name: "Home", bundle: nil)

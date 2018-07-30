@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */; };
+		09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */; };
 		09B2145420E3C62F004572DC /* ChatCampUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 09B2145220E3C62F004572DC /* ChatCampUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09B2146620E3CCA6004572DC /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B2146320E3CCA6004572DC /* Login.storyboard */; };
 		09B2146720E3CCA6004572DC /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B2146420E3CCA6004572DC /* Home.storyboard */; };
 		09B2146820E3CCA6004572DC /* CreateChannel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B2146520E3CCA6004572DC /* CreateChannel.storyboard */; };
 		09B2147820E3CCE0004572DC /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146920E3CCDD004572DC /* HomeTabBarController.swift */; };
@@ -22,7 +23,6 @@
 		09B2148020E3CCE0004572DC /* CreateChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147120E3CCDF004572DC /* CreateChannelViewController.swift */; };
 		09B2148120E3CCE0004572DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147220E3CCDF004572DC /* ViewController.swift */; };
 		09B2148220E3CCE0004572DC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147320E3CCDF004572DC /* ProfileViewController.swift */; };
-		09B2148320E3CCE0004572DC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147420E3CCDF004572DC /* LoginViewController.swift */; };
 		09B2148420E3CCE0004572DC /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147520E3CCE0004572DC /* CameraViewController.swift */; };
 		09B2148520E3CCE0004572DC /* GroupChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147620E3CCE0004572DC /* GroupChannelsViewController.swift */; };
 		09B2148620E3CCE0004572DC /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147720E3CCE0004572DC /* ChatViewController.swift */; };
@@ -38,17 +38,14 @@
 		09B2149A20E3CD38004572DC /* ParticipantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149920E3CD38004572DC /* ParticipantViewModel.swift */; };
 		09B214A320E3CD46004572DC /* String+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149B20E3CD45004572DC /* String+ChatCamp.swift */; };
 		09B214A420E3CD46004572DC /* NSObject+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149C20E3CD45004572DC /* NSObject+ChatCamp.swift */; };
-		09B214A520E3CD46004572DC /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149D20E3CD45004572DC /* UIStoryboard+ChatCamp.swift */; };
 		09B214A620E3CD46004572DC /* UIView+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149E20E3CD45004572DC /* UIView+ChatCamp.swift */; };
 		09B214A720E3CD46004572DC /* UserDefaults+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2149F20E3CD46004572DC /* UserDefaults+ChatCamp.swift */; };
 		09B214A820E3CD46004572DC /* Data+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214A020E3CD46004572DC /* Data+ChatCamp.swift */; };
 		09B214A920E3CD46004572DC /* UIImageView+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214A120E3CD46004572DC /* UIImageView+ChatCamp.swift */; };
-		09B214AA20E3CD46004572DC /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214A220E3CD46004572DC /* UIViewController+ChatCamp.swift */; };
 		09B214AD20E3CD63004572DC /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214AB20E3CD63004572DC /* Message.swift */; };
 		09B214AE20E3CD63004572DC /* MessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214AC20E3CD63004572DC /* MessageContent.swift */; };
 		09B214B320E3CD89004572DC /* AttachmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214AF20E3CD88004572DC /* AttachmentManager.swift */; };
 		09B214B420E3CD89004572DC /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214B020E3CD89004572DC /* DBManager.swift */; };
-		09B214B520E3CD89004572DC /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214B120E3CD89004572DC /* WindowManager.swift */; };
 		09B214B620E3CD89004572DC /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214B220E3CD89004572DC /* ImageManager.swift */; };
 		09B2150120E3CD9D004572DC /* MessagesCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214B920E3CD9D004572DC /* MessagesCollectionViewLayoutAttributes.swift */; };
 		09B2150220E3CD9D004572DC /* MessageIntermediateLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214BA20E3CD9D004572DC /* MessageIntermediateLayoutAttributes.swift */; };
@@ -118,10 +115,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
+		09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B2144F20E3C62F004572DC /* ChatCampUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChatCampUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B2145220E3C62F004572DC /* ChatCampUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatCampUIKit.h; sourceTree = "<group>"; };
 		09B2145320E3C62F004572DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		09B2146320E3CCA6004572DC /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		09B2146420E3CCA6004572DC /* Home.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		09B2146520E3CCA6004572DC /* CreateChannel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateChannel.storyboard; sourceTree = "<group>"; };
 		09B2146920E3CCDD004572DC /* HomeTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
@@ -135,7 +133,6 @@
 		09B2147120E3CCDF004572DC /* CreateChannelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChannelViewController.swift; sourceTree = "<group>"; };
 		09B2147220E3CCDF004572DC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		09B2147320E3CCDF004572DC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		09B2147420E3CCDF004572DC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		09B2147520E3CCE0004572DC /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		09B2147620E3CCE0004572DC /* GroupChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupChannelsViewController.swift; sourceTree = "<group>"; };
 		09B2147720E3CCE0004572DC /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -151,17 +148,14 @@
 		09B2149920E3CD38004572DC /* ParticipantViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantViewModel.swift; sourceTree = "<group>"; };
 		09B2149B20E3CD45004572DC /* String+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B2149C20E3CD45004572DC /* NSObject+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+ChatCamp.swift"; sourceTree = "<group>"; };
-		09B2149D20E3CD45004572DC /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B2149E20E3CD45004572DC /* UIView+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B2149F20E3CD46004572DC /* UserDefaults+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B214A020E3CD46004572DC /* Data+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B214A120E3CD46004572DC /* UIImageView+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ChatCamp.swift"; sourceTree = "<group>"; };
-		09B214A220E3CD46004572DC /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
 		09B214AB20E3CD63004572DC /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		09B214AC20E3CD63004572DC /* MessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContent.swift; sourceTree = "<group>"; };
 		09B214AF20E3CD88004572DC /* AttachmentManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentManager.swift; sourceTree = "<group>"; };
 		09B214B020E3CD89004572DC /* DBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
-		09B214B120E3CD89004572DC /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		09B214B220E3CD89004572DC /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		09B214B920E3CD9D004572DC /* MessagesCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		09B214BA20E3CD9D004572DC /* MessageIntermediateLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageIntermediateLayoutAttributes.swift; sourceTree = "<group>"; };
@@ -294,7 +288,6 @@
 				09B214AF20E3CD88004572DC /* AttachmentManager.swift */,
 				09B214B020E3CD89004572DC /* DBManager.swift */,
 				09B214B220E3CD89004572DC /* ImageManager.swift */,
-				09B214B120E3CD89004572DC /* WindowManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -315,9 +308,9 @@
 				09B2149C20E3CD45004572DC /* NSObject+ChatCamp.swift */,
 				09B2149B20E3CD45004572DC /* String+ChatCamp.swift */,
 				09B214A120E3CD46004572DC /* UIImageView+ChatCamp.swift */,
-				09B2149D20E3CD45004572DC /* UIStoryboard+ChatCamp.swift */,
 				09B2149E20E3CD45004572DC /* UIView+ChatCamp.swift */,
-				09B214A220E3CD46004572DC /* UIViewController+ChatCamp.swift */,
+				09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */,
+				09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */,
 				09B2149F20E3CD46004572DC /* UserDefaults+ChatCamp.swift */,
 			);
 			path = Extensions;
@@ -364,7 +357,6 @@
 				09B2147620E3CCE0004572DC /* GroupChannelsViewController.swift */,
 				09B2146920E3CCDD004572DC /* HomeTabBarController.swift */,
 				09B2146F20E3CCDE004572DC /* ImagePreviewViewController.swift */,
-				09B2147420E3CCDF004572DC /* LoginViewController.swift */,
 				09B2146A20E3CCDD004572DC /* OpenChannelChatViewController.swift */,
 				09B2146C20E3CCDE004572DC /* OpenChannelsViewController.swift */,
 				09B2147320E3CCDF004572DC /* ProfileViewController.swift */,
@@ -381,7 +373,6 @@
 			children = (
 				09B2146520E3CCA6004572DC /* CreateChannel.storyboard */,
 				09B2146420E3CCA6004572DC /* Home.storyboard */,
-				09B2146320E3CCA6004572DC /* Login.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -570,7 +561,6 @@
 				09B2144B20E3C62F004572DC /* Frameworks */,
 				09B2144C20E3C62F004572DC /* Headers */,
 				09B2144D20E3C62F004572DC /* Resources */,
-				18B3F931650B50B4282D6B4A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -618,7 +608,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09B2146620E3CCA6004572DC /* Login.storyboard in Resources */,
 				09B2152A20E3CD9D004572DC /* AudioView.xib in Resources */,
 				09B2149520E3CD24004572DC /* ChatTableViewCell.xib in Resources */,
 				09B2146720E3CCA6004572DC /* Home.storyboard in Resources */,
@@ -634,21 +623,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		18B3F931650B50B4282D6B4A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		C22D39A1E34C53684AA9D929 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -682,14 +656,12 @@
 				09B2152F20E3CD9D004572DC /* MessageInputBar.swift in Sources */,
 				09B2150D20E3CD9D004572DC /* MessageData.swift in Sources */,
 				09B2153C20E3CD9D004572DC /* MessageType.swift in Sources */,
-				09B2148320E3CCE0004572DC /* LoginViewController.swift in Sources */,
 				09B2151620E3CD9D004572DC /* UICollectionView+Extensions.swift in Sources */,
 				09B2148120E3CCE0004572DC /* ViewController.swift in Sources */,
 				09B214A420E3CD46004572DC /* NSObject+ChatCamp.swift in Sources */,
 				09B2147B20E3CCE0004572DC /* OpenChannelsViewController.swift in Sources */,
 				09B2152D20E3CD9D004572DC /* MessageLabel.swift in Sources */,
 				09B2149A20E3CD38004572DC /* ParticipantViewModel.swift in Sources */,
-				09B214B520E3CD89004572DC /* WindowManager.swift in Sources */,
 				09B2148020E3CCE0004572DC /* CreateChannelViewController.swift in Sources */,
 				09B2150A20E3CD9D004572DC /* MessageKitError.swift in Sources */,
 				09B2150120E3CD9D004572DC /* MessagesCollectionViewLayoutAttributes.swift in Sources */,
@@ -727,6 +699,7 @@
 				09B2149420E3CD24004572DC /* ChannelProfileTableViewCell.swift in Sources */,
 				09B2147D20E3CCE0004572DC /* UsersViewController.swift in Sources */,
 				09B2151120E3CD9D004572DC /* String+Extensions.swift in Sources */,
+				09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */,
 				09B214A720E3CD46004572DC /* UserDefaults+ChatCamp.swift in Sources */,
 				09B2153320E3CD9D004572DC /* MessageContainerView.swift in Sources */,
 				09B2150C20E3CD9D004572DC /* DetectorType.swift in Sources */,
@@ -743,11 +716,11 @@
 				09B2147920E3CCE0004572DC /* OpenChannelChatViewController.swift in Sources */,
 				09B214B320E3CD89004572DC /* AttachmentManager.swift in Sources */,
 				09B2153E20E3CD9D004572DC /* MessageLabelDelegate.swift in Sources */,
-				09B214A520E3CD46004572DC /* UIStoryboard+ChatCamp.swift in Sources */,
 				09B2153120E3CD9D004572DC /* MessageHeaderView.swift in Sources */,
 				09B2152220E3CD9D004572DC /* MediaMessageCell.swift in Sources */,
 				09B2150720E3CD9D004572DC /* LocationMessageSnapshotOptions.swift in Sources */,
 				09B214B620E3CD89004572DC /* ImageManager.swift in Sources */,
+				09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */,
 				09B2152E20E3CD9D004572DC /* InputBarItem.swift in Sources */,
 				09B2148B20E3CCF9004572DC /* DelayMethod.swift in Sources */,
 				09B2147C20E3CCE0004572DC /* SettingsViewController.swift in Sources */,
@@ -765,7 +738,6 @@
 				09B2151B20E3CD9D004572DC /* MessagesViewController.swift in Sources */,
 				09B2150220E3CD9D004572DC /* MessageIntermediateLayoutAttributes.swift in Sources */,
 				09B2148C20E3CCF9004572DC /* Constants.swift in Sources */,
-				09B214AA20E3CD46004572DC /* UIViewController+ChatCamp.swift in Sources */,
 				09B2153620E3CD9D004572DC /* AvatarView.swift in Sources */,
 				09B2151420E3CD9D004572DC /* Bundle+Extensions.swift in Sources */,
 				09B2153920E3CD9D004572DC /* SeparatorLine.swift in Sources */,
@@ -909,6 +881,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ChatCampUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -937,6 +910,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ChatCampUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

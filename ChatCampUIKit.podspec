@@ -2,13 +2,13 @@ Pod::Spec.new do |s|
 
 # 1
 s.platform = :ios
-s.ios.deployment_target = '9.0'
+s.ios.deployment_target = '10.0'
 s.name = "ChatCampUIKit"
 s.summary = "ChatCampUIKit - UIKit for Chat Camp iOS."
 s.requires_arc = true
 
 # 2
-s.version = "0.2.0"
+s.version = "0.1.1"
 
 # 3
 s.license = { :type => "MIT", :file => "LICENSE" }
@@ -23,9 +23,9 @@ s.homepage = "https://github.com/ChatCamp/ChatCamp-iOS-UIKit"
 s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UIKit.git", :tag => "#{s.version}"}
 
 # 7
-s.framework = "UIKit"
+s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "SQLite3", "MapKit", "UIKit", "Foundation"]
 s.dependency 'ChatCamp', '0.1.13'
-s.dependency 'DKImagePickerController', '4.0.0-beta'
+s.dependency 'DKImagePickerController', '~> 4.0.0-beta'
 s.dependency 'Alamofire'
 s.dependency 'SwiftyCam'
 s.dependency 'MBProgressHUD', '~> 1.1.0'

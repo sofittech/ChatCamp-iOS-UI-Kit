@@ -10,11 +10,11 @@ import UIKit
 import ChatCamp
 
 extension UIViewController {
-    static func loginViewController() -> LoginViewController {
-        return UIStoryboard.login().instantiateViewController(withIdentifier: LoginViewController.string()) as! LoginViewController
-    }
+//    static func loginViewController() -> LoginViewController {
+//        return UIStoryboard.login().instantiateViewController(withIdentifier: LoginViewController.string()) as! LoginViewController
+//    }
     
-    static func homeTabBarNavigationController() -> UINavigationController {
+    public static func homeTabBarNavigationController() -> UINavigationController {
         return UIStoryboard.home().instantiateViewController(withIdentifier: UINavigationController.string()) as! UINavigationController
     }
     

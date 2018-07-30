@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSObject {
-    class func string() -> String {
+    public class func string() -> String {
         return String(describing: self)
     }
     
