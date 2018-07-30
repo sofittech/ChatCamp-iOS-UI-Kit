@@ -11,12 +11,12 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-class GroupChannelsViewController: UIViewController {
+open class GroupChannelsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.register(ChatTableViewCell.nib(), forCellReuseIdentifier: ChatTableViewCell.string())
+            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
         }
     }
     @IBOutlet weak var addChannelFAB: UIButton! {
@@ -26,13 +26,13 @@ class GroupChannelsViewController: UIViewController {
         }
     }
     
-    var channels: [CCPGroupChannel] = []
+    open var channels: [CCPGroupChannel] = []
     
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         loadChannels()
@@ -70,11 +70,11 @@ extension GroupChannelsViewController {
 
 // MARK:- UITableViewDataSource
 extension GroupChannelsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return channels.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         
         let channel = channels[indexPath.row]
@@ -134,7 +134,7 @@ extension GroupChannelsViewController: UITableViewDataSource {
 
 // MARK:- UITableViewDelegate
 extension GroupChannelsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
         

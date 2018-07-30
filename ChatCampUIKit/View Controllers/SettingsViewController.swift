@@ -9,8 +9,8 @@
 import UIKit
 import ChatCamp
 
-class SettingsViewController: UITableViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+open class SettingsViewController: UITableViewController {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -18,7 +18,7 @@ class SettingsViewController: UITableViewController {
             UserDefaults.standard.setUserID(userID: nil)
             UserDefaults.standard.setUsername(username: nil)
             CCPClient.disconnect() { (error) in
-//                WindowManager.shared.showLoginWithAnimation()
+                WindowManager.shared.showLoginWithAnimation()
             }
         }
         alertController.addAction(cancelAction)

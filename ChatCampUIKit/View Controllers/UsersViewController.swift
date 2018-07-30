@@ -11,7 +11,7 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-class UsersViewController: UIViewController {
+open class UsersViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -19,16 +19,16 @@ class UsersViewController: UIViewController {
             tableView.dataSource = self
             tableView.rowHeight = UITableViewAutomaticDimension
             tableView.estimatedRowHeight = 44
-            tableView.register(ChatTableViewCell.nib(), forCellReuseIdentifier: ChatTableViewCell.string())
+            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
         }
     }
     
-    var users: [CCPUser] = []
+    open var users: [CCPUser] = []
     fileprivate var usersToFetch: Int = 20
     fileprivate var loadingUsers = false
-    var usersQuery: CCPUserListQuery!
+    open var usersQuery: CCPUserListQuery!
 
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         usersQuery = CCPClient.createUserListQuery()
@@ -62,11 +62,11 @@ class UsersViewController: UIViewController {
 
 // MARK:- UITableViewDataSource
 extension UsersViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         cell.nameLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
 
@@ -86,7 +86,7 @@ extension UsersViewController: UITableViewDataSource {
 
 // MARK:- UITableViewDelegate
 extension UsersViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = users[indexPath.row]
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
@@ -107,7 +107,7 @@ extension UsersViewController: UITableViewDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension UsersViewController {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, users.count - 1]) ?? false) && !loadingUsers && users.count >= 19 {
             loadUsers(limit: usersToFetch)
         }

@@ -11,13 +11,14 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-class OpenChannelsViewController: UIViewController {
+open class OpenChannelsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.register(ChatTableViewCell.nib(), forCellReuseIdentifier: ChatTableViewCell.string())
+            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
+
         }
     }
     
@@ -26,7 +27,7 @@ class OpenChannelsViewController: UIViewController {
     fileprivate var loadingChannels = false
     var openChannelsQuery: CCPOpenChannelListQuery!
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         openChannelsQuery = CCPOpenChannel.createOpenChannelListQuery()
@@ -60,11 +61,11 @@ class OpenChannelsViewController: UIViewController {
 
 // MARK:- UITableViewDataSource
 extension OpenChannelsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return channels.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         cell.nameLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         
@@ -84,7 +85,7 @@ extension OpenChannelsViewController: UITableViewDataSource {
 
 // MARK:- UITableViewDelegate
 extension OpenChannelsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
         
@@ -106,7 +107,7 @@ extension OpenChannelsViewController: UITableViewDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension OpenChannelsViewController {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
             loadChannels(limit: channelsToFetch)
         }
