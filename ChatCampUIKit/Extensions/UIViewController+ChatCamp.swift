@@ -45,7 +45,7 @@ extension UIViewController {
 
 // MARK:- Alerts
 extension UIViewController {
-    func showAlert(title: String, message: String, actionText: String) {
+    public func showAlert(title: String, message: String, actionText: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: actionText, style: .default) { (action) in
             alertController.dismiss(animated: true, completion: nil)
