@@ -9,13 +9,12 @@
 /* Begin PBXBuildFile section */
 		09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */; };
 		09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */; };
+		0996E0772119B9A700DD7C1B /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0996E0762119B9A700DD7C1B /* Channel.storyboard */; };
 		09B2145420E3C62F004572DC /* ChatCampUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 09B2145220E3C62F004572DC /* ChatCampUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		09B2146820E3CCA6004572DC /* CreateChannel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B2146520E3CCA6004572DC /* CreateChannel.storyboard */; };
-		09B2147820E3CCE0004572DC /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146920E3CCDD004572DC /* HomeTabBarController.swift */; };
 		09B2147920E3CCE0004572DC /* OpenChannelChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146A20E3CCDD004572DC /* OpenChannelChatViewController.swift */; };
 		09B2147A20E3CCE0004572DC /* ChannelProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146B20E3CCDE004572DC /* ChannelProfileViewController.swift */; };
 		09B2147B20E3CCE0004572DC /* OpenChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146C20E3CCDE004572DC /* OpenChannelsViewController.swift */; };
-		09B2147C20E3CCE0004572DC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146D20E3CCDE004572DC /* SettingsViewController.swift */; };
 		09B2147D20E3CCE0004572DC /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146E20E3CCDE004572DC /* UsersViewController.swift */; };
 		09B2147E20E3CCE0004572DC /* ImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2146F20E3CCDE004572DC /* ImagePreviewViewController.swift */; };
 		09B2147F20E3CCE0004572DC /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147020E3CCDF004572DC /* VideoViewController.swift */; };
@@ -116,15 +115,14 @@
 /* Begin PBXFileReference section */
 		09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
 		09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
+		0996E0762119B9A700DD7C1B /* Channel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Channel.storyboard; sourceTree = "<group>"; };
 		09B2144F20E3C62F004572DC /* ChatCampUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChatCampUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B2145220E3C62F004572DC /* ChatCampUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatCampUIKit.h; sourceTree = "<group>"; };
 		09B2145320E3C62F004572DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09B2146520E3CCA6004572DC /* CreateChannel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateChannel.storyboard; sourceTree = "<group>"; };
-		09B2146920E3CCDD004572DC /* HomeTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
 		09B2146A20E3CCDD004572DC /* OpenChannelChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenChannelChatViewController.swift; sourceTree = "<group>"; };
 		09B2146B20E3CCDE004572DC /* ChannelProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelProfileViewController.swift; sourceTree = "<group>"; };
 		09B2146C20E3CCDE004572DC /* OpenChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenChannelsViewController.swift; sourceTree = "<group>"; };
-		09B2146D20E3CCDE004572DC /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		09B2146E20E3CCDE004572DC /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		09B2146F20E3CCDE004572DC /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
 		09B2147020E3CCDF004572DC /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
@@ -265,19 +263,11 @@
 				09B2145E20E3CAFD004572DC /* ViewModel */,
 				09B2145D20E3CAF5004572DC /* Extensions */,
 				09B2145B20E3CAE4004572DC /* Managers */,
-				09B2145A20E3CACB004572DC /* Third Party Frameworks */,
+				09B214B720E3CD9D004572DC /* MessageKit */,
 				09B2145220E3C62F004572DC /* ChatCampUIKit.h */,
 				09B2145320E3C62F004572DC /* Info.plist */,
 			);
 			path = ChatCampUIKit;
-			sourceTree = "<group>";
-		};
-		09B2145A20E3CACB004572DC /* Third Party Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				09B214B720E3CD9D004572DC /* MessageKit */,
-			);
-			path = "Third Party Frameworks";
 			sourceTree = "<group>";
 		};
 		09B2145B20E3CAE4004572DC /* Managers */ = {
@@ -353,12 +343,10 @@
 				09B2147720E3CCE0004572DC /* ChatViewController.swift */,
 				09B2147120E3CCDF004572DC /* CreateChannelViewController.swift */,
 				09B2147620E3CCE0004572DC /* GroupChannelsViewController.swift */,
-				09B2146920E3CCDD004572DC /* HomeTabBarController.swift */,
 				09B2146F20E3CCDE004572DC /* ImagePreviewViewController.swift */,
 				09B2146A20E3CCDD004572DC /* OpenChannelChatViewController.swift */,
 				09B2146C20E3CCDE004572DC /* OpenChannelsViewController.swift */,
 				09B2147320E3CCDF004572DC /* ProfileViewController.swift */,
-				09B2146D20E3CCDE004572DC /* SettingsViewController.swift */,
 				09B2146E20E3CCDE004572DC /* UsersViewController.swift */,
 				09B2147020E3CCDF004572DC /* VideoViewController.swift */,
 				09B2147220E3CCDF004572DC /* ViewController.swift */,
@@ -370,6 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				09B2146520E3CCA6004572DC /* CreateChannel.storyboard */,
+				0996E0762119B9A700DD7C1B /* Channel.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -611,6 +600,7 @@
 				09B2150420E3CD9D004572DC /* MessageKitAssets.bundle in Resources */,
 				09B2149820E3CD24004572DC /* LoadingDots.xib in Resources */,
 				09B2152820E3CD9D004572DC /* CustomMessageContentView.xib in Resources */,
+				0996E0772119B9A700DD7C1B /* Channel.storyboard in Resources */,
 				09B2146820E3CCA6004572DC /* CreateChannel.storyboard in Resources */,
 				09B2151920E3CD9D004572DC /* Info.plist in Resources */,
 			);
@@ -719,7 +709,6 @@
 				09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */,
 				09B2152E20E3CD9D004572DC /* InputBarItem.swift in Sources */,
 				09B2148B20E3CCF9004572DC /* DelayMethod.swift in Sources */,
-				09B2147C20E3CCE0004572DC /* SettingsViewController.swift in Sources */,
 				09B2148620E3CCE0004572DC /* ChatViewController.swift in Sources */,
 				09B2153A20E3CD9D004572DC /* MessageInputBarDelegate.swift in Sources */,
 				09B2152920E3CD9D004572DC /* DocumentMessageCell.swift in Sources */,
@@ -728,7 +717,6 @@
 				09B214AE20E3CD63004572DC /* MessageContent.swift in Sources */,
 				09B2151820E3CD9D004572DC /* MessageKit+Availability.swift in Sources */,
 				09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */,
-				09B2147820E3CCE0004572DC /* HomeTabBarController.swift in Sources */,
 				09B2150F20E3CD9D004572DC /* NSConstraintLayoutSet.swift in Sources */,
 				09B2152320E3CD9D004572DC /* CustomMessageCell.swift in Sources */,
 				09B2151B20E3CD9D004572DC /* MessagesViewController.swift in Sources */,

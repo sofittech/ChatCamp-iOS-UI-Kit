@@ -124,8 +124,8 @@ public enum MessageStyle {
 
     private var imagePath: String? {
         guard let imageName = imageName else { return nil }
-        let assetBundle = Bundle.messageKitAssetBundle()
-        return assetBundle.path(forResource: imageName, ofType: "png", inDirectory: "Images")
+        //let assetBundle = Bundle.messageKitAssetBundle()
+        return Bundle(for: MessagesViewController.self).path(forResource: imageName, ofType: "png")
     }
 
     private func stretch(_ image: UIImage) -> UIImage {

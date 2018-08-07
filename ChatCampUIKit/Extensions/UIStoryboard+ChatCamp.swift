@@ -18,4 +18,9 @@ extension UIStoryboard {
         let bundle = Bundle(for: CreateChannelViewController.self)
         return UIStoryboard(name: "CreateChannel", bundle: bundle)
     }
+    
+    static func channel() -> UIStoryboard {
+        let bundle = Bundle(for: ProfileViewController.self)
+        return UIStoryboard(name: "Channel", bundle: bundle)
+    }
 }

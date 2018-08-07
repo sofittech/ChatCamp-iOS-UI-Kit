@@ -27,19 +27,19 @@ extension UIViewController {
     }
     
     static func profileViewController() -> ProfileViewController {
-        return UIStoryboard.home().instantiateViewController(withIdentifier: ProfileViewController.string()) as! ProfileViewController
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: ProfileViewController.string()) as! ProfileViewController
     }
     
     static func channelProfileViewController() -> ChannelProfileViewController {
-        return UIStoryboard.home().instantiateViewController(withIdentifier: ChannelProfileViewController.string()) as! ChannelProfileViewController
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: ChannelProfileViewController.string()) as! ChannelProfileViewController
     }
     
     static func cameraViewController() -> CameraViewController {
-        return UIStoryboard.home().instantiateViewController(withIdentifier: CameraViewController.string()) as! CameraViewController
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: CameraViewController.string()) as! CameraViewController
     }
     
     static func imagePreviewViewController() -> ImagePreviewViewController {
-        return UIStoryboard.home().instantiateViewController(withIdentifier: ImagePreviewViewController.string()) as! ImagePreviewViewController
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: ImagePreviewViewController.string()) as! ImagePreviewViewController
     }
 }
 
