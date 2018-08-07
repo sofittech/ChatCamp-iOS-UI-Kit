@@ -429,17 +429,23 @@ extension OpenChannelChatViewController: UIDocumentInteractionControllerDelegate
 extension OpenChannelChatViewController {
     fileprivate func setupMessageInputBar() {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
-        messageInputBar.sendButton.setImage(#imageLiteral(resourceName: "chat_send_button"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "chat_send_button", ofType: "png") {
+            messageInputBar.sendButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
         
         let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(#imageLiteral(resourceName: "attachment"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "attachment", ofType: "png") {
+            attachmentButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
 
         attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
             self.presentAlertController()
         }
         
         let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "microphone", ofType: "png") {
+            audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
 
         audioButton.onTouchUpInside { [unowned self] audioButton in
             self.handleAudioMessageAction(audioButton: audioButton)
@@ -740,7 +746,9 @@ extension OpenChannelChatViewController {
                             self.startRecording(audioButton: audioButton)
                         } else {
                             self.finishRecording(success: true)
-                            audioButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
+                            if let path = Bundle(for: MessagesViewController.self).path(forResource: "microphone", ofType: "png") {
+                                audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+                            }
                         }
                     } else {
                         // failed to record!
@@ -767,7 +775,9 @@ extension OpenChannelChatViewController {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
-            audioButton.setImage(#imageLiteral(resourceName: "stop_recording"), for: .normal)
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "stop_recording", ofType: "png") {
+                audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+            }
         } catch {
             finishRecording(success: false)
         }

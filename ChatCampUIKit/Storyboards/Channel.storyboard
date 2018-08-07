@@ -203,8 +203,8 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H7O-0d-QdF">
-                                <rect key="frame" x="84" y="598.5" width="16" height="22"/>
-                                <state key="normal" image="flipCamera"/>
+                                <rect key="frame" x="70" y="598" width="30" height="23"/>
+                                <state key="normal" image="flipCamera.png"/>
                                 <connections>
                                     <action selector="cameraSwitchTapped:" destination="EWZ-jh-QNA" eventType="touchUpInside" id="St2-lT-saZ"/>
                                 </connections>
@@ -215,7 +215,7 @@
                                     <constraint firstAttribute="height" constant="30" id="i8o-Sk-Wrt"/>
                                     <constraint firstAttribute="width" constant="18" id="nxI-SQ-TdV"/>
                                 </constraints>
-                                <state key="normal" image="flashOutline"/>
+                                <state key="normal" image="flashOutline.png"/>
                                 <connections>
                                     <action selector="toggleFlashTapped:" destination="EWZ-jh-QNA" eventType="touchUpInside" id="KQa-oN-OCD"/>
                                 </connections>
@@ -226,7 +226,7 @@
                                     <constraint firstAttribute="width" constant="30" id="VNd-VK-BFG"/>
                                     <constraint firstAttribute="height" constant="30" id="rUQ-Rq-iCe"/>
                                 </constraints>
-                                <state key="normal" image="cancel"/>
+                                <state key="normal" image="cancel.png"/>
                                 <connections>
                                     <action selector="cancelButtonTapped:" destination="EWZ-jh-QNA" eventType="touchUpInside" id="I8j-jO-bB6"/>
                                 </connections>
@@ -300,8 +300,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cancel" width="16" height="16"/>
-        <image name="flashOutline" width="16" height="16"/>
-        <image name="flipCamera" width="16" height="16"/>
+        <image name="cancel.png" width="30" height="30"/>
+        <image name="flashOutline.png" width="18" height="30"/>
+        <image name="flipCamera.png" width="30" height="23"/>
     </resources>
 </document>

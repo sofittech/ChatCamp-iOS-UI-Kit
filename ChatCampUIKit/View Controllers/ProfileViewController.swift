@@ -33,9 +33,13 @@ class ProfileViewController: UIViewController {
         }
         
         if participant?.getIsOnline() ?? false {
-            onlineStatusImageView.image = #imageLiteral(resourceName: "online")
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "online", ofType: "png") {
+                onlineStatusImageView.image = UIImage(contentsOfFile: path)
+            }
         } else {
-            onlineStatusImageView.image = #imageLiteral(resourceName: "offline")
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "offline", ofType: "png") {
+                onlineStatusImageView.image = UIImage(contentsOfFile: path)
+            }
         }
 
         displayNameLabel.text = participant?.getDisplayName()

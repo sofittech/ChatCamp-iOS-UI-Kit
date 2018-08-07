@@ -466,17 +466,23 @@ extension ChatViewController {
     
     fileprivate func setupMessageInputBar() {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
-        messageInputBar.sendButton.setImage(#imageLiteral(resourceName: "chat_send_button"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "chat_send_button", ofType: "png") {
+            messageInputBar.sendButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
         
         let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(#imageLiteral(resourceName: "attachment"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "attachment", ofType: "png") {
+            attachmentButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
         
         attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
             self.presentAlertController()
         }
         
         let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
+        if let path = Bundle(for: MessagesViewController.self).path(forResource: "microphone", ofType: "png") {
+            audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+        }
         
         audioButton.onTouchUpInside { [unowned self] audioButton in
             self.handleAudioMessageAction(audioButton: audioButton)
@@ -682,7 +688,9 @@ extension ChatViewController {
                             self.startRecording(audioButton: audioButton)
                         } else {
                             self.finishRecording(success: true)
-                            audioButton.setImage(#imageLiteral(resourceName: "microphone"), for: .normal)
+                            if let path = Bundle(for: MessagesViewController.self).path(forResource: "microphone", ofType: "png") {
+                                audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+                            }
                         }
                     } else {
                         // failed to record!
@@ -709,7 +717,9 @@ extension ChatViewController {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
-            audioButton.setImage(#imageLiteral(resourceName: "stop_recording"), for: .normal)
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "stop_recording", ofType: "png") {
+                audioButton.setImage(UIImage(contentsOfFile: path), for: .normal)
+            }
         } catch {
             finishRecording(success: false)
         }
@@ -865,14 +875,22 @@ extension ChatViewController: MessagesDataSource {
         if message.messageId != "TYPING_INDICATOR" {
             let ccpMessage = self.messages[indexPath.section]
             if self.lastRead > Double(ccpMessage.getInsertedAt()) {
-                return #imageLiteral(resourceName: "double-tick-blue")
+                if let path = Bundle(for: MessagesViewController.self).path(forResource: "double-tick-blue", ofType: "png") {
+                    return UIImage(contentsOfFile: path)
+                } else {
+                    return nil
+                }
             }
             else {
-                return #imageLiteral(resourceName: "tick-grey")
+                if let path = Bundle(for: MessagesViewController.self).path(forResource: "tick-grey", ofType: "png") {
+                    return UIImage(contentsOfFile: path)
+                } else {
+                    return nil
+                }
             }
         }
         else {
-            return #imageLiteral(resourceName: "fab_add")
+            return UIImage()
         }
     }
     
@@ -965,7 +983,7 @@ extension ChatViewController: MessagesDisplayDelegate {
                 containerView.layer.borderWidth = 1
                 containerView.layer.borderColor = UIColor.lightGray.cgColor
                 
-                let loadingView = LoadingDots.loadViewFromNib() as! LoadingDots
+                let loadingView = LoadingDots().loadFromNib() as! LoadingDots
                 loadingView.animate()
                 containerView.addSubview(loadingView)
                 containerView.fillSuperview()

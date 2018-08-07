@@ -57,7 +57,11 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
-        let focusView = UIImageView(image: #imageLiteral(resourceName: "focus"))
+        guard let path = Bundle(for: MessagesViewController.self).path(forResource: "focus", ofType: "png") else {
+            return
+        }
+        
+        let focusView = UIImageView(image: UIImage(contentsOfFile: path))
         focusView.center = point
         focusView.alpha = 0.0
         view.addSubview(focusView)
@@ -83,9 +87,13 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         flashEnabled = !flashEnabled
         
         if flashEnabled == true {
-            flashButton.setImage(#imageLiteral(resourceName: "flash"), for: UIControlState())
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "flash", ofType: "png") {
+                flashButton.setImage(UIImage(contentsOfFile: path), for: UIControlState())
+            }
         } else {
-            flashButton.setImage(#imageLiteral(resourceName: "flashOutline"), for: UIControlState())
+            if let path = Bundle(for: MessagesViewController.self).path(forResource: "flashOutline", ofType: "png") {
+                flashButton.setImage(UIImage(contentsOfFile: path), for: UIControlState())
+            }
         }
     }
     

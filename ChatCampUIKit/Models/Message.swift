@@ -47,19 +47,23 @@ class Message: NSObject, MessageType {
             data = MessageData.text(ccpMessage.getText())
         } else if ccpMessage.getType() == "attachment" {
             if ccpMessage.getAttachment()!.isImage() {
-                data = MessageData.photo(#imageLiteral(resourceName: "chat_image_placeholder"))
+                if let path = Bundle(for: MessagesViewController.self).path(forResource: "chat_image_placeholder", ofType: "png") {
+                    data = MessageData.photo(UIImage(contentsOfFile: path)!)
+                }
                 
                 DispatchQueue.global().async {
                     if let attachement = ccpMessage.getAttachment(), let dataURL = URL(string: attachement.getUrl()), let imageData = try? Data(contentsOf: dataURL) {
                         DispatchQueue.main.async {
-                            self.data = MessageData.photo(UIImage(data: imageData) ?? #imageLiteral(resourceName: "chat_image_placeholder"))
+                            self.data = MessageData.photo(UIImage(data: imageData)!)
                             self.delegate?.messageDidUpdateWithImage(message: self)
                         }
                     }
                 }
             } else if ccpMessage.getAttachment()?.isVideo() ?? false {
                 if let attachement = ccpMessage.getAttachment(), let dataURL = URL(string: attachement.getUrl()) {
-                    self.data = MessageData.video(file: dataURL, thumbnail: #imageLiteral(resourceName: "chat_image_placeholder"))
+                    if let path = Bundle(for: MessagesViewController.self).path(forResource: "chat_image_placeholder", ofType: "png") {
+                        self.data = MessageData.video(file: dataURL, thumbnail: UIImage(contentsOfFile: path)!)
+                    }
                     let documentUrl:URL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as URL!
                     let destinationFileUrl = documentUrl.appendingPathComponent(attachement.getName())
                     if FileManager.default.fileExists(atPath: destinationFileUrl.path) {
@@ -201,7 +205,7 @@ class Message: NSObject, MessageType {
                 "Code": code,
                 "ShortDescription": shortDescription,
                 "ShippingCost": shippingCost,
-                "Image": #imageLiteral(resourceName: "chat_image_placeholder")
+                "Image": UIImage(contentsOfFile: Bundle(for: MessagesViewController.self).path(forResource: "chat_image_placeholder", ofType: "png")!) ?? UIImage()
             ]
             
             data = MessageData.custom(messageDataDictionary)
