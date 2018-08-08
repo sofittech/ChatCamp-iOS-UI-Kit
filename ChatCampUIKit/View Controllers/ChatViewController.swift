@@ -14,7 +14,9 @@ import Photos
 import MobileCoreServices
 import AVFoundation
 
-class ChatViewController: MessagesViewController {
+public var currentChannelId = ""
+
+public class ChatViewController: MessagesViewController {
     fileprivate var participant: CCPParticipant?
     fileprivate var allParticipants: [CCPParticipant]?
     fileprivate var db: SQLiteDatabase!
@@ -34,7 +36,7 @@ class ChatViewController: MessagesViewController {
     var audioRecorder: AVAudioRecorder!
     let progressView = UIProgressView()
     
-    init(channel: CCPGroupChannel, sender: Sender) {
+    public init(channel: CCPGroupChannel, sender: Sender) {
         self.channel = channel
         self.sender = sender
         self.lastRead = 0
@@ -49,16 +51,18 @@ class ChatViewController: MessagesViewController {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        currentChannelId = channel.getId()
         setupNavigationItems()
         setupMessageInputBar()
-
+        setupNotifications()
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -83,17 +87,18 @@ class ChatViewController: MessagesViewController {
 //        addNavigationRightBarButton()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: ChatViewController.string())
         channel.markAsRead()
         self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         CCPClient.removeChannelDelegate(identifier: ChatViewController.string())
+        currentChannelId = ""
     }
     
     //    override func viewDidDisappear(_ animated: Bool) {
@@ -225,6 +230,10 @@ class ChatViewController: MessagesViewController {
         }
     }
     
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
     @objc func userProfileTapped() {
         let profileViewController = UIViewController.profileViewController()
         profileViewController.participant = self.participant
@@ -241,6 +250,10 @@ class ChatViewController: MessagesViewController {
                 self.navigationController?.pushViewController(channelProfileViewController, animated: true)
             }
         }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        messagesCollectionView.scrollToBottom(animated: true)
     }
 }
 
@@ -259,7 +272,7 @@ extension ChatViewController: MessageImageDelegate {
 
 // MARK:- CCPChannelDelegate
 extension ChatViewController: CCPChannelDelegate {
-    func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
+    public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
             if let c = channel as? CCPGroupChannel {
                 if let p = c.getTypingParticipants().first {
@@ -275,7 +288,7 @@ extension ChatViewController: CCPChannelDelegate {
         }
     }
     
-    func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
+    public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
         if channel.getId() == self.channel.getId() {
             let mkMessage = Message(fromCCPMessage: message)
             self.removeLoadingDots()
@@ -296,7 +309,7 @@ extension ChatViewController: CCPChannelDelegate {
         
     }
     
-    func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
+    public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
             if let c = channel as? CCPGroupChannel {
                 if c.getReadReceipt().count > 0 {
@@ -389,7 +402,9 @@ extension ChatViewController {
                         DispatchQueue.main.async {
                             
                             self.messagesCollectionView.reloadData()
-                            self.messagesCollectionView.scrollToItem(at:IndexPath(row: 0, section: count - 1), at: .top, animated: false)
+                            if messages?.count ?? 0 > 0 {
+                                self.messagesCollectionView.scrollToItem(at:IndexPath(row: 0, section: count - 1), at: .top, animated: false)
+                            }
                             self.loadingMessages = false
                         }
                     
@@ -729,7 +744,7 @@ extension ChatViewController {
 
 // MARK: AVAudioRecorderDelegate
 extension ChatViewController: AVAudioRecorderDelegate {
-    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+    public func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if !flag {
             finishRecording(success: false)
         } else {
@@ -753,12 +768,12 @@ extension ChatViewController: AVAudioRecorderDelegate {
 
 // MARK: UIDocumentMenuDelegate, UIDocumentPickerDelegate
 extension ChatViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    public func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
     
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         do {
             let documentData = try Data(contentsOf: url)
             self.addProgressView()
@@ -775,18 +790,18 @@ extension ChatViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
         
     }
     
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+    public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
     
-    func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController) {
+    public func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController) {
         documentMenu.dismiss(animated: true, completion: nil)
     }
 }
 
 // MARK:- MessageInputBarDelegate
 extension ChatViewController: MessageInputBarDelegate {
-    func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+    public func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
         inputBar.inputTextView.text = ""
         channel.sendMessage(text: text) { [unowned self] (message, error) in
             inputBar.inputTextView.text = ""
@@ -802,7 +817,7 @@ extension ChatViewController: MessageInputBarDelegate {
         }
     }
     
-    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
+    public func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
         if !text.isEmpty {
             channel.startTyping()
         }
@@ -812,7 +827,7 @@ extension ChatViewController: MessageInputBarDelegate {
 
 // MARK:- UICollectionViewDelegate
 extension ChatViewController: MessageCellDelegate {
-    func didTapMessage(in cell: MessageCollectionViewCell) {
+    public func didTapMessage(in cell: MessageCollectionViewCell) {
         let indexPath = messagesCollectionView.indexPath(for: cell)!
         let message = mkMessages[indexPath.section]
         
@@ -843,26 +858,26 @@ extension ChatViewController: MessageCellDelegate {
 }
 
 extension ChatViewController: UIDocumentInteractionControllerDelegate {
-    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+    public func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
     }
 }
 
 // MARK:- MessagesDataSource
 extension ChatViewController: MessagesDataSource {
-    func currentSender() -> Sender {
+    public func currentSender() -> Sender {
         return sender
     }
     
-    func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
+    public func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
         return mkMessages.count
     }
     
-    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+    public func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
         return mkMessages[indexPath.section]
     }
     
-    func cellBottomReadReceiptImage(for message: MessageType, at indexPath: IndexPath) -> UIImage? {
+    public func cellBottomReadReceiptImage(for message: MessageType, at indexPath: IndexPath) -> UIImage? {
         if message.messageId != "TYPING_INDICATOR" {
             let ccpMessage = self.messages[indexPath.section]
             if self.lastRead > Double(ccpMessage.getInsertedAt()) {
@@ -877,7 +892,7 @@ extension ChatViewController: MessagesDataSource {
         }
     }
     
-    func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
+    public func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
@@ -887,15 +902,15 @@ extension ChatViewController: MessagesDataSource {
 
 // MARK:- MessagesLayoutDelegate
 extension ChatViewController: MessagesLayoutDelegate {
-    func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
     
-    func widthForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func widthForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return view.bounds.width / 2
     }
     
-    func heightForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
         switch message.data {
         case .photo(let image):
@@ -907,11 +922,11 @@ extension ChatViewController: MessagesLayoutDelegate {
         }
     }
     
-    func widthForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func widthForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return view.bounds.width / 2
     }
     
-    func heightForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         switch message.data {
         case .custom(let metadata):
             let image = metadata["Image"] as! UIImage
@@ -926,7 +941,7 @@ extension ChatViewController: MessagesLayoutDelegate {
 
 // MARK:- MessagesDisplayDelegate
 extension ChatViewController: MessagesDisplayDelegate {
-    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+    public func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let message = mkMessages[indexPath.section]
         
         switch message.data {
@@ -1003,7 +1018,7 @@ extension ChatViewController: MessagesDisplayDelegate {
         }
     }
     
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+    public func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         
         if message.messageId == "TYPING_INDICATOR" {
             if let participant = self.channel.getTypingParticipants().first {

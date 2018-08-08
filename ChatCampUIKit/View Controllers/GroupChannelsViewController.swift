@@ -9,7 +9,6 @@
 import UIKit
 import ChatCamp
 import SDWebImage
-import MBProgressHUD
 
 open class GroupChannelsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView! {
@@ -26,34 +25,77 @@ open class GroupChannelsViewController: UIViewController {
         }
     }
     
+    fileprivate var loadingChannels = false
     open var channels: [CCPGroupChannel] = []
+    fileprivate var db: SQLiteDatabase!
+    var groupChannelsQuery: CCPGroupChannelListQuery!
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("ChatDatabase.sqlite")
+            db = try! SQLiteDatabase.open(path: fileURL.path)
+            print("Successfully opened connection to database.")
+            do {
+                try db.createTable(table: Channel.self)
+            } catch {
+                print(db.errorMessage)
+            }
+        } catch SQLiteError.OpenDatabase(let message) {
+            print("Unable to open database. Verify that you created the directory described in the Getting Started section.")
+        }
+        
+        loadChannelsFromLocalStorage()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        loadChannels()
+        CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
+        groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
+        loadChannelsFromAPI()
     }
     
-    fileprivate func loadChannels() {
-        let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        progressHud.label.text = "Loading..."
-        progressHud.contentColor = .black
-        let groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
-        groupChannelsQuery.get { [unowned self] (channels, error) in
-            progressHud.hide(animated: true)
-            if error == nil {
-                self.channels = channels!
-                
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        CCPClient.removeChannelDelegate(identifier: GroupChannelsViewController.string())
+    }
+    
+    fileprivate func loadChannelsFromLocalStorage() {
+        if let loadedChannels = self.db.getGroupChannels() {
+            if loadedChannels.count > 0 {
+                self.channels = loadedChannels
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    fileprivate func loadChannelsFromAPI() {
+        loadingChannels = true
+        groupChannelsQuery.get { [unowned self] (channels, error) in
+            if error == nil {
+                guard let channels = channels else { return }
+                self.channels = channels
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.loadingChannels = false
+                }
+                
+                do {
+                    try self.db.insertGroupChannels(channels: channels)
+                } catch {
+                    print(self.db.errorMessage)
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Group Channels", message: "Unable to load Group Channels right now. Please try later.", actionText: "Ok")
+                    self.loadingChannels = false
                 }
             }
         }
@@ -80,21 +122,17 @@ extension GroupChannelsViewController: UITableViewDataSource {
         let channel = channels[indexPath.row]
         
         if channel.getParticipantsCount() == 2 && channel.isDistinct() {
-            CCPGroupChannel.get(groupChannelId: channel.getId()) { (groupChannel, error) in
-                if let gC = groupChannel {
-                    let participants = gC.getParticipants()
-                    for participant in participants {
-                        if participant.getId() != CCPClient.getCurrentUser().getId() {
-                            cell.nameLabel.text = participant.getDisplayName()
-                            if let avatarUrl = participant.getAvatarUrl() {
-                                cell.avatarImageView?.sd_setImage(with: URL(string: avatarUrl), completed: nil)
-                            } else {
-                                cell.avatarImageView.setImageForName(string: participant.getDisplayName() ?? "?", backgroundColor: nil, circular: true, textAttributes: nil)
-                            }
-                        } else {
-                            continue
-                        }
+            let participants = channel.getParticipants()
+            for participant in participants {
+                if participant.getId() != CCPClient.getCurrentUser().getId() {
+                    cell.nameLabel.text = participant.getDisplayName()
+                    if let avatarUrl = participant.getAvatarUrl() {
+                        cell.avatarImageView?.sd_setImage(with: URL(string: avatarUrl), completed: nil)
+                    } else {
+                        cell.avatarImageView.setImageForName(string: participant.getDisplayName() ?? "?", backgroundColor: nil, circular: true, textAttributes: nil)
                     }
+                } else {
+                    continue
                 }
             }
         } else {
@@ -143,5 +181,53 @@ extension GroupChannelsViewController: UITableViewDelegate {
         let chatViewController = ChatViewController(channel: channels[indexPath.row], sender: sender)
         navigationController?.pushViewController(chatViewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK:- CCPChannelDelegate
+extension GroupChannelsViewController: CCPChannelDelegate {
+    public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
+        if let index = channels.index(where: { (groupChannel) -> Bool in
+            groupChannel.getId() == channel.getId()
+        }) {
+            channels.remove(at: index)
+            channels.insert(channel as! CCPGroupChannel, at: 0)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
+        // Not applicable
+    }
+    
+    public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
+        // Not applicable
+    }
+}
+
+// MARK:- ScrollView Delegate Methods
+extension GroupChannelsViewController {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
+            loadingChannels = true
+            groupChannelsQuery.get { [unowned self] (channels, error) in
+                if error == nil {
+                    guard let channels = channels else { return }
+                    self.channels.append(contentsOf: channels)
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.loadingChannels = false
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.showAlert(title: "Can't Load Group Channels", message: "Unable to load Group Channels right now. Please try later.", actionText: "Ok")
+                        self.loadingChannels = false
+                    }
+                }
+            }
+        }
     }
 }
