@@ -8,6 +8,8 @@
 
 import UIKit
 
+let gradientTransitionDuration: TimeInterval = 1.5
+
 class LoadingDots: UIView {
     
     @IBOutlet weak var dotImage1: UIImageView!
