@@ -74,13 +74,9 @@ extension ChannelProfileViewController {
             }
             cell.displayNameLabel.text = participants?[indexPath.row].getDisplayName()
             if participants?[indexPath.row].getIsOnline() ?? false {
-                if let path = Bundle(for: MessagesViewController.self).path(forResource: "online", ofType: "png") {
-                    cell.onlineStatusImageView.image = UIImage(contentsOfFile: path)
-                }
+                cell.onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: Message.self), compatibleWith: nil)
             } else {
-                if let path = Bundle(for: MessagesViewController.self).path(forResource: "offline", ofType: "png") {
-                    cell.onlineStatusImageView.image = UIImage(contentsOfFile: path)
-                }
+                cell.onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: Message.self), compatibleWith: nil)
             }
         }
         

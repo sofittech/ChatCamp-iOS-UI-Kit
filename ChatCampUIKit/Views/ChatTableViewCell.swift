@@ -44,9 +44,7 @@ class ChatTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        if let path = Bundle(for: MessagesViewController.self).path(forResource: "user_placeholder", ofType: "png") {
-            avatarImageView.image = UIImage(contentsOfFile: path)
-        }
+        avatarImageView.image = UIImage(named: "user_placeholder", in: Bundle(for: Message.self), compatibleWith: nil)
         nameLabel.text = ""
         messageLabel.text = ""
         lastMessageLabel.text = ""

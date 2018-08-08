@@ -87,13 +87,9 @@ class CameraViewController: SwiftyCamViewController, SwiftyCamViewControllerDele
         flashEnabled = !flashEnabled
         
         if flashEnabled == true {
-            if let path = Bundle(for: MessagesViewController.self).path(forResource: "flash", ofType: "png") {
-                flashButton.setImage(UIImage(contentsOfFile: path), for: UIControlState())
-            }
+            flashButton.setImage(UIImage(named: "flash", in: Bundle(for: Message.self), compatibleWith: nil), for: UIControlState())
         } else {
-            if let path = Bundle(for: MessagesViewController.self).path(forResource: "flashOutline", ofType: "png") {
-                flashButton.setImage(UIImage(contentsOfFile: path), for: UIControlState())
-            }
+            flashButton.setImage(UIImage(named: "flashOutline", in: Bundle(for: Message.self), compatibleWith: nil), for: UIControlState())
         }
     }
     
