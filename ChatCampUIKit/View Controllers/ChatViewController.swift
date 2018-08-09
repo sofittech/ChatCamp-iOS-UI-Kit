@@ -31,7 +31,6 @@ public class ChatViewController: MessagesViewController {
     fileprivate var partnerTyping = false
     fileprivate var messageCount: Int = 30
     var loadingDots = LoadingDots()
-    let loadingDotsAnimationDelay : TimeInterval = 0.5
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     let progressView = UIProgressView()
@@ -84,7 +83,6 @@ public class ChatViewController: MessagesViewController {
         }
         
         loadMessages(count: messageCount)
-//        addNavigationRightBarButton()
     }
     
     override public func viewDidAppear(_ animated: Bool) {
@@ -100,18 +98,6 @@ public class ChatViewController: MessagesViewController {
         CCPClient.removeChannelDelegate(identifier: ChatViewController.string())
         currentChannelId = ""
     }
-    
-    //    override func viewDidDisappear(_ animated: Bool) {
-    //        super.viewDidDisappear(animated)
-    //        db = nil
-    //    }
-//    func addNavigationRightBarButton() {
-//        let barButtonItem = UIBarButtonItem(image: UIImage(named: "fab_add"),
-//                                            style: .plain,
-//                                            target: self,
-//                                            action: #selector(addTypingText))
-//        navigationItem.rightBarButtonItem = barButtonItem
-//    }
     
     fileprivate func setupNavigationItems() {
         if channel.getParticipantsCount() == 2 && channel.isDistinct() {
@@ -191,22 +177,6 @@ public class ChatViewController: MessagesViewController {
                 navigationItem.leftBarButtonItems = [channelAvatarBarButtonItem, channelNameBarButtonItem]
             }
         }
-    }
-    
-    func addTypingText() {
-        if partnerTyping {
-            removeLoadingDots()
-//            messageInputBar.topStackViewPadding = .zero
-//            messageInputBar.topStackView.arrangedSubviews.first?.removeFromSuperview()
-            
-//            messagesCollectionView.deleteSections(IndexSet([mkMessages.count - 1]))
-            mkMessages.removeLast()
-            messagesCollectionView.reloadData()
-            messagesCollectionView.scrollToBottom(animated: false)
-        } else {
-//            showLoadingDots()
-        }
-        partnerTyping = !partnerTyping
     }
     
     func showLoadingDots(sender: Sender) {
@@ -878,7 +848,7 @@ extension ChatViewController: MessagesDataSource {
     }
     
     public func cellBottomReadReceiptImage(for message: MessageType, at indexPath: IndexPath) -> UIImage? {
-        if message.messageId != "TYPING_INDICATOR" {
+        if message.messageId != "TYPING_INDICATOR" && message.sender == self.sender {
             let ccpMessage = self.messages[indexPath.section]
             if self.lastRead > Double(ccpMessage.getInsertedAt()) {
                 return UIImage(named: "double-tick-blue", in: Bundle(for: Message.self), compatibleWith: nil)
@@ -892,11 +862,23 @@ extension ChatViewController: MessagesDataSource {
         }
     }
     
+    public func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        let date = dateFormatter.string(from: message.sentDate)
+        let attributedString = NSMutableAttributedString(string: date)
+        attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12), range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSString(string: date).range(of: date))
+
+        return attributedString
+    }
+    
     public func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
-        return dataSource.isFromCurrentSender(message: message) ? .messageTrailing(.zero) : .messageLeading(.zero)
+        
+        return dataSource.isFromCurrentSender(message: message) ? .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)) : .messageLeading(.zero)
     }
 }
 
@@ -976,10 +958,6 @@ extension ChatViewController: MessagesDisplayDelegate {
             return .custom(configurationClosure)
         case .writingView(_):
             let configurationClosure = { (containerView: UIImageView) in
-                containerView.layer.cornerRadius = 4
-                containerView.layer.masksToBounds = true
-                containerView.layer.borderWidth = 1
-                containerView.layer.borderColor = UIColor.lightGray.cgColor
                 
                 let loadingView = LoadingDots().loadFromNib() as! LoadingDots
                 loadingView.animate()

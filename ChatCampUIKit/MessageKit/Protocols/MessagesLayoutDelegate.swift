@@ -228,7 +228,7 @@ public extension MessagesLayoutDelegate {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
-        return dataSource.isFromCurrentSender(message: message) ? .messageLeading(.zero) : .messageTrailing(.zero)
+        return dataSource.isFromCurrentSender(message: message) ? .cellTrailing(.zero) : .messageLeading(.zero)
     }
 
     func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {

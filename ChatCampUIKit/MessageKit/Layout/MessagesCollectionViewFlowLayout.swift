@@ -258,7 +258,7 @@ fileprivate extension MessagesCollectionViewFlowLayout {
         
         // Cell Read Receipt
         attributes.bottomReadReceiptSize = readReceipSize(for: attributes)
-        attributes.bottomReadReceiptAlignment = cellBottomLabelAlignment(for: attributes)
+        attributes.bottomReadReceiptAlignment = cellBottomReadReceiptAlignment(for: attributes)
         
         return attributes
     }
@@ -455,8 +455,7 @@ private extension MessagesCollectionViewFlowLayout {
             let height = messagesLayoutDelegate.heightForImageInCustom(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView) + CustomMessageCell.bottomViewHeight()
             messageContainerSize = CGSize(width: width, height: height)
         case .writingView:
-            //TODO: get width and height from a particular type here
-            messageContainerSize = CGSize(width: 50, height: 50)
+            messageContainerSize = CGSize(width: 50, height: 30)
         case .document(let url):
             messageContainerSize = labelSize(for: url.lastPathComponent, considering: maxWidth, and: messageLabelFont)
             messageContainerSize.width += attributes.messageLabelHorizontalInsets + DocumentMessageCell.sideViewWidth()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let gradientTransitionDuration: TimeInterval = 1.5
+let gradientTransitionDuration: TimeInterval = 0.75
 
 class LoadingDots: UIView {
     
@@ -38,6 +38,4 @@ class LoadingDots: UIView {
         dotImage2.alpha = 0
         dotImage3.alpha = 0
     }
-    
-    
 }

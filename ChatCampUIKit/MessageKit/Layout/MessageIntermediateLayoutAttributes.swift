@@ -160,7 +160,7 @@ final class MessageIntermediateLayoutAttributes {
     }()
     
     // Cell Read Receipt Image
-    var bottomReadReceiptAlignment: LabelAlignment = .cellCenter(.zero)
+    var bottomReadReceiptAlignment: LabelAlignment = .cellTrailing(.zero)
     var bottomReadReceiptSize: CGSize = .zero
     var bottomReadReceiptMaxWidth: CGFloat = 0
     

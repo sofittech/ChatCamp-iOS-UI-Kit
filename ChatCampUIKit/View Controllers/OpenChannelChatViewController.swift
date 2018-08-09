@@ -113,6 +113,17 @@ extension OpenChannelChatViewController: MessagesDataSource {
         return mkMessages[indexPath.section]
     }
     
+    public func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        let date = dateFormatter.string(from: message.sentDate)
+        let attributedString = NSMutableAttributedString(string: date)
+        attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 10), range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSString(string: date).range(of: date))
+        
+        return attributedString
+    }
+    
     func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
