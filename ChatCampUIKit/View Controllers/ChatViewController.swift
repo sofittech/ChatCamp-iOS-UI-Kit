@@ -87,6 +87,7 @@ public class ChatViewController: MessagesViewController {
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: ChatViewController.string())
         channel.markAsRead()
         self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
@@ -202,6 +203,7 @@ public class ChatViewController: MessagesViewController {
     
     func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     @objc func userProfileTapped() {
@@ -224,6 +226,12 @@ public class ChatViewController: MessagesViewController {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         messagesCollectionView.scrollToBottom(animated: true)
+    }
+    
+    @objc func willEnterForeground() {
+        delay(2.0) {
+            self.loadMessagesFromAPI()
+        }
     }
 }
 
@@ -446,6 +454,30 @@ extension ChatViewController {
                         self.messagesCollectionView.reloadData()
                         self.messagesCollectionView.scrollToBottom(animated: true)
                     }
+                }
+            }
+        }
+    }
+    
+    public func loadMessagesFromAPI() {
+        channel.createPreviousMessageListQuery().load(limit: messageCount, reverse: true) { (messages, error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Can't Load Messages", message: "An error occurred while loading the messages. Please try again.", actionText: "Ok")
+                }
+            } else if let loadedMessages = messages {
+                let reverseChronologicalMessages = Array(loadedMessages.reversed())
+                self.messages = reverseChronologicalMessages
+                
+                self.mkMessages = Message.array(withCCPMessages: reverseChronologicalMessages)
+                    
+                for message in self.mkMessages {
+                    message.delegate = self
+                }
+                    
+                DispatchQueue.main.async {
+                    self.messagesCollectionView.reloadData()
+                    self.messagesCollectionView.scrollToBottom(animated: true)
                 }
             }
         }
