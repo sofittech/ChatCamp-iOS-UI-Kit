@@ -269,6 +269,8 @@ extension ChatViewController: CCPChannelDelegate {
             
             messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
             messagesCollectionView.scrollToBottom(animated: true)
+            self.channel.markAsRead()
+            self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
         }
             
         do {
