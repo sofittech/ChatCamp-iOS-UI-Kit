@@ -77,7 +77,7 @@ open class GroupChannelsViewController: UIViewController {
     
     fileprivate func loadChannelsFromAPI() {
         loadingChannels = true
-        groupChannelsQuery.get { [unowned self] (channels, error) in
+        groupChannelsQuery.get { (channels, error) in
             if error == nil {
                 guard let channels = channels else { return }
                 self.channels = channels
@@ -212,7 +212,7 @@ extension GroupChannelsViewController {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
             loadingChannels = true
-            groupChannelsQuery.get { [unowned self] (channels, error) in
+            groupChannelsQuery.get { (channels, error) in
                 if error == nil {
                     guard let channels = channels else { return }
                     self.channels.append(contentsOf: channels)

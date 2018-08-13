@@ -103,46 +103,42 @@ public class ChatViewController: MessagesViewController {
     fileprivate func setupNavigationItems() {
         if channel.getParticipantsCount() == 2 && channel.isDistinct() {
             navigationController?.navigationBar.items?.first?.title = ""
-            CCPGroupChannel.get(groupChannelId: channel.getId()) {(groupChannel, error) in
-                if let gC = groupChannel {
-                    self.allParticipants = gC.getParticipants()
-                    for participant in gC.getParticipants() {
-                        if participant.getId() != self.sender.id {
-                            self.participant = participant
-                            self.title = nil
-                            self.navigationItem.leftItemsSupplementBackButton = true
-                            let userNameBarButtonItem = UIBarButtonItem(title: participant.getDisplayName(), style: .plain, target: self, action: #selector(self.userProfileTapped))
-                            let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 35, height: 35))
-                            let profileButton = UIButton()
-                            profileButton.frame = CGRect(0, 0, 35, 35)
-                            if let avatarUrl = participant.getAvatarUrl() {
-                                imageView.sd_setImage(with: URL(string: avatarUrl), completed: nil)
-                                if let image = imageView.image {
-                                    UIGraphicsBeginImageContextWithOptions(profileButton.frame.size, false, image.scale)
-                                    let rect  = CGRect(0, 0, profileButton.frame.size.width, profileButton.frame.size.height)
-                                    UIBezierPath(roundedRect: rect, cornerRadius: rect.width/2).addClip()
-                                    image.draw(in: rect)
-                                    
-                                    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-                                    UIGraphicsEndImageContext()
-                                    let color = UIColor(patternImage: newImage!)
-                                    profileButton.backgroundColor = color
-                                } else {
-                                    let color = UIColor(patternImage: UIImage(named: "avatar_placeholder")!)
-                                    profileButton.backgroundColor = color
-                                }
-                                profileButton.layer.cornerRadius = 0.5 * profileButton.bounds.size.width
-                                let profileImageBarButtonItem = UIBarButtonItem(customView: profileButton)
-                                self.navigationItem.leftBarButtonItems = [profileImageBarButtonItem, userNameBarButtonItem]
-                            } else {
-                                imageView.setImageForName(string: participant.getDisplayName() ?? "?", circular: true, textAttributes: nil)
-                                let profileImageBarButtonItem = UIBarButtonItem(customView: imageView)
-                                self.navigationItem.leftBarButtonItems = [profileImageBarButtonItem, userNameBarButtonItem]
-                            }
+            allParticipants = channel.getParticipants()
+            for participant in allParticipants! {
+                if participant.getId() != self.sender.id {
+                    self.participant = participant
+                    self.title = nil
+                    self.navigationItem.leftItemsSupplementBackButton = true
+                    let userNameBarButtonItem = UIBarButtonItem(title: participant.getDisplayName(), style: .plain, target: self, action: #selector(self.userProfileTapped))
+                    let imageView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 35, height: 35))
+                    let profileButton = UIButton()
+                    profileButton.frame = CGRect(0, 0, 35, 35)
+                    if let avatarUrl = participant.getAvatarUrl() {
+                        imageView.sd_setImage(with: URL(string: avatarUrl), completed: nil)
+                        if let image = imageView.image {
+                            UIGraphicsBeginImageContextWithOptions(profileButton.frame.size, false, image.scale)
+                            let rect  = CGRect(0, 0, profileButton.frame.size.width, profileButton.frame.size.height)
+                            UIBezierPath(roundedRect: rect, cornerRadius: rect.width/2).addClip()
+                            image.draw(in: rect)
+                            
+                            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+                            UIGraphicsEndImageContext()
+                            let color = UIColor(patternImage: newImage!)
+                            profileButton.backgroundColor = color
                         } else {
-                            continue
+                            let color = UIColor(patternImage: UIImage(named: "avatar_placeholder")!)
+                            profileButton.backgroundColor = color
                         }
+                        profileButton.layer.cornerRadius = 0.5 * profileButton.bounds.size.width
+                        let profileImageBarButtonItem = UIBarButtonItem(customView: profileButton)
+                        self.navigationItem.leftBarButtonItems = [profileImageBarButtonItem, userNameBarButtonItem]
+                    } else {
+                        imageView.setImageForName(string: participant.getDisplayName() ?? "?", circular: true, textAttributes: nil)
+                        let profileImageBarButtonItem = UIBarButtonItem(customView: imageView)
+                        self.navigationItem.leftBarButtonItems = [profileImageBarButtonItem, userNameBarButtonItem]
                     }
+                } else {
+                    continue
                 }
             }
         } else {
@@ -215,13 +211,9 @@ public class ChatViewController: MessagesViewController {
     @objc func channelProfileButtonTapped() {
         let channelProfileViewController = UIViewController.channelProfileViewController()
         channelProfileViewController.channel = self.channel
-        CCPGroupChannel.get(groupChannelId: channel.getId()) {(groupChannel, error) in
-            if let gC = groupChannel {
-                self.allParticipants = gC.getParticipants()
-                channelProfileViewController.participants = self.allParticipants
-                self.navigationController?.pushViewController(channelProfileViewController, animated: true)
-            }
-        }
+        self.allParticipants = channel.getParticipants()
+        channelProfileViewController.participants = self.allParticipants
+        self.navigationController?.pushViewController(channelProfileViewController, animated: true)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -292,7 +284,7 @@ extension ChatViewController: CCPChannelDelegate {
     public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
             if let c = channel as? CCPGroupChannel {
-                if c.getReadReceipt().count > 0 {
+                if c.getReadReceipt().count > 0 && c.getReadReceipt().count == c.getParticipants().count {
                     var r: Double = 0
                     (_, r) = c.getReadReceipt().first!
                     for (_, time) in c.getReadReceipt() {
