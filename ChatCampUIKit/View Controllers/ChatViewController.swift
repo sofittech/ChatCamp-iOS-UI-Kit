@@ -181,9 +181,14 @@ public class ChatViewController: MessagesViewController {
             partnerTyping = true
             let data = MessageData.writingView(loadingDots)
             let writingMessage = Message.init(senderOfMessage: sender, IDOfMessage: "TYPING_INDICATOR", sentDate: Date(), messageData: data)
+            
+            let _ = messagesCollectionView.numberOfItems(inSection: 0)
             mkMessages.append(writingMessage)
-            messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
-            messagesCollectionView.scrollToBottom(animated: true)
+            
+            if isViewLoaded {
+                self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
+                self.messagesCollectionView.scrollToBottom(animated: true)
+            }
         }
     }
     
@@ -262,13 +267,17 @@ extension ChatViewController: CCPChannelDelegate {
         if channel.getId() == self.channel.getId() {
             let mkMessage = Message(fromCCPMessage: message)
             self.removeLoadingDots()
+            let _ = messagesCollectionView.numberOfItems(inSection: 0)
             mkMessages.append(mkMessage)
             messages.append(message)
             
             mkMessage.delegate = self
             
-            messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
-            messagesCollectionView.scrollToBottom(animated: true)
+            if isViewLoaded {
+                self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
+                self.messagesCollectionView.scrollToBottom(animated: true)
+            }
+            
             self.channel.markAsRead()
             self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
         }
@@ -988,6 +997,7 @@ extension ChatViewController: MessagesDisplayDelegate {
                 let loadingView = LoadingDots().loadFromNib() as! LoadingDots
                 loadingView.animate()
                 containerView.addSubview(loadingView)
+                containerView.backgroundColor = .clear
                 containerView.fillSuperview()
             }
             return .writingView(configurationClosure)
