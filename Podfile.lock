@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.7.2)
-  - ChatCamp (0.1.17)
+  - ChatCamp (0.1.18)
   - CLImageEditor (0.2.0):
     - CLImageEditor/Core (= 0.2.0)
   - CLImageEditor/Core (0.2.0)
@@ -58,7 +58,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
-  - ChatCamp (= 0.1.17)
+  - ChatCamp (= 0.1.18)
   - DKImagePickerController (~> 4.0.0-beta)
   - MBProgressHUD (~> 1.1.0)
   - SwiftyCam
@@ -78,7 +78,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
-  ChatCamp: d466a4ceeb224716e97080bb7e63a721a730b032
+  ChatCamp: 5f1724b6775d6aa0cd35593a903862cd5a4c6b79
   CLImageEditor: ec5ae50b3a54c9818c0bdb243b20665a1c6718e3
   DKCamera: bc3cf80a80167cea61ab2a539b9d64a10b7ed361
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
@@ -88,6 +88,6 @@ SPEC CHECKSUMS:
   SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
 
-PODFILE CHECKSUM: 72b2ec557c934c0fea286026f52529afbc14a7ce
+PODFILE CHECKSUM: d70bec7cf874195fe8a8ae48f0e810e473b3958d
 
 COCOAPODS: 1.5.3

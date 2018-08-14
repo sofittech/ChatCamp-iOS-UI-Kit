@@ -89,6 +89,7 @@ public class ChatViewController: MessagesViewController {
         super.viewDidAppear(animated)
         
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: ChatViewController.string())
+        CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: ChatViewController.string())
         channel.markAsRead()
         self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
     }
@@ -97,6 +98,7 @@ public class ChatViewController: MessagesViewController {
         super.viewWillDisappear(animated)
         
         CCPClient.removeChannelDelegate(identifier: ChatViewController.string())
+        CCPClient.removeConnectionDelegate(identifier: ChatViewController.string())
         currentChannelId = ""
     }
     
@@ -209,7 +211,6 @@ public class ChatViewController: MessagesViewController {
     
     func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     @objc func userProfileTapped() {
@@ -228,12 +229,6 @@ public class ChatViewController: MessagesViewController {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         messagesCollectionView.scrollToBottom(animated: true)
-    }
-    
-    @objc func willEnterForeground() {
-        delay(2.0) {
-            self.loadMessagesFromAPI()
-        }
     }
 }
 
@@ -323,6 +318,15 @@ extension ChatViewController: CCPChannelDelegate {
     }
 }
 
+// MARK:- CCPConnectionDelegate
+extension ChatViewController: CCPConnectionDelegate {
+    func connectionDidChange(isConnected: Bool) {
+        if isConnected {
+            loadMessagesFromAPI()
+        }
+    }
+}
+
 extension ChatViewController {
     func updateUploadProgress(with progress: Float) {
         DispatchQueue.main.async {
@@ -350,7 +354,6 @@ extension ChatViewController {
 extension ChatViewController {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
         if ((NSDate().timeIntervalSince1970 * 1000) - self.lastReadSent) > 10000 {
             channel.markAsRead()
             self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
@@ -369,7 +372,6 @@ extension ChatViewController {
                     }
                 } else if let loadedMessages = messages {
 //                    let reverseChronologicalMessages = Array(loadedMessages.reversed())
-                    
 //                    self.messages = reverseChronologicalMessages
                     
                     for message in loadedMessages {
@@ -386,20 +388,13 @@ extension ChatViewController {
                         //                    print("MEssage DeSerialize: \(m)")
                     }
                     
-                    
-                        
-                    
-                    
-                        
-                        DispatchQueue.main.async {
-                            
-                            self.messagesCollectionView.reloadData()
-                            if messages?.count ?? 0 > 0 {
-                                self.messagesCollectionView.scrollToItem(at:IndexPath(row: 0, section: count - 1), at: .top, animated: false)
-                            }
-                            self.loadingMessages = false
+                    DispatchQueue.main.async {
+                        self.messagesCollectionView.reloadData()
+                        if messages?.count ?? 0 > 0 {
+                            self.messagesCollectionView.scrollToItem(at:IndexPath(row: 0, section: count - 1), at: .top, animated: false)
                         }
-                    
+                        self.loadingMessages = false
+                    }
                 }
             }
         }
@@ -407,20 +402,12 @@ extension ChatViewController {
     
     
     fileprivate func loadMessages(count: Int) {
-        
         var cachedMessages: [CCPMessage]?
-        
         if let loadedMessages = self.db.chat(channel: self.channel) {
-            
             cachedMessages = loadedMessages
-            
             let reverseChronologicalMessages = Array(loadedMessages.reversed())
-            
             self.messages = reverseChronologicalMessages
-            
-            
             self.mkMessages = Message.array(withCCPMessages: reverseChronologicalMessages)
-            
             for message in self.mkMessages {
                 message.delegate = self
             }
@@ -429,9 +416,21 @@ extension ChatViewController {
                 self.messagesCollectionView.reloadData()
                 self.messagesCollectionView.scrollToBottom(animated: true)
             }
+            if channel.getReadReceipt().count > 0 && channel.getReadReceipt().count == channel.getParticipants().count {
+                var r: Double = 0
+                (_, r) = channel.getReadReceipt().first!
+                for (_, time) in channel.getReadReceipt() {
+                    if(time < r) {
+                        r = time
+                    }
+                }
+                self.lastRead = r
+                
+                DispatchQueue.main.async {
+                    self.messagesCollectionView.reloadData()
+                }
+            }
         }
-        
-        
         
         previousMessagesQuery.load(limit: count, reverse: true) { (messages, error) in
             if error != nil {
@@ -440,9 +439,7 @@ extension ChatViewController {
                 }
             } else if let loadedMessages = messages {
                 let reverseChronologicalMessages = Array(loadedMessages.reversed())
-                
                 self.messages = reverseChronologicalMessages
-                
                 for message in self.messages {
                     //                    let m = CCPMessage.createfromSerializedData(jsonString: message.serialize()!)
                     do {
@@ -455,9 +452,7 @@ extension ChatViewController {
                 }
                 
                 if !(cachedMessages != nil && cachedMessages?.first?.getId() == loadedMessages.first?.getId()) {
-                    
                     self.mkMessages = Message.array(withCCPMessages: reverseChronologicalMessages)
-                    
                     for message in self.mkMessages {
                         message.delegate = self
                     }
@@ -480,9 +475,7 @@ extension ChatViewController {
             } else if let loadedMessages = messages {
                 let reverseChronologicalMessages = Array(loadedMessages.reversed())
                 self.messages = reverseChronologicalMessages
-                
                 self.mkMessages = Message.array(withCCPMessages: reverseChronologicalMessages)
-                    
                 for message in self.mkMessages {
                     message.delegate = self
                 }

@@ -54,6 +54,7 @@ open class GroupChannelsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
+        CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: GroupChannelsViewController.string())
         groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
         loadChannelsFromAPI()
     }
@@ -62,6 +63,7 @@ open class GroupChannelsViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         CCPClient.removeChannelDelegate(identifier: GroupChannelsViewController.string())
+        CCPClient.removeConnectionDelegate(identifier: GroupChannelsViewController.string())
     }
     
     fileprivate func loadChannelsFromLocalStorage() {
@@ -82,6 +84,33 @@ open class GroupChannelsViewController: UIViewController {
                 guard let channels = channels else { return }
                 self.channels = channels
 
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.loadingChannels = false
+                }
+                
+                do {
+                    try self.db.insertGroupChannels(channels: channels)
+                } catch {
+                    print(self.db.errorMessage)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Can't Load Group Channels", message: "Unable to load Group Channels right now. Please try later.", actionText: "Ok")
+                    self.loadingChannels = false
+                }
+            }
+        }
+    }
+    
+    func refreshChannels() {
+        loadingChannels = true
+        let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
+        groupChannelsListQuery.get { (channels, error) in
+            if error == nil {
+                guard let channels = channels else { return }
+                self.channels = channels
+                
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.loadingChannels = false
@@ -204,6 +233,15 @@ extension GroupChannelsViewController: CCPChannelDelegate {
     
     public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         // Not applicable
+    }
+}
+
+// MARK:- CCPConnectionDelegate
+extension GroupChannelsViewController: CCPConnectionDelegate {
+    func connectionDidChange(isConnected: Bool) {
+        if isConnected {
+            refreshChannels()
+        }
     }
 }
 

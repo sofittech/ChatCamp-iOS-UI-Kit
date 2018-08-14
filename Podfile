@@ -4,7 +4,7 @@ platform :ios, '8.0'
 target 'ChatCampUIKit' do
   use_frameworks!
 
-    pod 'ChatCamp', '0.1.17'
+    pod 'ChatCamp', '0.1.18'
     pod 'DKImagePickerController', '~> 4.0.0-beta'
     pod 'Alamofire'
     pod 'SwiftyCam'
