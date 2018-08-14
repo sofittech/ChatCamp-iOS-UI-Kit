@@ -182,12 +182,17 @@ public class ChatViewController: MessagesViewController {
             let data = MessageData.writingView(loadingDots)
             let writingMessage = Message.init(senderOfMessage: sender, IDOfMessage: "TYPING_INDICATOR", sentDate: Date(), messageData: data)
             
-            let _ = messagesCollectionView.numberOfItems(inSection: 0)
+            if messagesCollectionView.numberOfSections > 0 {
+                let _ = messagesCollectionView.numberOfItems(inSection: 0)
+            }
             mkMessages.append(writingMessage)
-            
-            if isViewLoaded {
-                self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                self.messagesCollectionView.scrollToBottom(animated: true)
+            if mkMessages.count == 1 {
+                messagesCollectionView.reloadData()
+            } else {
+                if isViewLoaded {
+                    self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
+                    self.messagesCollectionView.scrollToBottom(animated: true)
+                }
             }
         }
     }
@@ -267,15 +272,21 @@ extension ChatViewController: CCPChannelDelegate {
         if channel.getId() == self.channel.getId() {
             let mkMessage = Message(fromCCPMessage: message)
             self.removeLoadingDots()
-            let _ = messagesCollectionView.numberOfItems(inSection: 0)
+            if messagesCollectionView.numberOfSections > 0 {
+                let _ = messagesCollectionView.numberOfItems(inSection: 0)
+            }
             mkMessages.append(mkMessage)
             messages.append(message)
             
             mkMessage.delegate = self
             
-            if isViewLoaded {
-                self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                self.messagesCollectionView.scrollToBottom(animated: true)
+            if mkMessages.count == 1 {
+                messagesCollectionView.reloadData()
+            } else {
+                if isViewLoaded {
+                    self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
+                    self.messagesCollectionView.scrollToBottom(animated: true)
+                }
             }
             
             self.channel.markAsRead()
