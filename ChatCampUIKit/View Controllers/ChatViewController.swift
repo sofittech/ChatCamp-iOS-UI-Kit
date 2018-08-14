@@ -320,7 +320,7 @@ extension ChatViewController: CCPChannelDelegate {
 
 // MARK:- CCPConnectionDelegate
 extension ChatViewController: CCPConnectionDelegate {
-    func connectionDidChange(isConnected: Bool) {
+    public func connectionDidChange(isConnected: Bool) {
         if isConnected {
             loadMessagesFromAPI()
         }

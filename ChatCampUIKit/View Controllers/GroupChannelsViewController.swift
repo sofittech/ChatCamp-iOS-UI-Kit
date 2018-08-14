@@ -47,6 +47,7 @@ open class GroupChannelsViewController: UIViewController {
             print("Unable to open database. Verify that you created the directory described in the Getting Started section.")
         }
         
+        groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
         loadChannelsFromLocalStorage()
     }
     
@@ -55,8 +56,7 @@ open class GroupChannelsViewController: UIViewController {
         
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
         CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: GroupChannelsViewController.string())
-        groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
-        loadChannelsFromAPI()
+        refreshChannels()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
@@ -72,32 +72,6 @@ open class GroupChannelsViewController: UIViewController {
                 self.channels = loadedChannels
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
-                }
-            }
-        }
-    }
-    
-    fileprivate func loadChannelsFromAPI() {
-        loadingChannels = true
-        groupChannelsQuery.get { (channels, error) in
-            if error == nil {
-                guard let channels = channels else { return }
-                self.channels = channels
-
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingChannels = false
-                }
-                
-                do {
-                    try self.db.insertGroupChannels(channels: channels)
-                } catch {
-                    print(self.db.errorMessage)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.showAlert(title: "Can't Load Group Channels", message: "Unable to load Group Channels right now. Please try later.", actionText: "Ok")
-                    self.loadingChannels = false
                 }
             }
         }
@@ -238,7 +212,7 @@ extension GroupChannelsViewController: CCPChannelDelegate {
 
 // MARK:- CCPConnectionDelegate
 extension GroupChannelsViewController: CCPConnectionDelegate {
-    func connectionDidChange(isConnected: Bool) {
+    public func connectionDidChange(isConnected: Bool) {
         if isConnected {
             refreshChannels()
         }
