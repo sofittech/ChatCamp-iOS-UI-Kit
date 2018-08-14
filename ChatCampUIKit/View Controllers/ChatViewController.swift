@@ -818,6 +818,7 @@ extension ChatViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
 // MARK:- MessageInputBarDelegate
 extension ChatViewController: MessageInputBarDelegate {
     public func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+        channel.stopTyping()
         inputBar.inputTextView.text = ""
         channel.sendMessage(text: text) { [unowned self] (message, error) in
             inputBar.inputTextView.text = ""
