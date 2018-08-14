@@ -57,7 +57,6 @@ public class ChatViewController: MessagesViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        currentChannelId = channel.getId()
         setupNavigationItems()
         setupMessageInputBar()
         setupNotifications()
@@ -90,6 +89,7 @@ public class ChatViewController: MessagesViewController {
         
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: ChatViewController.string())
         CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: ChatViewController.string())
+        currentChannelId = channel.getId()
         channel.markAsRead()
         self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
     }
