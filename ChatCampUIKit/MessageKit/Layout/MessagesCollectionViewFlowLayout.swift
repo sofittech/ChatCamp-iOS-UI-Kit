@@ -457,9 +457,7 @@ private extension MessagesCollectionViewFlowLayout {
         case .writingView:
             messageContainerSize = CGSize(width: 50, height: 30)
         case .document(let url):
-            messageContainerSize = labelSize(for: url.lastPathComponent, considering: maxWidth, and: messageLabelFont)
-            messageContainerSize.width += attributes.messageLabelHorizontalInsets + DocumentMessageCell.sideViewWidth()
-            messageContainerSize.height += attributes.messageLabelVerticalInsets + DocumentMessageCell.paddingHeight()
+            messageContainerSize = CGSize(width: 150, height: 40)
         case .audio:
             messageContainerSize = CGSize(width: 120, height: 40)
         }
