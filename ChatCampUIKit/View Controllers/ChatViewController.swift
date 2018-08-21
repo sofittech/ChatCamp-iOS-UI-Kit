@@ -854,9 +854,13 @@ extension ChatViewController: MessageCellDelegate {
             imagePreviewViewController.image = image
             navigationController?.pushViewController(imagePreviewViewController, animated: true)
         case .document(let url):
-            let documentInteractionController = UIDocumentInteractionController(url: url)
-            documentInteractionController.delegate = self
-            documentInteractionController.presentPreview(animated: true)
+            if url.isFileURL {
+                let documentInteractionController = UIDocumentInteractionController(url: url)
+                documentInteractionController.delegate = self
+                documentInteractionController.presentPreview(animated: true)
+            } else {
+                showAlert(title: "Download in progress!", message: "Document is not fully donwloded.", actionText: "OK")
+            }
         case .audio(let audioUrl):
             if let audioView = (cell.messageContainerView.subviews.first) as? AudioView {
                 audioView.playAudio(audioUrl)
