@@ -8,7 +8,7 @@ s.summary = "ChatCampUIKit - UIKit for Chat Camp iOS."
 s.requires_arc = true
 
 # 2
-s.version = "0.1.2"
+s.version = "0.1.3"
 
 # 3
 s.license = { :type => "MIT", :file => "LICENSE" }
@@ -17,10 +17,10 @@ s.license = { :type => "MIT", :file => "LICENSE" }
 s.author = { "Saurabh Gupta" => "saurabh.gupta@iflylabs.com" }
 
 # 5 - Replace this URL with your own Github page's URL (from the address bar)
-s.homepage = "https://github.com/ChatCamp/ChatCamp-iOS-UIKit"
+s.homepage = "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit"
 
 # 6 - Replace this URL with your own Git URL from "Quick Setup"
-s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UIKit.git", :tag => "#{s.version}"}
+s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "#{s.version}"}
 
 # 7
 s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "MapKit", "UIKit", "Foundation"]
