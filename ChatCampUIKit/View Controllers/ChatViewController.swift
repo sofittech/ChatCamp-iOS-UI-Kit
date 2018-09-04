@@ -43,11 +43,6 @@ public class ChatViewController: MessagesViewController {
         self.loadingMessages = false
         previousMessagesQuery = channel.createPreviousMessageListQuery()
         super.init(nibName: nil, bundle: nil)
-        CCPGroupChannel.get(groupChannelId: channel.getId()) {(groupChannel, error) in
-            if let gC = groupChannel {
-                self.channel = gC
-            }
-        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -92,7 +87,14 @@ public class ChatViewController: MessagesViewController {
         currentChannelId = channel.getId()
         channel.markAsRead()
         self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
+        CCPGroupChannel.get(groupChannelId: channel.getId()) {(groupChannel, error) in
+            if let gC = groupChannel {
+                self.channel = gC
+                self.updateParticipant()
+            }
+        }
     }
+    
     
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -316,6 +318,14 @@ extension ChatViewController: CCPChannelDelegate {
             }
         }
     }
+    
+    public func channelDidUpdated(channel: CCPBaseChannel) { }
+    
+    public func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
+    
+    public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate
@@ -496,7 +506,11 @@ extension ChatViewController {
         attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
         
         attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
-            self.presentAlertController()
+            if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
+                self.presentUserBlockedAlert()
+            } else {
+                self.presentAlertController()
+            }
         }
         
         let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -504,7 +518,11 @@ extension ChatViewController {
 
         
         audioButton.onTouchUpInside { [unowned self] audioButton in
-            self.handleAudioMessageAction(audioButton: audioButton)
+            if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
+                self.presentUserBlockedAlert()
+            } else {
+                self.handleAudioMessageAction(audioButton: audioButton)
+            }
         }
         
         messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
@@ -749,6 +767,35 @@ extension ChatViewController {
         audioRecorder.stop()
         audioRecorder = nil
     }
+    
+    func presentUserBlockedAlert() {
+        let alertController = UIAlertController(title: "Unblock User", message: "User has been blocked by you. Unblock user to continue chatting with them.", preferredStyle: .actionSheet)
+        let unblockAction = UIAlertAction(title: "Unblock", style: .default) { (action) in
+            CCPClient.unblockUser(userId: self.participant?.getId() ?? "") { (participant, error) in
+                if error == nil {
+                    self.participant = participant
+                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(unblockAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func updateParticipant() {
+        if self.channel.getParticipantsCount() == 2 {
+            let participants = self.channel.getParticipants()
+            for participant in participants {
+                if participant.getId() != self.sender.id {
+                    self.participant = participant
+                }
+            }
+        }
+    }
 }
 
 // MARK: AVAudioRecorderDelegate
@@ -811,18 +858,22 @@ extension ChatViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
 // MARK:- MessageInputBarDelegate
 extension ChatViewController: MessageInputBarDelegate {
     public func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
-        channel.stopTyping()
-        inputBar.inputTextView.text = ""
-        channel.sendMessage(text: text) { [unowned self] (message, error) in
+        if channel.getParticipants().count == 2 && participant?.isParticipantBlockedByMe() ?? false {
+            self.presentUserBlockedAlert()
+        } else {
+            channel.stopTyping()
             inputBar.inputTextView.text = ""
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlert(title: "Unable to Send Message", message: "An error occurred while sending the message.", actionText: "Ok")
-                    inputBar.inputTextView.text = text
+            channel.sendMessage(text: text) { [weak self] (message, error) in
+                inputBar.inputTextView.text = ""
+                if error != nil {
+                    DispatchQueue.main.async {
+                        self?.showAlert(title: "Unable to Send Message", message: "An error occurred while sending the message.", actionText: "Ok")
+                        inputBar.inputTextView.text = text
+                    }
+                } else if let _ = message {
+                    self?.channel.markAsRead()
+                    self?.lastReadSent = NSDate().timeIntervalSince1970 * 1000
                 }
-            } else if let _ = message {
-                self.channel.markAsRead()
-                self.lastReadSent = NSDate().timeIntervalSince1970 * 1000
             }
         }
     }

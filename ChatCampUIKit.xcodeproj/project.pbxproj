@@ -66,7 +66,6 @@
 		09B2148620E3CCE0004572DC /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2147720E3CCE0004572DC /* ChatViewController.swift */; };
 		09B2148A20E3CCF9004572DC /* LastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2148720E3CCF8004572DC /* LastMessage.swift */; };
 		09B2148B20E3CCF9004572DC /* DelayMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2148820E3CCF8004572DC /* DelayMethod.swift */; };
-		09B2148C20E3CCF9004572DC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2148920E3CCF9004572DC /* Constants.swift */; };
 		09B2149320E3CD24004572DC /* LoadingDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2148D20E3CD23004572DC /* LoadingDots.swift */; };
 		09B2149420E3CD24004572DC /* ChannelProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2148E20E3CD23004572DC /* ChannelProfileTableViewCell.swift */; };
 		09B2149520E3CD24004572DC /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09B2148F20E3CD23004572DC /* ChatTableViewCell.xib */; };
@@ -149,6 +148,9 @@
 		09B2153E20E3CD9D004572DC /* MessageLabelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */; };
 		09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */; };
 		09B2154020E3CD9D004572DC /* MessagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2150020E3CD9D004572DC /* MessagesDataSource.swift */; };
+		09D0C341213EBA040068C09D /* block@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C33F213EBA040068C09D /* block@3x.png */; };
+		09D0C342213EBA050068C09D /* block@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C340213EBA040068C09D /* block@2x.png */; };
+		09D0C344213EBBE20068C09D /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */; };
 		D5005367164B1533ABDB8D30 /* Pods_ChatCampUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591900E5D1DCCF080918580 /* Pods_ChatCampUIKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -214,7 +216,6 @@
 		09B2147720E3CCE0004572DC /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		09B2148720E3CCF8004572DC /* LastMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastMessage.swift; sourceTree = "<group>"; };
 		09B2148820E3CCF8004572DC /* DelayMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayMethod.swift; sourceTree = "<group>"; };
-		09B2148920E3CCF9004572DC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		09B2148D20E3CD23004572DC /* LoadingDots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingDots.swift; sourceTree = "<group>"; };
 		09B2148E20E3CD23004572DC /* ChannelProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelProfileTableViewCell.swift; sourceTree = "<group>"; };
 		09B2148F20E3CD23004572DC /* ChatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
@@ -297,6 +298,9 @@
 		09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLabelDelegate.swift; sourceTree = "<group>"; };
 		09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDisplayDelegate.swift; sourceTree = "<group>"; };
 		09B2150020E3CD9D004572DC /* MessagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDataSource.swift; sourceTree = "<group>"; };
+		09D0C33F213EBA040068C09D /* block@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@3x.png"; sourceTree = "<group>"; };
+		09D0C340213EBA040068C09D /* block@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@2x.png"; sourceTree = "<group>"; };
+		09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
 		97A592481AF409627FA7F95B /* Pods-ChatCampUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.release.xcconfig"; sourceTree = "<group>"; };
 		9B22777981599F5B3001EA96 /* Pods-ChatCampUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 		F591900E5D1DCCF080918580 /* Pods_ChatCampUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatCampUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -317,6 +321,8 @@
 		0996E0782119DEEA00DD7C1B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				09D0C340213EBA040068C09D /* block@2x.png */,
+				09D0C33F213EBA040068C09D /* block@3x.png */,
 				0996E0D32119ED0700DD7C1B /* chat_image_placeholder@2x.png */,
 				0996E0D42119ED0700DD7C1B /* chat_image_placeholder@3x.png */,
 				0996E0CF2119E34400DD7C1B /* cancel@2x.png */,
@@ -456,7 +462,6 @@
 		09B2146020E3CB1D004572DC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				09B2148920E3CCF9004572DC /* Constants.swift */,
 				09B2148820E3CCF8004572DC /* DelayMethod.swift */,
 				09B2148720E3CCF8004572DC /* LastMessage.swift */,
 			);
@@ -478,6 +483,7 @@
 				09B2146E20E3CCDE004572DC /* UsersViewController.swift */,
 				09B2147020E3CCDF004572DC /* VideoViewController.swift */,
 				09B2147220E3CCDF004572DC /* ViewController.swift */,
+				09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -759,10 +765,12 @@
 				0996E0D62119ED0800DD7C1B /* chat_image_placeholder@3x.png in Resources */,
 				09B2146820E3CCA6004572DC /* CreateChannel.storyboard in Resources */,
 				0996E0B82119E05B00DD7C1B /* stop_recording@2x.png in Resources */,
+				09D0C342213EBA050068C09D /* block@2x.png in Resources */,
 				0996E08C2119DFB400DD7C1B /* double-tick-blue.png in Resources */,
 				0996E0AC2119E03000DD7C1B /* pause@2x.png in Resources */,
 				09B2151920E3CD9D004572DC /* Info.plist in Resources */,
 				0996E0C72119E0E700DD7C1B /* user_placeholder@3x.png in Resources */,
+				09D0C341213EBA040068C09D /* block@3x.png in Resources */,
 				0996E0932119DFDF00DD7C1B /* flash@3x.png in Resources */,
 				0996E0A82119E02500DD7C1B /* online.png in Resources */,
 				0996E08A2119DF9B00DD7C1B /* chat_send_button@3x.png in Resources */,
@@ -862,6 +870,7 @@
 				09B2147F20E3CCE0004572DC /* VideoViewController.swift in Sources */,
 				09B2147E20E3CCE0004572DC /* ImagePreviewViewController.swift in Sources */,
 				09B2150320E3CD9D004572DC /* MessagesCollectionViewFlowLayout.swift in Sources */,
+				09D0C344213EBBE20068C09D /* BlockedUsersViewController.swift in Sources */,
 				09B214B420E3CD89004572DC /* DBManager.swift in Sources */,
 				09B2148520E3CCE0004572DC /* GroupChannelsViewController.swift in Sources */,
 				09B2153720E3CD9D004572DC /* MessagesCollectionView.swift in Sources */,
@@ -889,7 +898,6 @@
 				09B2152320E3CD9D004572DC /* CustomMessageCell.swift in Sources */,
 				09B2151B20E3CD9D004572DC /* MessagesViewController.swift in Sources */,
 				09B2150220E3CD9D004572DC /* MessageIntermediateLayoutAttributes.swift in Sources */,
-				09B2148C20E3CCF9004572DC /* Constants.swift in Sources */,
 				09B2153620E3CD9D004572DC /* AvatarView.swift in Sources */,
 				09B2151420E3CD9D004572DC /* Bundle+Extensions.swift in Sources */,
 				09B2153920E3CD9D004572DC /* SeparatorLine.swift in Sources */,
@@ -1033,7 +1041,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ChatCampUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1062,7 +1070,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = ChatCampUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

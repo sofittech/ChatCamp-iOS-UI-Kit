@@ -23,7 +23,6 @@ open class OpenChannelsViewController: UIViewController {
     }
     
     var channels: [CCPOpenChannel] = []
-    fileprivate var channelsToFetch: Int = 20
     fileprivate var loadingChannels = false
     var openChannelsQuery: CCPOpenChannelListQuery!
 
@@ -31,28 +30,28 @@ open class OpenChannelsViewController: UIViewController {
         super.viewDidLoad()
         
         openChannelsQuery = CCPOpenChannel.createOpenChannelListQuery()
-        loadChannels(limit: channelsToFetch)
+        loadChannels()
     }
     
-    fileprivate func loadChannels(limit: Int) {
+    fileprivate func loadChannels() {
         let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
         progressHud.label.text = "Loading..."
         progressHud.contentColor = .black
         loadingChannels = true
-        openChannelsQuery.get(limit: limit) { [unowned self] (channels, error) in
+        openChannelsQuery.load() { [weak self] (channels, error) in
             progressHud.hide(animated: true)
             if error == nil {
                 guard let channels = channels else { return }
-                self.channels.append(contentsOf: channels)
+                self?.channels.append(contentsOf: channels)
                 
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingChannels = false
+                    self?.tableView.reloadData()
+                    self?.loadingChannels = false
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
-                    self.loadingChannels = false
+                    self?.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
+                    self?.loadingChannels = false
                 }
             }
         }
@@ -109,7 +108,7 @@ extension OpenChannelsViewController: UITableViewDelegate {
 extension OpenChannelsViewController {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
-            loadChannels(limit: channelsToFetch)
+            loadChannels()
         }
     }
 }

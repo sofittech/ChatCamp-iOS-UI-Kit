@@ -8,6 +8,7 @@
 
 import UIKit
 import ChatCamp
+import MBProgressHUD
 
 class ProfileViewController: UIViewController {
 
@@ -15,6 +16,15 @@ class ProfileViewController: UIViewController {
         didSet {
             profileImageView.layer.cornerRadius = profileImageView.bounds.width/2
             profileImageView.layer.masksToBounds = true
+        }
+    }
+    @IBOutlet weak var blockUserButton: UIButton! {
+        didSet {
+            if participant?.isParticipantBlockedByMe() ?? false {
+                blockUserButton.setTitle("Unblock User", for: .normal)
+            } else {
+                blockUserButton.setTitle("Block User", for: .normal)
+            }
         }
     }
     @IBOutlet weak var displayNameLabel: UILabel!
@@ -39,6 +49,26 @@ class ProfileViewController: UIViewController {
         }
 
         displayNameLabel.text = participant?.getDisplayName()
-
+    }
+    
+    @IBAction func blockUserButtonTapped(_ sender: Any) {
+        let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        if participant?.isParticipantBlockedByMe() ?? false {
+            CCPClient.unblockUser(userId: participant?.getId() ?? "") { (participant, error) in
+                progressHud.hide(animated: true)
+                if error == nil {
+                    self.blockUserButton.setTitle("Block User", for: .normal)
+                    self.participant = participant
+                }
+            }
+        } else {
+            CCPClient.blockUser(userId: participant?.getId() ?? "") { (participant, error) in
+                progressHud.hide(animated: true)
+                if error == nil {
+                    self.blockUserButton.setTitle("Unblock User", for: .normal)
+                    self.participant = participant
+                }
+            }
+        }
     }
 }

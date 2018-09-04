@@ -80,7 +80,7 @@ open class GroupChannelsViewController: UIViewController {
     func refreshChannels() {
         loadingChannels = true
         let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
-        groupChannelsListQuery.get { (channels, error) in
+        groupChannelsListQuery.load { (channels, error) in
             if error == nil {
                 guard let channels = channels else { return }
                 self.channels = channels
@@ -208,6 +208,14 @@ extension GroupChannelsViewController: CCPChannelDelegate {
     public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         // Not applicable
     }
+    
+    public func channelDidUpdated(channel: CCPBaseChannel) { }
+    
+    public func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
+    
+    public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate
@@ -224,7 +232,7 @@ extension GroupChannelsViewController {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
             loadingChannels = true
-            groupChannelsQuery.get { (channels, error) in
+            groupChannelsQuery.load { (channels, error) in
                 if error == nil {
                     guard let channels = channels else { return }
                     self.channels.append(contentsOf: channels)

@@ -342,6 +342,14 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
     func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         // Not applicable
     }
+    
+    public func channelDidUpdated(channel: CCPBaseChannel) { }
+    
+    public func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
+    
+    public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 extension OpenChannelChatViewController {

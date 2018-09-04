@@ -41,6 +41,10 @@ extension UIViewController {
     static func imagePreviewViewController() -> ImagePreviewViewController {
         return UIStoryboard.channel().instantiateViewController(withIdentifier: ImagePreviewViewController.string()) as! ImagePreviewViewController
     }
+    
+    public static func blockedUsersViewController() -> BlockedUsersViewController {
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: BlockedUsersViewController.string()) as! BlockedUsersViewController
+    }
 }
 
 // MARK:- Alerts
