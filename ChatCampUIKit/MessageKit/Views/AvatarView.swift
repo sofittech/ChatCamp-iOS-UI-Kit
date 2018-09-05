@@ -105,7 +105,7 @@ open class AvatarView: UIImageView {
 
         let textStyle = NSMutableParagraphStyle()
         textStyle.alignment = .center
-        let textFontAttributes: [NSAttributedStringKey: Any] = [NSFontAttributeName as NSString: font, NSForegroundColorAttributeName as NSString: placeholderTextColor, NSParagraphStyleAttributeName as NSString: textStyle]
+        let textFontAttributes: [NSAttributedStringKey: Any] = [(NSAttributedStringKey.font as NSString) as NSAttributedStringKey: font, (NSAttributedStringKey.foregroundColor as NSString) as NSAttributedStringKey: placeholderTextColor, (NSAttributedStringKey.paragraphStyle as NSString) as NSAttributedStringKey: textStyle]
 
         let textTextHeight: CGFloat = initials.boundingRect(with: CGSize(width: textRect.width, height: CGFloat.infinity), options: .usesLineFragmentOrigin, attributes: textFontAttributes as [String : Any], context: nil).height
         context.saveGState()

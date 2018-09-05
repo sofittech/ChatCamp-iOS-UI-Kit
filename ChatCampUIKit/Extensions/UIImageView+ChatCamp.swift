@@ -36,8 +36,8 @@ extension UIImageView {
         let color: UIColor = (backgroundColor != nil) ? backgroundColor! : randomColor(for: string)
         let gradientColors = gradientColors ?? topAndBottomColors(for: color)
         let attributes: [String: AnyObject] = (textAttributes != nil) ? textAttributes! : [
-            NSFontAttributeName: self.fontForFontName(name: nil),
-            NSForegroundColorAttributeName: UIColor.white
+            NSAttributedStringKey.font.rawValue: self.fontForFontName(name: nil),
+            NSAttributedStringKey.foregroundColor.rawValue: UIColor.white
         ]
         
         self.image = imageSnapshot(text: initials, backgroundColor: color, circular: circular, textAttributes: attributes, gradient: gradient, gradientColors: gradientColors)
@@ -97,7 +97,7 @@ extension UIImageView {
         }
         
         // Draw text in the context
-        let textSize: CGSize = imageText.size(attributes: textAttributes)
+        let textSize: CGSize = imageText.size(withAttributes: textAttributes)
         let bounds: CGRect = self.bounds
         
         imageText.draw(in: CGRect(x: bounds.midX - textSize.width / 2,

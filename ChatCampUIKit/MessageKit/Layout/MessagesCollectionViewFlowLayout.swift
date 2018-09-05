@@ -287,7 +287,7 @@ fileprivate extension MessagesCollectionViewFlowLayout {
         case .text:
             attributes.messageLabelFont = messageLabelFont
         case .attributedText(let text):
-            guard let font = text.attribute(NSFontAttributeName, at: 0, effectiveRange: nil) as? UIFont else { return }
+            guard let font = text.attribute(NSAttributedStringKey.font, at: 0, effectiveRange: nil) as? UIFont else { return }
             attributes.messageLabelFont = font
         default:
             break
