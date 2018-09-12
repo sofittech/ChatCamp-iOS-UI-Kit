@@ -216,7 +216,7 @@ open class MessageLabel: UILabel {
                 rangeTuples.forEach { (arg) in
                     
                     let (range, _) = arg
-                    mutableText.addAttributes(attributes as [String : Any], range: range)
+                    mutableText.addAttributes(attributes, range: range)
                 }
             }
         }
@@ -251,7 +251,7 @@ open class MessageLabel: UILabel {
 
             for (range, _)  in rangeTuples {
                 let attributes = detectorAttributes(for: detector)
-                mutableAttributedString.addAttributes(attributes as [String : Any], range: range)
+                mutableAttributedString.addAttributes(attributes, range: range)
             }
 
             let updatedString = NSAttributedString(attributedString: mutableAttributedString)
@@ -383,7 +383,7 @@ open class MessageLabel: UILabel {
             addressComponents.forEach { (arg) in
                 
                 let (key, value) = arg
-                transformedAddressComponents[key as String] = value //TODO: Check
+                transformedAddressComponents[key.rawValue] = value
             }
             handleAddress(transformedAddressComponents)
         case let .phoneNumber(phoneNumber):

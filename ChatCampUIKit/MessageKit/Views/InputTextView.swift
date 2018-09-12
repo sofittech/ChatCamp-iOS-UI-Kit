@@ -246,7 +246,7 @@ open class InputTextView: UITextView {
             (NSAttributedStringKey.font as NSString) as NSAttributedStringKey: font ?? UIFont.preferredFont(forTextStyle: .body),
             (NSAttributedStringKey.foregroundColor as NSString) as NSAttributedStringKey: textColor ?? .black
             ]
-        newAttributedStingComponent.addAttributes(attributes as [String : Any], range: NSRange(location: 0, length: newAttributedStingComponent.length))
+        newAttributedStingComponent.addAttributes(attributes, range: NSRange(location: 0, length: newAttributedStingComponent.length))
         
         textStorage.beginEditing()
         // Paste over selected text

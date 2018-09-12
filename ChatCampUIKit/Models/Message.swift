@@ -37,7 +37,7 @@ class Message: NSObject, MessageType {
         let errorMessageAttributes: [NSAttributedStringKey: Any] = [
             (NSAttributedStringKey.font as NSString) as NSAttributedStringKey: UIFont.italicSystemFont(ofSize: 12),
             ]
-        let attributedString = NSMutableAttributedString(string: "can't display the message", attributes: errorMessageAttributes as [String : Any])
+        let attributedString = NSMutableAttributedString(string: "can't display the message", attributes: errorMessageAttributes)
         
         data = MessageData.attributedText(attributedString)
         
