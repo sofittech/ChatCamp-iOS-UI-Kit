@@ -7,7 +7,17 @@ target 'ChatCampUIKit' do
   pod 'ChatCamp', '0.1.20'
   pod 'DKImagePickerController', '~> 4.0.0-beta'
   pod 'Alamofire'
-  pod 'SwiftyCam', :git => 'https://github.com/Awalz/SwiftyCam', :branch => 'Swift4'
+  pod 'SwiftyCam'
   pod 'MBProgressHUD'
 
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == "SwiftyCam"
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '3.3'
+            end
+        end
+    end
 end
