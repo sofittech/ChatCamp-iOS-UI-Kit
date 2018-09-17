@@ -7,7 +7,6 @@ target 'ChatCampUIKit' do
   pod 'ChatCamp', '0.1.20'
   pod 'DKImagePickerController', '~> 4.0.0-beta'
   pod 'Alamofire'
-  pod 'SwiftyCam', :git => 'https://github.com/Awalz/SwiftyCam', :branch => 'Swift4'
   pod 'MBProgressHUD'
 
 end
