@@ -2,8 +2,9 @@ Pod::Spec.new do |s|
 
 s.platform = :ios
 s.ios.deployment_target = '10.0'
-s.name = "ChatCamp iOS UI Kit"
-s.summary = "UI Kit for ChatCamp iOS SDK"
+s.name = "ChatCampUIKit"
+s.summary = "ChatCamp iOS UI Kit"
+s.description  = "UI Kit for ChatCamp iOS SDK"
 s.requires_arc = true
 s.version = "0.1.4"
 s.license = { :type => "MIT", :file => "LICENSE" }
