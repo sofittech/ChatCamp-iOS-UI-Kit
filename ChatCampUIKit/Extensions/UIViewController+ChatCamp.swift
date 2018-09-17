@@ -34,9 +34,9 @@ extension UIViewController {
         return UIStoryboard.channel().instantiateViewController(withIdentifier: ChannelProfileViewController.string()) as! ChannelProfileViewController
     }
     
-    static func cameraViewController() -> CameraViewController {
-        return UIStoryboard.channel().instantiateViewController(withIdentifier: CameraViewController.string()) as! CameraViewController
-    }
+//    static func cameraViewController() -> CameraViewController {
+//        return UIStoryboard.channel().instantiateViewController(withIdentifier: CameraViewController.string()) as! CameraViewController
+//    }
     
     static func imagePreviewViewController() -> ImagePreviewViewController {
         return UIStoryboard.channel().instantiateViewController(withIdentifier: ImagePreviewViewController.string()) as! ImagePreviewViewController

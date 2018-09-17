@@ -582,9 +582,9 @@ extension OpenChannelChatViewController {
     
     fileprivate func presentAlertController() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let videoCameraAction = UIAlertAction(title: "Video Camera", style: .default) { (action) in
-            self.handleVideoCameraAction()
-        }
+//        let videoCameraAction = UIAlertAction(title: "Video Camera", style: .default) { (action) in
+//            self.handleVideoCameraAction()
+//        }
         
         let photoCameraAction = UIAlertAction(title: "Photo Camera", style: .default) { (action) in
             self.handlePhotoCameraAction()
@@ -600,7 +600,7 @@ extension OpenChannelChatViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        alertController.addAction(videoCameraAction)
+//        alertController.addAction(videoCameraAction)
         alertController.addAction(photoCameraAction)
         alertController.addAction(photoLibraryAction)
         alertController.addAction(documentAction)
@@ -732,34 +732,34 @@ extension OpenChannelChatViewController {
         self.present(photoGalleryViewController, animated: true, completion: nil)
     }
     
-    func handleVideoCameraAction() {
-        let cameraViewController = UIViewController.cameraViewController()
-        cameraViewController.videoProcessed = { url in
-            self.addProgressView()
-            let compressedURL = URL(fileURLWithPath: NSTemporaryDirectory() + url.lastPathComponent)
-            AttachmentManager.shared.compressVideo(inputURL: url, outputURL: compressedURL) { (exportSession) in
-                guard let session = exportSession else {
-                    self.removeProgressView()
-                    return
-                }
-                if session.status == .completed {
-                    do {
-                        let compressedData = try Data(contentsOf: compressedURL)
-                        AttachmentManager.shared.uploadAttachment(data: compressedData, channel: self.channel, fileName: compressedURL.lastPathComponent, fileType: "video" + "/" + "\(compressedURL.pathExtension)", uploadProgressHandler: {  totalBytesSent, totalBytesExpectedToSend in
-                            let progress = totalBytesSent/totalBytesExpectedToSend
-                            self.updateUploadProgress(with: progress)
-                        }) { (_, _) in
-                            self.removeProgressView()
-                        }
-                    } catch  {
-                        print("exception catch at block - while uploading video")
-                        self.removeProgressView()
-                    }
-                }
-            }
-        }
-        present(cameraViewController, animated: true, completion: nil)
-    }
+//    func handleVideoCameraAction() {
+//        let cameraViewController = UIViewController.cameraViewController()
+//        cameraViewController.videoProcessed = { url in
+//            self.addProgressView()
+//            let compressedURL = URL(fileURLWithPath: NSTemporaryDirectory() + url.lastPathComponent)
+//            AttachmentManager.shared.compressVideo(inputURL: url, outputURL: compressedURL) { (exportSession) in
+//                guard let session = exportSession else {
+//                    self.removeProgressView()
+//                    return
+//                }
+//                if session.status == .completed {
+//                    do {
+//                        let compressedData = try Data(contentsOf: compressedURL)
+//                        AttachmentManager.shared.uploadAttachment(data: compressedData, channel: self.channel, fileName: compressedURL.lastPathComponent, fileType: "video" + "/" + "\(compressedURL.pathExtension)", uploadProgressHandler: {  totalBytesSent, totalBytesExpectedToSend in
+//                            let progress = totalBytesSent/totalBytesExpectedToSend
+//                            self.updateUploadProgress(with: progress)
+//                        }) { (_, _) in
+//                            self.removeProgressView()
+//                        }
+//                    } catch  {
+//                        print("exception catch at block - while uploading video")
+//                        self.removeProgressView()
+//                    }
+//                }
+//            }
+//        }
+//        present(cameraViewController, animated: true, completion: nil)
+//    }
     
     func handleAudioMessageAction(audioButton: InputBarButtonItem) {
         recordingSession = AVAudioSession.sharedInstance()
