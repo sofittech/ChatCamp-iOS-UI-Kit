@@ -1,8 +1,6 @@
 # ChatCamp-iOS-UI-Kit
 # ChatCamp UI Kit for iOS Apps
-
 ## Installation
-
 ### CocoaPods
 [CocoaPods] is a dependency manager for Cocoa projects. You can install it with the following command:
 
@@ -19,7 +17,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'ChatCampUIKit', '~> 4.7'
+    pod 'ChatCampUIKit', '~> 0.1.9'
 end
 ```
 Then, run the following command:
@@ -30,3 +28,4 @@ $ pod install
 
 ### Note: To use UIKit with Swift 3, please use ChatCamp iOS Uikit `swift3` branch.
 
+[CocoaPods]: <https://cocoapods.org/>
