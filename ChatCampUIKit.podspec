@@ -10,7 +10,7 @@ s.version = "0.1.4"
 s.license = { :type => "MIT", :file => "LICENSE" }
 s.authors = {"Saurabh Gupta" => "saurabh.gupta@iflylabs.com", "Shashwat Srivastava"=>"shashwat@iflylabs.com", "Shubham Gupta"=>"shubham@iflylabs.com"}
 s.homepage = "https://chatcamp.io"
-s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "#{s.version}"}
+s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "v#{s.version}"}
 
 s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "MapKit", "UIKit", "Foundation"]
 s.dependency 'ChatCamp', '~> 0.1.20'
