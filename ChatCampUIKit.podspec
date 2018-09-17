@@ -2,11 +2,12 @@ Pod::Spec.new do |s|
 
 s.platform = :ios
 s.ios.deployment_target = '10.0'
+s.swift_version = '4.0'
 s.name = "ChatCampUIKit"
 s.summary = "ChatCamp iOS UI Kit"
 s.description  = "UI Kit for ChatCamp iOS SDK"
 s.requires_arc = true
-s.version = "0.1.5"
+s.version = "0.1.6"
 s.license = { :type => "MIT", :file => "LICENSE" }
 s.authors = {"Saurabh Gupta" => "saurabh.gupta@iflylabs.com", "Shashwat Srivastava"=>"shashwat@iflylabs.com", "Shubham Gupta"=>"shubham@iflylabs.com"}
 s.homepage = "https://chatcamp.io"
