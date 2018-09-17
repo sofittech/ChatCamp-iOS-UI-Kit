@@ -151,7 +151,7 @@
 		09D0C341213EBA040068C09D /* block@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C33F213EBA040068C09D /* block@3x.png */; };
 		09D0C342213EBA050068C09D /* block@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C340213EBA040068C09D /* block@2x.png */; };
 		09D0C344213EBBE20068C09D /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */; };
-		D5005367164B1533ABDB8D30 /* Pods_ChatCampUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591900E5D1DCCF080918580 /* Pods_ChatCampUIKit.framework */; };
+		B49AD1C6FD9B17B8F67FCB7B /* Pods_ChatCampUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 698626C6E3870A0243877F38 /* Pods_ChatCampUIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -301,9 +301,9 @@
 		09D0C33F213EBA040068C09D /* block@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@3x.png"; sourceTree = "<group>"; };
 		09D0C340213EBA040068C09D /* block@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@2x.png"; sourceTree = "<group>"; };
 		09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
-		97A592481AF409627FA7F95B /* Pods-ChatCampUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.release.xcconfig"; sourceTree = "<group>"; };
-		9B22777981599F5B3001EA96 /* Pods-ChatCampUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.debug.xcconfig"; sourceTree = "<group>"; };
-		F591900E5D1DCCF080918580 /* Pods_ChatCampUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatCampUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		698626C6E3870A0243877F38 /* Pods_ChatCampUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatCampUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFC3996C18C434E35E9509F1 /* Pods-ChatCampUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.release.xcconfig"; sourceTree = "<group>"; };
+		E726045785B3257AC4D9FCA9 /* Pods-ChatCampUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatCampUIKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatCampUIKit/Pods-ChatCampUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,7 +311,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5005367164B1533ABDB8D30 /* Pods_ChatCampUIKit.framework in Frameworks */,
+				B49AD1C6FD9B17B8F67FCB7B /* Pods_ChatCampUIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,8 +372,8 @@
 			children = (
 				09B2145120E3C62F004572DC /* ChatCampUIKit */,
 				09B2145020E3C62F004572DC /* Products */,
-				C6B0F29C39CD2E9E75E5C28E /* Pods */,
-				58719C0793C203A101974A3F /* Frameworks */,
+				CCA8AD8AA977163377C7B7A9 /* Pods */,
+				81E18876380F1D45D2151F7B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -640,19 +640,19 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		58719C0793C203A101974A3F /* Frameworks */ = {
+		81E18876380F1D45D2151F7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F591900E5D1DCCF080918580 /* Pods_ChatCampUIKit.framework */,
+				698626C6E3870A0243877F38 /* Pods_ChatCampUIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C6B0F29C39CD2E9E75E5C28E /* Pods */ = {
+		CCA8AD8AA977163377C7B7A9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9B22777981599F5B3001EA96 /* Pods-ChatCampUIKit.debug.xcconfig */,
-				97A592481AF409627FA7F95B /* Pods-ChatCampUIKit.release.xcconfig */,
+				E726045785B3257AC4D9FCA9 /* Pods-ChatCampUIKit.debug.xcconfig */,
+				DFC3996C18C434E35E9509F1 /* Pods-ChatCampUIKit.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -676,7 +676,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09B2145720E3C62F004572DC /* Build configuration list for PBXNativeTarget "ChatCampUIKit" */;
 			buildPhases = (
-				C22D39A1E34C53684AA9D929 /* [CP] Check Pods Manifest.lock */,
+				A5CCFC848ED8A36473512C82 /* [CP] Check Pods Manifest.lock */,
 				09B2144A20E3C62F004572DC /* Sources */,
 				09B2144B20E3C62F004572DC /* Frameworks */,
 				09B2144C20E3C62F004572DC /* Headers */,
@@ -702,7 +702,7 @@
 				TargetAttributes = {
 					09B2144E20E3C62F004572DC = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 0940;
 					};
 				};
 			};
@@ -785,7 +785,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C22D39A1E34C53684AA9D929 /* [CP] Check Pods Manifest.lock */ = {
+		A5CCFC848ED8A36473512C82 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1029,7 +1029,7 @@
 		};
 		09B2145820E3C62F004572DC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B22777981599F5B3001EA96 /* Pods-ChatCampUIKit.debug.xcconfig */;
+			baseConfigurationReference = E726045785B3257AC4D9FCA9 /* Pods-ChatCampUIKit.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1051,14 +1051,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		09B2145920E3C62F004572DC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97A592481AF409627FA7F95B /* Pods-ChatCampUIKit.release.xcconfig */;
+			baseConfigurationReference = DFC3996C18C434E35E9509F1 /* Pods-ChatCampUIKit.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1079,7 +1080,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.chatcamp.ChatCampUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

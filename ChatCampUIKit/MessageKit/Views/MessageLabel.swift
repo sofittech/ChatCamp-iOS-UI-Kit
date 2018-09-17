@@ -117,9 +117,9 @@ open class MessageLabel: UILabel {
 
     public static var defaultAttributes: [NSAttributedStringKey: Any] = {
         return [
-            NSForegroundColorAttributeName: UIColor.darkText,
-            NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
-            NSUnderlineColorAttributeName: UIColor.darkText
+            NSAttributedStringKey.foregroundColor: UIColor.darkText,
+            NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+            NSAttributedStringKey.underlineColor: UIColor.darkText
         ]
         }() as [NSAttributedStringKey : Any]
 
@@ -202,7 +202,7 @@ open class MessageLabel: UILabel {
         let range = NSRange(location: 0, length: newText.length)
         
         let mutableText = NSMutableAttributedString(attributedString: newText)
-        mutableText.addAttribute(NSParagraphStyleAttributeName, value: style, range: range)
+        mutableText.addAttribute(NSAttributedStringKey.paragraphStyle, value: style, range: range)
         
         if shouldParse {
             rangesForDetectors.removeAll()
@@ -216,7 +216,7 @@ open class MessageLabel: UILabel {
                 rangeTuples.forEach { (arg) in
                     
                     let (range, _) = arg
-                    mutableText.addAttributes(attributes as [String : Any], range: range)
+                    mutableText.addAttributes(attributes, range: range)
                 }
             }
         }
@@ -232,7 +232,7 @@ open class MessageLabel: UILabel {
         guard text.length > 0 else { return NSParagraphStyle() }
         
         var range = NSRange(location: 0, length: text.length)
-        let existingStyle = text.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle
+        let existingStyle = text.attribute(NSAttributedStringKey.paragraphStyle, at: 0, effectiveRange: &range) as? NSMutableParagraphStyle
         let style = existingStyle ?? NSMutableParagraphStyle()
         
         style.lineBreakMode = lineBreakMode
@@ -251,7 +251,7 @@ open class MessageLabel: UILabel {
 
             for (range, _)  in rangeTuples {
                 let attributes = detectorAttributes(for: detector)
-                mutableAttributedString.addAttributes(attributes as [String : Any], range: range)
+                mutableAttributedString.addAttributes(attributes, range: range)
             }
 
             let updatedString = NSAttributedString(attributedString: mutableAttributedString)
@@ -383,7 +383,7 @@ open class MessageLabel: UILabel {
             addressComponents.forEach { (arg) in
                 
                 let (key, value) = arg
-                transformedAddressComponents[key as String] = value //TODO: Check
+                transformedAddressComponents[key.rawValue] = value
             }
             handleAddress(transformedAddressComponents)
         case let .phoneNumber(phoneNumber):

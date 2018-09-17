@@ -17,7 +17,7 @@ s.dependency 'ChatCamp', '~> 0.1.20'
 s.dependency 'DKImagePickerController', '~> 4.0.0-beta'
 s.dependency 'Alamofire'
 s.dependency 'SwiftyCam'
-s.dependency 'MBProgressHUD', '~> 1.1.0'
+s.dependency 'MBProgressHUD'
 
 
 s.source_files = "ChatCampUIKit/**/*.{swift}"

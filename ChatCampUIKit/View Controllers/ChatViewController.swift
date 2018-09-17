@@ -962,8 +962,8 @@ extension ChatViewController: MessagesDataSource {
         dateFormatter.dateFormat = "HH:mm"
         let date = dateFormatter.string(from: message.sentDate)
         let attributedString = NSMutableAttributedString(string: date)
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12), range: NSString(string: date).range(of: date))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12), range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray, range: NSString(string: date).range(of: date))
 
         return attributedString
     }
