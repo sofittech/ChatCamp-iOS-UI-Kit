@@ -17,7 +17,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'ChatCampUIKit', '~> 0.1.9'
+    pod 'ChatCampUIKit', '~> 0.1.10'
 end
 ```
 Then, run the following command:
