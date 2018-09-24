@@ -15,7 +15,7 @@ s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag
 
 s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "MapKit", "UIKit", "Foundation"]
 s.dependency 'ChatCamp', '~> 0.1.21'
-s.dependency 'DKImagePickerController', '~> 4.0.0-beta'
+s.dependency 'DKImagePickerController', '4.0.0-beta2'
 s.dependency 'Alamofire'
 s.dependency 'MBProgressHUD'
 
