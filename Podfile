@@ -6,6 +6,8 @@ target 'ChatCampUIKit' do
 
   pod 'ChatCamp', '~> 0.1.21'
   pod 'DKImagePickerController', '4.0.0-beta2'
+  pod 'DKCamera', '1.5.3'
+  pod 'DKPhotoGallery', '0.0.7'
   pod 'Alamofire'
   pod 'MBProgressHUD'
 
