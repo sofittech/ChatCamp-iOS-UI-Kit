@@ -8,23 +8,23 @@
 
 import UIKit
 
-class ChatTableViewCell: UITableViewCell {
-    @IBOutlet weak var avatarImageView: UIImageView! {
+open class ChatTableViewCell: UITableViewCell {
+    @IBOutlet weak open var avatarImageView: UIImageView! {
         didSet {
             avatarImageView.layer.cornerRadius = 25
             avatarImageView.layer.masksToBounds = true
         }
     }
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var accessoryLabel: UILabel!
-    @IBOutlet weak var unreadCountLabel: UILabel! {
+    @IBOutlet weak open var nameLabel: UILabel!
+    @IBOutlet weak open var messageLabel: UILabel!
+    @IBOutlet weak open var accessoryLabel: UILabel!
+    @IBOutlet weak open var unreadCountLabel: UILabel! {
         didSet {
             unreadCountLabel.layer.cornerRadius = unreadCountLabel.frame.width / 2
             unreadCountLabel.layer.masksToBounds = true
         }
     }
-    @IBOutlet weak var lastMessageLabel: UILabel! {
+    @IBOutlet weak open var lastMessageLabel: UILabel! {
         didSet {
             lastMessageLabel.text = ""
         }
@@ -41,7 +41,7 @@ class ChatTableViewCell: UITableViewCell {
         }
     }
     
-    override func prepareForReuse() {
+    override open func prepareForReuse() {
         super.prepareForReuse()
         
         avatarImageView.image = UIImage(named: "user_placeholder", in: Bundle(for: Message.self), compatibleWith: nil)
@@ -50,7 +50,7 @@ class ChatTableViewCell: UITableViewCell {
         lastMessageLabel.text = ""
     }
     
-    override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         
         selectionStyle = .none
@@ -60,7 +60,7 @@ class ChatTableViewCell: UITableViewCell {
         return String(describing: self)
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
+    override open func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // update UI

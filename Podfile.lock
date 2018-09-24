@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.7.3)
-  - ChatCamp (0.1.21)
+  - ChatCamp (0.1.22)
   - CLImageEditor (0.2.0):
     - CLImageEditor/Core (= 0.2.0)
   - CLImageEditor/Core (0.2.0)
@@ -75,7 +75,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  ChatCamp: ac3822f0ebea37bec7016a07589faec2cbfc594f
+  ChatCamp: 6a5c1f3674a5064542b76d5948346a42ee08efb3
   CLImageEditor: ec5ae50b3a54c9818c0bdb243b20665a1c6718e3
   DKCamera: 6077537273ffac6288071fbbbbf57d57c62e6803
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
