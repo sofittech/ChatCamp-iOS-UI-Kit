@@ -108,7 +108,6 @@
 		09B2151620E3CD9D004572DC /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214D020E3CD9D004572DC /* UICollectionView+Extensions.swift */; };
 		09B2151720E3CD9D004572DC /* MessageKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 09B214D220E3CD9D004572DC /* MessageKit.h */; };
 		09B2151820E3CD9D004572DC /* MessageKit+Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214D320E3CD9D004572DC /* MessageKit+Availability.swift */; };
-		09B2151920E3CD9D004572DC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09B214D420E3CD9D004572DC /* Info.plist */; };
 		09B2151A20E3CD9D004572DC /* MessagesViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214D620E3CD9D004572DC /* MessagesViewController+Keyboard.swift */; };
 		09B2151B20E3CD9D004572DC /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214D720E3CD9D004572DC /* MessagesViewController.swift */; };
 		09B2151C20E3CD9D004572DC /* MessagesViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214D820E3CD9D004572DC /* MessagesViewController+DataSource.swift */; };
@@ -768,7 +767,6 @@
 				09D0C342213EBA050068C09D /* block@2x.png in Resources */,
 				0996E08C2119DFB400DD7C1B /* double-tick-blue.png in Resources */,
 				0996E0AC2119E03000DD7C1B /* pause@2x.png in Resources */,
-				09B2151920E3CD9D004572DC /* Info.plist in Resources */,
 				0996E0C72119E0E700DD7C1B /* user_placeholder@3x.png in Resources */,
 				09D0C341213EBA040068C09D /* block@3x.png in Resources */,
 				0996E0932119DFDF00DD7C1B /* flash@3x.png in Resources */,
