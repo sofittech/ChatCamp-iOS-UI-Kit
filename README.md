@@ -17,7 +17,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'ChatCampUIKit', '~> 0.1'
+    pod 'ChatCampUIKit', '~> 4.2'
 end
 ```
 Then, run the following command:
@@ -25,6 +25,8 @@ Then, run the following command:
 ```sh
 $ pod install
 ```
+
+### Note: To use UIKit with Swift 4 (Swift versions prior to 4.2), please use ChatCamp iOS Uikit `swift-4.1` branch.
 
 ### Note: To use UIKit with Swift 3, please use ChatCamp iOS Uikit `swift3` branch.
 
