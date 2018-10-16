@@ -33,7 +33,12 @@ class VideoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
+        if #available(iOS 10.0, *) {
+            try! AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+        } else {
+            // fallback method for older iOS versions. Unfortunately there is none. Please update the device to iOS 10.0 +
+        }
+        
         self.view.backgroundColor = UIColor.clear
         player = AVPlayer(url: videoURL)
         playerController = AVPlayerViewController()
@@ -44,7 +49,7 @@ class VideoViewController: UIViewController {
         
         playerController!.showsPlaybackControls = true
         playerController!.player = player!
-        self.addChildViewController(playerController!)
+        self.addChild(playerController!)
         self.view.addSubview(playerController!.view)
         playerController!.view.frame = view.frame
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player!.currentItem)
@@ -57,7 +62,7 @@ class VideoViewController: UIViewController {
     
     @objc fileprivate func playerItemDidReachEnd(_ notification: Notification) {
         if self.player != nil {
-            self.player!.seek(to: kCMTimeZero)
+            self.player!.seek(to: CMTime.zero)
         }
     }
 }

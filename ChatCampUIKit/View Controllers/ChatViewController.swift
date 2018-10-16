@@ -212,7 +212,7 @@ public class ChatViewController: MessagesViewController {
     }
     
     func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     @objc func userProfileTapped() {
@@ -716,7 +716,11 @@ extension ChatViewController {
         recordingSession = AVAudioSession.sharedInstance()
         
         do {
-            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            if #available(iOS 10.0, *) {
+                try! recordingSession.setCategory(.playAndRecord, mode: .default, options: [])
+            } else {
+                // fallback method for older iOS versions. Unfortunately there is none. Please update the device to iOS 10.0 +
+            }
             try recordingSession.setActive(true)
             recordingSession.requestRecordPermission() { [unowned self] allowed in
                 DispatchQueue.main.async {
@@ -962,8 +966,8 @@ extension ChatViewController: MessagesDataSource {
         dateFormatter.dateFormat = "HH:mm"
         let date = dateFormatter.string(from: message.sentDate)
         let attributedString = NSMutableAttributedString(string: date)
-        attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12), range: NSString(string: date).range(of: date))
-        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray, range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 12), range: NSString(string: date).range(of: date))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.gray, range: NSString(string: date).range(of: date))
 
         return attributedString
     }
@@ -1114,4 +1118,3 @@ extension ChatViewController: MessagesDisplayDelegate {
         }
     }
 }
-

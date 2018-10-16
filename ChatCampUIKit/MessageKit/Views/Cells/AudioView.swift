@@ -16,7 +16,12 @@ class AudioView: UIView {
     
     func playAudio(_ audioUrl: URL) {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            if #available(iOS 10.0, *) {
+                try! AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            } else {
+                // fallback method for older iOS versions. Unfortunately there is none. Please update the device to iOS 10.0 +
+            }
+            
             try AVAudioSession.sharedInstance().setActive(true)
             audioPlayer = try AVAudioPlayer(contentsOf: audioUrl)
             audioPlayer?.delegate = self

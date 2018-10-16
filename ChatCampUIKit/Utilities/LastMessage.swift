@@ -9,7 +9,7 @@
 import Foundation
 
 open class LastMessage {
-    static open func getDisplayableMessage(timeInterval: Double) -> String {
+    static public func getDisplayableMessage(timeInterval: Double) -> String {
         let lastMessageDate = Date(timeIntervalSince1970: timeInterval)
         let timeDifference = Date().timeIntervalSince(lastMessageDate)
         
