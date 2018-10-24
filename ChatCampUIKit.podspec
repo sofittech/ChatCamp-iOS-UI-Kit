@@ -14,7 +14,7 @@ s.homepage = "https://chatcamp.io"
 s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "v#{s.version}"}
 
 s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "MapKit", "UIKit", "Foundation"]
-s.dependency 'ChatCamp', '~> 4.2'
+s.dependency 'ChatCamp'
 s.dependency 'DKImagePickerController'
 s.dependency 'DKCamera'
 s.dependency 'DKPhotoGallery'

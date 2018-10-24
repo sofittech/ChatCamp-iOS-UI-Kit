@@ -43,9 +43,9 @@ class ProfileViewController: UIViewController {
         }
         
         if participant?.getIsOnline() ?? false {
-            onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: Message.self), compatibleWith: nil)
+            onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: ProfileViewController.self), compatibleWith: nil)
         } else {
-            onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: Message.self), compatibleWith: nil)
+            onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: ProfileViewController.self), compatibleWith: nil)
         }
 
         displayNameLabel.text = participant?.getDisplayName()
