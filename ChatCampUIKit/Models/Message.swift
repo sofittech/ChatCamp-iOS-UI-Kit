@@ -53,7 +53,7 @@ class Message: NSObject, MessageType {
                 DispatchQueue.global().async {
                     if let attachement = ccpMessage.getAttachment(), let dataURL = URL(string: attachement.getUrl()), let imageData = try? Data(contentsOf: dataURL) {
                         DispatchQueue.main.async {
-                            self.data = MessageData.photo(UIImage(data: imageData)!)
+                            self.data = MessageData.photo(UIImage(data: imageData) ?? UIImage())
                             self.delegate?.messageDidUpdateWithImage(message: self)
                         }
                     }
@@ -61,7 +61,7 @@ class Message: NSObject, MessageType {
             } else if ccpMessage.getAttachment()?.isVideo() ?? false {
                 if let attachement = ccpMessage.getAttachment(), let dataURL = URL(string: attachement.getUrl()) {
                     data = MessageData.video(file: dataURL, thumbnail: UIImage(named: "chat_image_placeholder", in: Bundle(for: Message.self), compatibleWith: nil) ?? UIImage())
-                    let documentUrl:URL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as URL!
+                    guard let documentUrl:URL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
                     let destinationFileUrl = documentUrl.appendingPathComponent(attachement.getName())
                     if FileManager.default.fileExists(atPath: destinationFileUrl.path) {
                         guard let thumbnail = ImageManager.getThumbnailFrom(path: destinationFileUrl) else { return }
@@ -202,7 +202,7 @@ class Message: NSObject, MessageType {
                 "Code": code,
                 "ShortDescription": shortDescription,
                 "ShippingCost": shippingCost,
-                "Image": UIImage(contentsOfFile: Bundle(for: MessagesViewController.self).path(forResource: "chat_image_placeholder", ofType: "png")!) ?? UIImage()
+                "Image": UIImage(named: "chat_image_placeholder", in: Bundle(for: Message.self), compatibleWith: nil) ?? UIImage()
             ]
             
             data = MessageData.custom(messageDataDictionary)

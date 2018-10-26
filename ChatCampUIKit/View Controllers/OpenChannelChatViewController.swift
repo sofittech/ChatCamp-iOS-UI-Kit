@@ -455,17 +455,17 @@ extension OpenChannelChatViewController: UIDocumentInteractionControllerDelegate
 extension OpenChannelChatViewController {
     fileprivate func setupMessageInputBar() {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
-        messageInputBar.sendButton.setImage(UIImage(named: "chat_send_button", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+        messageInputBar.sendButton.setImage(UIImage(named: "chat_send_button", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         
         let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+        attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         
         attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
             self.presentAlertController()
         }
         
         let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+        audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         
         audioButton.onTouchUpInside { [unowned self] audioButton in
             self.handleAudioMessageAction(audioButton: audioButton)
@@ -497,8 +497,11 @@ extension OpenChannelChatViewController {
                 let color = UIColor(patternImage: newImage!)
                 profileButton.backgroundColor = color
             } else {
-                let color = UIColor(patternImage: UIImage(named: "avatar_placeholder")!)
-                profileButton.backgroundColor = color
+                if let imagePath = Bundle(for: OpenChannelChatViewController.self).path(forResource: "avatar_placeholder", ofType: "png"), let image = UIImage(contentsOfFile: imagePath) {
+                    let color = UIColor(patternImage: image)
+                    
+                    profileButton.backgroundColor = color
+                }
             }
             profileButton.layer.cornerRadius = 0.5 * profileButton.bounds.size.width
             let channelAvatarBarButtonItem = UIBarButtonItem(customView: profileButton)
@@ -778,7 +781,7 @@ extension OpenChannelChatViewController {
                             self.startRecording(audioButton: audioButton)
                         } else {
                             self.finishRecording(success: true)
-                            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+                            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
                         }
                     } else {
                         // failed to record!
@@ -805,7 +808,7 @@ extension OpenChannelChatViewController {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
-            audioButton.setImage(UIImage(named: "stop_recording", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+            audioButton.setImage(UIImage(named: "stop_recording", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         } catch {
             finishRecording(success: false)
         }

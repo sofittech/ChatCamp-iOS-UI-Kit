@@ -44,7 +44,7 @@ open class ChatTableViewCell: UITableViewCell {
     override open func prepareForReuse() {
         super.prepareForReuse()
         
-        avatarImageView.image = UIImage(named: "user_placeholder", in: Bundle(for: Message.self), compatibleWith: nil)
+        avatarImageView.image = UIImage(named: "user_placeholder", in: Bundle(for: ChatTableViewCell.self), compatibleWith: nil)
         nameLabel.text = ""
         messageLabel.text = ""
         lastMessageLabel.text = ""
