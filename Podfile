@@ -5,7 +5,7 @@ target 'ChatCampUIKit' do
   use_frameworks!
 
   pod 'ChatCamp', '~> 4.2'
-  pod 'DKImagePickerController'
+  pod 'DKImagePickerController', '4.0.3'
   pod 'Alamofire', '~> 4.7'
   pod 'MBProgressHUD'
 
