@@ -130,8 +130,11 @@ public class ChatViewController: MessagesViewController {
                             let color = UIColor(patternImage: newImage!)
                             profileButton.backgroundColor = color
                         } else {
-                            let color = UIColor(patternImage: UIImage(named: "avatar_placeholder")!)
-                            profileButton.backgroundColor = color
+                            if let imagePath = Bundle(for: ChatViewController.self).path(forResource: "avatar_placeholder", ofType: "png"), let image = UIImage(contentsOfFile: imagePath) {
+                                let color = UIColor(patternImage: image)
+                                
+                                profileButton.backgroundColor = color
+                            }
                         }
                         profileButton.layer.cornerRadius = 0.5 * profileButton.bounds.size.width
                         let profileImageBarButtonItem = UIBarButtonItem(customView: profileButton)
@@ -166,8 +169,11 @@ public class ChatViewController: MessagesViewController {
                     let color = UIColor(patternImage: newImage!)
                     profileButton.backgroundColor = color
                 } else {
-                    let color = UIColor(patternImage: UIImage(named: "avatar_placeholder")!)
-                    profileButton.backgroundColor = color
+                    if let imagePath = Bundle(for: ChatViewController.self).path(forResource: "avatar_placeholder", ofType: "png"), let image = UIImage(contentsOfFile: imagePath) {
+                        let color = UIColor(patternImage: image)
+                        
+                        profileButton.backgroundColor = color
+                    }
                 }
                 profileButton.layer.cornerRadius = 0.5 * profileButton.bounds.size.width
                 let channelAvatarBarButtonItem = UIBarButtonItem(customView: profileButton)
@@ -725,7 +731,7 @@ extension ChatViewController {
                             self.startRecording(audioButton: audioButton)
                         } else {
                             self.finishRecording(success: true)
-                            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+                            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
                         }
                     } else {
                         // failed to record!
@@ -752,7 +758,7 @@ extension ChatViewController {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
-            audioButton.setImage(UIImage(named: "stop_recording", in: Bundle(for: Message.self), compatibleWith: nil), for: .normal)
+            audioButton.setImage(UIImage(named: "stop_recording", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
         } catch {
             finishRecording(success: false)
         }
@@ -946,10 +952,10 @@ extension ChatViewController: MessagesDataSource {
         if message.messageId != "TYPING_INDICATOR" && message.sender == self.sender {
             let ccpMessage = self.messages[indexPath.section]
             if self.lastRead > Double(ccpMessage.getInsertedAt()) {
-                return UIImage(named: "double-tick-blue", in: Bundle(for: Message.self), compatibleWith: nil)
+                return UIImage(named: "double-tick-blue", in: Bundle(for: ChatViewController.self), compatibleWith: nil)
             }
             else {
-                return UIImage(named: "tick-grey", in: Bundle(for: Message.self), compatibleWith: nil)
+                return UIImage(named: "tick-grey", in: Bundle(for: ChatViewController.self), compatibleWith: nil)
             }
         }
         else {
