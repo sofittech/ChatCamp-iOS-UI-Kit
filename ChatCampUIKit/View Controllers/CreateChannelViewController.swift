@@ -94,8 +94,10 @@ class CreateChannelViewController: UIViewController {
         }
         
         CCPGroupChannel.create(name: channelName, userIds: viewModel.selectedItems.map { $0.userId }, isDistinct: false) { groupChannel, error in
-            if error == nil {
-                self.dismiss(animated: true, completion: nil)
+            if error == nil, let channel = groupChannel {
+                let sender = Sender(id: CCPClient.getCurrentUser().getId(), displayName: CCPClient.getCurrentUser().getDisplayName() ?? "")
+                let chatViewController = ChatViewController(channel: channel, sender: sender)
+                self.navigationController?.pushViewController(chatViewController, animated: true)
             } else {
                 self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")
             }
