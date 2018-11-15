@@ -985,6 +985,15 @@ extension ChatViewController: MessagesDataSource {
         
         return dataSource.isFromCurrentSender(message: message) ? .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)) : .messageLeading(.zero)
     }
+    
+    public func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let senderName = message.sender.displayName
+        let attributedString = NSMutableAttributedString(string: senderName)
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 14), range: NSString(string: senderName).range(of: senderName))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSString(string: senderName).range(of: senderName))
+        
+        return attributedString
+    }
 }
 
 // MARK:- MessagesLayoutDelegate
