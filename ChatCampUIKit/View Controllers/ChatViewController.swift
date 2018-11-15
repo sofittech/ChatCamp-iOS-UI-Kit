@@ -1123,4 +1123,8 @@ extension ChatViewController: MessagesDisplayDelegate {
             }
         }
     }
+    
+    public func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.address, .date, .phoneNumber, .url]
+    }
 }

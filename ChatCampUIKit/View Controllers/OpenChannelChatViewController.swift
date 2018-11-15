@@ -245,6 +245,10 @@ extension OpenChannelChatViewController: MessagesDisplayDelegate {
             avatarView.setImageForName(string: ccpMessage.getUser().getDisplayName() ?? "?", circular: true, textAttributes: nil)
         }
     }
+    
+    public func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.address, .date, .phoneNumber, .url]
+    }
 }
 
 // MARK:- MessageCellDelegate
