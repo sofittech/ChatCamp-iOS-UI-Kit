@@ -124,7 +124,7 @@ extension GroupChannelsViewController: UITableViewDataSource {
         
         let channel = channels[indexPath.row]
         
-        if channel.getParticipantsCount() == 2 && channel.isDistinct() {
+        if channel.getParticipantsCount() == 2 {
             let participants = channel.getParticipants()
             for participant in participants {
                 if participant.getId() != CCPClient.getCurrentUser().getId() {

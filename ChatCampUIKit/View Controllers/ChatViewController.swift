@@ -105,7 +105,7 @@ public class ChatViewController: MessagesViewController {
     }
     
     fileprivate func setupNavigationItems() {
-        if channel.getParticipantsCount() == 2 && channel.isDistinct() {
+        if channel.getParticipantsCount() == 2 {
             navigationController?.navigationBar.items?.first?.title = ""
             allParticipants = channel.getParticipants()
             for participant in allParticipants! {
