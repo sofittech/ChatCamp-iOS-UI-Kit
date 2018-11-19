@@ -29,6 +29,16 @@ open class GroupChannelsViewController: UIViewController {
     open var channels: [CCPGroupChannel] = []
     fileprivate var db: SQLiteDatabase!
     var groupChannelsQuery: CCPGroupChannelListQuery!
+    lazy var messageLabel: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.textColor = .black
+        messageLabel.center = view.center
+        messageLabel.text = "No Recent Converstions"
+        
+        return messageLabel
+    }()
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,18 +92,26 @@ open class GroupChannelsViewController: UIViewController {
         let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
         groupChannelsListQuery.load { (channels, error) in
             if error == nil {
-                guard let channels = channels else { return }
-                self.channels = channels
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingChannels = false
-                }
-                
-                do {
-                    try self.db.insertGroupChannels(channels: channels)
-                } catch {
-                    print(self.db.errorMessage)
+                if channels?.count == 0 {
+                    self.messageLabel.frame = self.view.bounds
+                    self.view.addSubview(self.messageLabel)
+                    self.view.bringSubviewToFront(self.messageLabel)
+                    self.tableView.tableFooterView = UIView()
+                } else {
+                    self.messageLabel.removeFromSuperview()
+                    guard let channels = channels else { return }
+                    self.channels = channels
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.loadingChannels = false
+                    }
+                    
+                    do {
+                        try self.db.insertGroupChannels(channels: channels)
+                    } catch {
+                        print(self.db.errorMessage)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
@@ -102,6 +120,10 @@ open class GroupChannelsViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        refreshChannels()
     }
 }
 

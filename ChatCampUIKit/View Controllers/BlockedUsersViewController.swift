@@ -19,18 +19,41 @@ open class BlockedUsersViewController: UIViewController {
             tableView.dataSource = self
             tableView.rowHeight = UITableView.automaticDimension
             tableView.estimatedRowHeight = 44
-            tableView?.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.identifier)        }
+            tableView?.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.identifier)
+        }
     }
     
     var users: [CCPUser] = []
     fileprivate var usersToFetch: Int = 20
     fileprivate var loadingUsers = false
     var usersQuery: CCPUserListQuery!
+    lazy var messageLabel: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.textColor = .black
+        messageLabel.center = view.center
+        messageLabel.text = "No Blocked Users"
+        
+        return messageLabel
+    }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(BlockedUsersViewController.handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+        
+        return refreshControl
+    }()
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Blocked Users"
+        
+        tableView.addSubview(self.refreshControl)
         usersQuery = CCPClient.createBlockedUserListQuery()
         loadUsers(limit: usersToFetch)
     }
@@ -43,17 +66,73 @@ open class BlockedUsersViewController: UIViewController {
         usersQuery.load(limit: limit) { [unowned self] (users, error) in
             progressHud.hide(animated: true)
             if error == nil {
-                guard let users = users else { return }
-                self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                if users?.count == 0 {
+                    self.messageLabel.frame = self.view.bounds
+                    self.view.addSubview(self.messageLabel)
+                    self.view.bringSubviewToFront(self.messageLabel)
+                    self.tableView.tableFooterView = UIView()
+                } else {
+                    self.messageLabel.removeFromSuperview()
+                    guard let users = users else { return }
+                    self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.loadingUsers = false
+                    }
+                }
                 
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingUsers = false
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
                     self.loadingUsers = false
+                    if self.refreshControl.isRefreshing {
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        usersQuery = CCPClient.createBlockedUserListQuery()
+        let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        progressHud.label.text = "Loading..."
+        progressHud.contentColor = .black
+        loadingUsers = true
+        usersQuery.load(limit: usersToFetch) { [unowned self] (users, error) in
+            progressHud.hide(animated: true)
+            if error == nil {
+                if users?.count == 0 {
+                    self.messageLabel.frame = self.view.bounds
+                    self.view.addSubview(self.messageLabel)
+                    self.view.bringSubviewToFront(self.messageLabel)
+                    self.tableView.tableFooterView = UIView()
+                } else {
+                    self.users.removeAll()
+                    self.messageLabel.removeFromSuperview()
+                    guard let users = users else { return }
+                    self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.loadingUsers = false
+                    }
+                }
+                
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
+                    self.loadingUsers = false
+                    if self.refreshControl.isRefreshing {
+                        self.refreshControl.endRefreshing()
+                    }
                 }
             }
         }
