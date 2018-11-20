@@ -58,6 +58,10 @@ class OpenChannelChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let image = backgroundImage {
+            setupBackground(with: image)
+        }
+        
         setupNavigationItems()
         setupMessageInputBar()
         setupNotifications()
@@ -487,6 +491,16 @@ extension OpenChannelChatViewController {
         messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
         messageInputBar.leftStackView.addSubview(attachmentButton)
         messageInputBar.leftStackView.addSubview(audioButton)
+    }
+    
+    fileprivate func setupBackground(with image: UIImage) {
+        var imageView : UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = image
+        imageView.center = view.center
+        messagesCollectionView.backgroundView = imageView
     }
     
     fileprivate func setupNavigationItems() {

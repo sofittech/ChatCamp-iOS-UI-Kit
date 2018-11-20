@@ -15,6 +15,7 @@ import MobileCoreServices
 import AVFoundation
 
 public var currentChannelId = ""
+public var backgroundImage: UIImage?
 
 public class ChatViewController: MessagesViewController {
     fileprivate var participant: CCPParticipant?
@@ -51,6 +52,10 @@ public class ChatViewController: MessagesViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let image = backgroundImage {
+            setupBackground(with: image)
+        }
         
         setupNavigationItems()
         setupMessageInputBar()
@@ -102,6 +107,16 @@ public class ChatViewController: MessagesViewController {
         CCPClient.removeChannelDelegate(identifier: ChatViewController.string())
         CCPClient.removeConnectionDelegate(identifier: ChatViewController.string())
         currentChannelId = ""
+    }
+    
+    fileprivate func setupBackground(with image: UIImage) {
+        var imageView : UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = image
+        imageView.center = view.center
+        messagesCollectionView.backgroundView = imageView
     }
     
     fileprivate func setupNavigationItems() {
