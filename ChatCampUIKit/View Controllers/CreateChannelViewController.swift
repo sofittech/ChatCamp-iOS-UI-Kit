@@ -17,6 +17,7 @@ class CreateChannelViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView?
     @IBOutlet weak var creatButton: UIBarButtonItem!
     @IBOutlet weak var channelNameTextField: UITextField!
+    @IBOutlet weak var channelNameTextFieldHightConstraint: NSLayoutConstraint!
     
     var viewModel = ParticipantViewModel()
     
@@ -24,11 +25,18 @@ class CreateChannelViewController: UIViewController {
     fileprivate var usersToFetch: Int = 20
     fileprivate var loadingUsers = false
     var usersQuery: CCPUserListQuery!
+    var channel: CCPGroupChannel?
+    fileprivate var existingParticipantsIds: [String] = []
+    var isAddingParticipants = false
+    var participantsAdded: ((CCPGroupChannel) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+        if isAddingParticipants {
+            setupUI()
+        }
         
         usersQuery = CCPClient.createUserListQuery()
         loadUsers(limit: usersToFetch)
@@ -53,6 +61,16 @@ class CreateChannelViewController: UIViewController {
         tableView?.delegate = viewModel
     }
     
+    func setupUI() {
+        title = "Add Participants"
+        creatButton.title = "Add"
+        channelNameTextFieldHightConstraint.constant = 0
+        guard let groupChannel = channel else { return }
+        for paticipant in groupChannel.getParticipants() {
+            existingParticipantsIds.append(paticipant.getId())
+        }
+    }
+    
     fileprivate func loadUsers(limit: Int) {
         let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
         progressHud.label.text = "Loading..."
@@ -62,10 +80,22 @@ class CreateChannelViewController: UIViewController {
             progressHud.hide(animated: true)
             if error == nil {
                 guard let users = users else { return }
-                self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                if self.isAddingParticipants {
+                    self.users.append(contentsOf: users.filter({
+                        for id in self.existingParticipantsIds {
+                            if id == $0.getId() {
+                                return false
+                            }
+                        }
+                        
+                        return true
+                    }))
+                } else {
+                    self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                }
                 
                 DispatchQueue.main.async {
-                    self.viewModel.users.append(contentsOf: users.map { ParticipantViewModelItem(user: $0) })
+                    self.viewModel.users = self.users.map { ParticipantViewModelItem(user: $0) }
                     self.loadingUsers = false
                     self.tableView?.reloadData()
                 }
@@ -79,27 +109,44 @@ class CreateChannelViewController: UIViewController {
     }
     
     @IBAction func didTapOnCreate(_ sender: UIBarButtonItem) {
-        let channelName = channelNameTextField.text ?? ""
+        if isAddingParticipants {
+            var userIds = existingParticipantsIds
+            userIds.append(contentsOf: viewModel.selectedItems.map { $0.userId })
+            guard let groupChannel = channel else { return }
+            CCPGroupChannel.create(name: groupChannel.getName(), userIds: userIds, isDistinct: groupChannel.isDistinct()) { groupChannel, error in
+                if error == nil {
+                    self.dismiss(animated: true, completion: {
+                        guard let channel = groupChannel else { return }
+                        self.participantsAdded?(channel)
+                    })
+                } else {
+                    self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")
+                }
+            }
+        } else {
         
-        if channelName.isEmpty {
-            showAlert(title: "Empty Channel Name!", message: "Channel Name cannot be blank", actionText: "OK")
+            let channelName = channelNameTextField.text ?? ""
             
-            return
-        }
-        
-        if viewModel.selectedItems.isEmpty || viewModel.selectedItems.count == 1 {
-            showAlert(title: "Empty Participants!", message: "Minimum 2 participants are required to create a channel.", actionText: "OK")
+            if channelName.isEmpty {
+                showAlert(title: "Empty Channel Name!", message: "Channel Name cannot be blank", actionText: "OK")
+                
+                return
+            }
+            
+            if viewModel.selectedItems.isEmpty || viewModel.selectedItems.count == 1 {
+                showAlert(title: "Empty Participants!", message: "Minimum 2 participants are required to create a channel.", actionText: "OK")
 
-            return
-        }
-        
-        CCPGroupChannel.create(name: channelName, userIds: viewModel.selectedItems.map { $0.userId }, isDistinct: false) { groupChannel, error in
-            if error == nil, let channel = groupChannel {
-                let sender = Sender(id: CCPClient.getCurrentUser().getId(), displayName: CCPClient.getCurrentUser().getDisplayName() ?? "")
-                let chatViewController = ChatViewController(channel: channel, sender: sender)
-                self.navigationController?.pushViewController(chatViewController, animated: true)
-            } else {
-                self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")
+                return
+            }
+            
+            CCPGroupChannel.create(name: channelName, userIds: viewModel.selectedItems.map { $0.userId }, isDistinct: false) { groupChannel, error in
+                if error == nil, let channel = groupChannel {
+                    let sender = Sender(id: CCPClient.getCurrentUser().getId(), displayName: CCPClient.getCurrentUser().getDisplayName() ?? "")
+                    let chatViewController = ChatViewController(channel: channel, sender: sender)
+                    self.navigationController?.pushViewController(chatViewController, animated: true)
+                } else {
+                    self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")
+                }
             }
         }
     }

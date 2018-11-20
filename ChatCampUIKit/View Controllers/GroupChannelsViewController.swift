@@ -25,8 +25,8 @@ open class GroupChannelsViewController: UIViewController {
         }
     }
     
-    fileprivate var loadingChannels = false
     open var channels: [CCPGroupChannel] = []
+    fileprivate var loadingChannels = false
     fileprivate var db: SQLiteDatabase!
     var groupChannelsQuery: CCPGroupChannelListQuery!
     lazy var messageLabel: UILabel = {

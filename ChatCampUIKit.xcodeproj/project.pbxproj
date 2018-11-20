@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		097FDB8A21A3EED60027F2D4 /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = 097FDB8921A3EED60027F2D4 /* add_participant.png */; };
 		09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */; };
 		09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */; };
 		0996E0772119B9A700DD7C1B /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0996E0762119B9A700DD7C1B /* Channel.storyboard */; };
@@ -153,6 +154,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		097FDB8921A3EED60027F2D4 /* add_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_participant.png; sourceTree = "<group>"; };
 		09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
 		09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
 		0996E0762119B9A700DD7C1B /* Channel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Channel.storyboard; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 		0996E0782119DEEA00DD7C1B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				097FDB8921A3EED60027F2D4 /* add_participant.png */,
 				09D0C340213EBA040068C09D /* block@2x.png */,
 				09D0C33F213EBA040068C09D /* block.png */,
 				0996E0D42119ED0700DD7C1B /* chat_image_placeholder.png */,
@@ -751,6 +754,7 @@
 				09B2152820E3CD9D004572DC /* CustomMessageContentView.xib in Resources */,
 				0996E0D12119E34400DD7C1B /* cancel@2x.png in Resources */,
 				0996E0942119DFDF00DD7C1B /* flash@2x.png in Resources */,
+				097FDB8A21A3EED60027F2D4 /* add_participant.png in Resources */,
 				0996E08F2119DFCC00DD7C1B /* file@2x.png in Resources */,
 				0996E0972119DFEA00DD7C1B /* flashOutline.png in Resources */,
 				0996E0C42119E0C000DD7C1B /* tick-grey.png in Resources */,
