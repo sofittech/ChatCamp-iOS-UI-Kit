@@ -216,7 +216,9 @@ public class ChatViewController: MessagesViewController {
             } else {
                 if isViewLoaded {
                     self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                    self.messagesCollectionView.scrollToBottom(animated: true)
+                    if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
                 }
             }
         }
@@ -228,7 +230,9 @@ public class ChatViewController: MessagesViewController {
             loadingDots.removeFromSuperview()
             mkMessages.removeLast()
             messagesCollectionView.reloadData()
-            messagesCollectionView.scrollToBottom(animated: false)
+            if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                messagesCollectionView.scrollToBottom(animated: false)
+            }
         }
     }
     
@@ -303,7 +307,9 @@ extension ChatViewController: CCPChannelDelegate {
             } else {
                 if isViewLoaded {
                     self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                    self.messagesCollectionView.scrollToBottom(animated: true)
+                    if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
                 }
             }
             

@@ -346,7 +346,9 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
             mkMessage.delegate = self
             
             messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
-            messagesCollectionView.scrollToBottom(animated: true)
+            if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                messagesCollectionView.scrollToBottom(animated: true)
+            }
         }
         
         do {
