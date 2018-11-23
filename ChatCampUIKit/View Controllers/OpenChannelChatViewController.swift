@@ -294,6 +294,10 @@ extension OpenChannelChatViewController: MessageCellDelegate {
             if let audioView = (cell.messageContainerView.subviews.first) as? AudioView {
                 audioView.playAudio(audioURL)
             }
+        case .text(let text):
+            if let _ = URL(string: text) {
+                openWebView(text)
+            }
         default:
             break
         }

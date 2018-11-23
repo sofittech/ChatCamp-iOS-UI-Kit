@@ -29,6 +29,7 @@ class CreateChannelViewController: UIViewController {
     fileprivate var existingParticipantsIds: [String] = []
     var isAddingParticipants = false
     var participantsAdded: ((CCPGroupChannel) -> Void)?
+    var channelCreated: ((CCPGroupChannel, Sender) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,9 +142,10 @@ class CreateChannelViewController: UIViewController {
             
             CCPGroupChannel.create(name: channelName, userIds: viewModel.selectedItems.map { $0.userId }, isDistinct: false) { groupChannel, error in
                 if error == nil, let channel = groupChannel {
-                    let sender = Sender(id: CCPClient.getCurrentUser().getId(), displayName: CCPClient.getCurrentUser().getDisplayName() ?? "")
-                    let chatViewController = ChatViewController(channel: channel, sender: sender)
-                    self.navigationController?.pushViewController(chatViewController, animated: true)
+                    self.dismiss(animated: false, completion: {
+                        let sender = Sender(id: CCPClient.getCurrentUser().getId(), displayName: CCPClient.getCurrentUser().getDisplayName() ?? "")
+                        self.channelCreated?(channel, sender)
+                    })
                 } else {
                     self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")
                 }

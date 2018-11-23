@@ -941,6 +941,10 @@ extension ChatViewController: MessageCellDelegate {
             if let audioView = (cell.messageContainerView.subviews.first) as? AudioView {
                 audioView.playAudio(audioUrl)
             }
+        case .text(let text):
+            if let _ = URL(string: text) {
+                openWebView(text)
+            }
         default:
             break
         }
@@ -1005,7 +1009,7 @@ extension ChatViewController: MessagesDataSource {
         let senderName = message.sender.displayName
         let attributedString = NSMutableAttributedString(string: senderName)
         attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 14), range: NSString(string: senderName).range(of: senderName))
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSString(string: senderName).range(of: senderName))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.darkGray, range: NSString(string: senderName).range(of: senderName))
         
         return attributedString
     }
@@ -1135,8 +1139,9 @@ extension ChatViewController: MessagesDisplayDelegate {
                 } else {
                     avatarView.setImageForName(string: participant.getDisplayName() ?? "?", circular: true, textAttributes: nil)
                 }
+            } else {
+                avatarView.setImageForName(string: message.sender.displayName, circular: true, textAttributes: nil)
             }
-            
         }
         else {
             let ccpMessage = self.messages[indexPath.section]

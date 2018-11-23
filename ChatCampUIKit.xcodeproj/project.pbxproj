@@ -147,6 +147,7 @@
 		09B2153E20E3CD9D004572DC /* MessageLabelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */; };
 		09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */; };
 		09B2154020E3CD9D004572DC /* MessagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2150020E3CD9D004572DC /* MessagesDataSource.swift */; };
+		09C867C321A7FEAC00214594 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C867C221A7FEAC00214594 /* WebViewController.swift */; };
 		09D0C341213EBA040068C09D /* block.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C33F213EBA040068C09D /* block.png */; };
 		09D0C342213EBA050068C09D /* block@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C340213EBA040068C09D /* block@2x.png */; };
 		09D0C344213EBBE20068C09D /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */; };
@@ -297,6 +298,7 @@
 		09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLabelDelegate.swift; sourceTree = "<group>"; };
 		09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDisplayDelegate.swift; sourceTree = "<group>"; };
 		09B2150020E3CD9D004572DC /* MessagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDataSource.swift; sourceTree = "<group>"; };
+		09C867C221A7FEAC00214594 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		09D0C33F213EBA040068C09D /* block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block.png; sourceTree = "<group>"; };
 		09D0C340213EBA040068C09D /* block@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@2x.png"; sourceTree = "<group>"; };
 		09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 				09B2147020E3CCDF004572DC /* VideoViewController.swift */,
 				09B2147220E3CCDF004572DC /* ViewController.swift */,
 				09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */,
+				09C867C221A7FEAC00214594 /* WebViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 				09B2149620E3CD24004572DC /* ChatTableViewCell.swift in Sources */,
 				09B214AE20E3CD63004572DC /* MessageContent.swift in Sources */,
 				09B2151820E3CD9D004572DC /* MessageKit+Availability.swift in Sources */,
+				09C867C321A7FEAC00214594 /* WebViewController.swift in Sources */,
 				09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */,
 				09B2150F20E3CD9D004572DC /* NSConstraintLayoutSet.swift in Sources */,
 				09B2152320E3CD9D004572DC /* CustomMessageCell.swift in Sources */,

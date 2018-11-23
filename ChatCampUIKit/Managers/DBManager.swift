@@ -154,6 +154,15 @@ extension SQLiteDatabase {
         }
     }
     
+    func deleteGroupChannelsLocalStorage() throws {
+        let deleteSql = "DELETE FROM Channel"
+        let deleteStatement = try prepareStatement(sql: deleteSql)
+        guard sqlite3_step(deleteStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+        sqlite3_finalize(deleteStatement)
+    }
+    
     func getGroupChannels() -> [CCPGroupChannel]? {
         let querySql = "SELECT * FROM Channel"
         

@@ -121,16 +121,18 @@ open class GroupChannelsViewController: UIViewController {
             }
         }
     }
-    
-    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        refreshChannels()
-    }
 }
 
 // MARK:- Actions
 extension GroupChannelsViewController {
     @IBAction func didTapOnAddChannelFAB(_ sender: UIButton) {
-        let createChannelViewController = UIViewController.createChannelViewController()        
+        let createChannelViewController = UIViewController.createChannelViewController()
+        if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
+            viewController.channelCreated = { (channel, sender) in
+                let chatViewController = ChatViewController(channel: channel, sender: sender)   
+                self.navigationController?.pushViewController(chatViewController, animated: true)
+            }
+        }
         present(createChannelViewController, animated: true, completion: nil)
     }
 }
