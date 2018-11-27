@@ -310,6 +310,9 @@ extension ChatViewController: CCPChannelDelegate {
                     if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
                         self.messagesCollectionView.scrollToBottom(animated: true)
                     }
+                    if message.getUser().getId() == self.sender.id {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
                 }
             }
             
