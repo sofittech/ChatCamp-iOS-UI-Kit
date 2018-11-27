@@ -47,7 +47,7 @@ class CreateChannelViewController: UIViewController {
         }
         
         viewModel.loadMoreUsers = {
-            if (self.tableView?.indexPathsForVisibleRows?.contains([0, self.users.count - 1]) ?? false) && !self.loadingUsers && self.users.count >= 19 {
+            if (self.tableView?.indexPathsForVisibleRows?.contains([0, self.users.count - 1]) ?? false) && !self.loadingUsers {
                 self.loadUsers(limit: self.usersToFetch)
             }
         }
