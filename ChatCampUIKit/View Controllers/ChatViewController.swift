@@ -454,7 +454,7 @@ extension ChatViewController {
             
             DispatchQueue.main.async {
                 self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
+                self.messagesCollectionView.scrollToBottom()
             }
             if channel.getReadReceipt().count > 0 && channel.getReadReceipt().count == channel.getParticipants().count {
                 var r: Double = 0
@@ -499,7 +499,7 @@ extension ChatViewController {
                     
                     DispatchQueue.main.async {
                         self.messagesCollectionView.reloadData()
-                        self.messagesCollectionView.scrollToBottom(animated: true)
+                        self.messagesCollectionView.scrollToBottom()
                     }
                 }
             }
