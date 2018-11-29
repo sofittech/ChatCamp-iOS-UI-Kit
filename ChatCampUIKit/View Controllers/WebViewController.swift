@@ -12,7 +12,7 @@ import WebKit
 class WebViewController: UIViewController, WKUIDelegate {
     
     var webView: WKWebView!
-    var urlString: String!
+    var url: URL!
     var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -31,15 +31,9 @@ class WebViewController: UIViewController, WKUIDelegate {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = UIActivityIndicatorView.Style.gray
         webView.addSubview(activityIndicator)
-        
-        if !urlString.starts(with: "http://") && !urlString.starts(with: "https://") {
-            urlString = "http://" + urlString
-        }
-        
-        if let url = URL(string: urlString) {
-            let request = URLRequest.init(url: url)
-            webView.load(request)
-        }
+    
+        let request = URLRequest.init(url: url)
+        webView.load(request)
     }
 }
 

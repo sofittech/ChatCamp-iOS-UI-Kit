@@ -294,13 +294,13 @@ extension OpenChannelChatViewController: MessageCellDelegate {
             if let audioView = (cell.messageContainerView.subviews.first) as? AudioView {
                 audioView.playAudio(audioURL)
             }
-        case .text(let text):
-            if let _ = URL(string: text) {
-                openWebView(text)
-            }
         default:
             break
         }
+    }
+    
+    public func didSelectURL(_ url: URL) {
+        openWebView(url)
     }
 }
 
@@ -348,6 +348,9 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
             messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
             if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
                 messagesCollectionView.scrollToBottom(animated: true)
+            }
+            if message.getUser().getId() == self.sender.id {
+                self.messagesCollectionView.scrollToBottom(animated: true)
             }
         }
         
@@ -580,7 +583,7 @@ extension OpenChannelChatViewController {
 
             DispatchQueue.main.async {
                 self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
+                self.messagesCollectionView.scrollToBottom()
             }
         }
         
@@ -609,7 +612,7 @@ extension OpenChannelChatViewController {
                     
                     DispatchQueue.main.async {
                         self.messagesCollectionView.reloadData()
-                        self.messagesCollectionView.scrollToBottom(animated: true)
+                        self.messagesCollectionView.scrollToBottom()
                     }
                 }
             }

@@ -950,13 +950,13 @@ extension ChatViewController: MessageCellDelegate {
             if let audioView = (cell.messageContainerView.subviews.first) as? AudioView {
                 audioView.playAudio(audioUrl)
             }
-        case .text(let text):
-            if let _ = URL(string: text) {
-                openWebView(text)
-            }
         default:
             break
         }
+    }
+    
+    public func didSelectURL(_ url: URL) {
+        openWebView(url)
     }
 }
 

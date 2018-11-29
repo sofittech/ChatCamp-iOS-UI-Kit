@@ -63,9 +63,9 @@ extension UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    public func openWebView(_ urlString: String) {
+    public func openWebView(_ url: URL) {
         let webViewController = UIViewController.webViewController()
-        webViewController.urlString = urlString
+        webViewController.url = url
         
         navigationController?.pushViewController(webViewController, animated: true)
     }
