@@ -274,6 +274,10 @@ extension ChatViewController: MessageImageDelegate {
 
 // MARK:- CCPChannelDelegate
 extension ChatViewController: CCPChannelDelegate {
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) {
+        // TODO:
+    }
+    
     public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
             if let c = channel as? CCPGroupChannel {

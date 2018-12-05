@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0935460A21B7EA1F00F618E6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */; };
+		0935460B21B7EA1F00F618E6 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */; };
 		097FDB8A21A3EED60027F2D4 /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = 097FDB8921A3EED60027F2D4 /* add_participant.png */; };
 		09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */; };
 		09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */; };
@@ -155,6 +157,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		097FDB8921A3EED60027F2D4 /* add_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_participant.png; sourceTree = "<group>"; };
 		09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
 		09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 				09B2148D20E3CD23004572DC /* LoadingDots.swift */,
 				09B2149220E3CD24004572DC /* LoadingDots.xib */,
 				09B2149120E3CD23004572DC /* RecordButton.swift */,
+				0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */,
+				0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -731,6 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09B2152A20E3CD9D004572DC /* AudioView.xib in Resources */,
+				0935460B21B7EA1F00F618E6 /* UserTableViewCell.xib in Resources */,
 				0996E0A62119E01E00DD7C1B /* offline.png in Resources */,
 				0996E0CE2119E2F500DD7C1B /* Dot25%.png in Resources */,
 				0996E0AF2119E03A00DD7C1B /* play@2x.png in Resources */,
@@ -887,6 +894,7 @@
 				09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */,
 				09B2152E20E3CD9D004572DC /* InputBarItem.swift in Sources */,
 				09B2148B20E3CCF9004572DC /* DelayMethod.swift in Sources */,
+				0935460A21B7EA1F00F618E6 /* UserTableViewCell.swift in Sources */,
 				09B2148620E3CCE0004572DC /* ChatViewController.swift in Sources */,
 				09B2153A20E3CD9D004572DC /* MessageInputBarDelegate.swift in Sources */,
 				09B2152920E3CD9D004572DC /* DocumentMessageCell.swift in Sources */,

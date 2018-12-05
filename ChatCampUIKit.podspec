@@ -7,14 +7,16 @@ s.name = "ChatCampUIKit"
 s.summary = "ChatCamp iOS UI Kit"
 s.description  = "UI Kit for ChatCamp iOS SDK"
 s.requires_arc = true
-s.version = "4.2.3"
+#s.version = "4.2.3"
+s.version = "6.2.0"
 s.license = { :type => "MIT", :file => "LICENSE" }
 s.authors = {"Saurabh Gupta" => "saurabh.gupta@iflylabs.com", "Shashwat Srivastava"=>"shashwat@iflylabs.com", "Shubham Gupta"=>"shubham@iflylabs.com"}
 s.homepage = "https://chatcamp.io"
 s.source = { :git => "https://github.com/ChatCamp/ChatCamp-iOS-UI-Kit.git", :tag => "v#{s.version}"}
 
 s.ios.frameworks = ["AVKit", "Photos", "AVFoundation", "MobileCoreServices", "SafariServices", "MapKit", "UIKit", "Foundation"]
-s.dependency 'ChatCamp', '~> 4.2'
+#s.dependency 'ChatCamp', '~> 4.2'
+s.dependency 'ChatCamp'
 s.dependency 'DKImagePickerController'
 s.dependency 'DKCamera'
 s.dependency 'DKPhotoGallery'

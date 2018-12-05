@@ -106,12 +106,17 @@ extension ChannelProfileViewController {
                 if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
                     viewController.isAddingParticipants = true
                     viewController.channel = self.channel
-                    viewController.participantsAdded = { groupChannel in
-                        DispatchQueue.main.async {
-                            self.channel = groupChannel
-                            self.participants = groupChannel.getParticipants()
-                            self.tableView.reloadData()
-                        }
+                    viewController.participantsAdded = {
+                        guard let id = self.channel?.getId() else { return }
+                        CCPGroupChannel.get(groupChannelId: id, completionHandler: { (channel, error) in
+                            if error ==  nil {
+                                DispatchQueue.main.async {
+                                    self.channel = channel
+                                    self.participants = self.channel?.getParticipants()
+                                    self.tableView.reloadData()
+                                }
+                            }
+                        })
                     }
                 }
                 present(createChannelViewController, animated: true, completion: nil)

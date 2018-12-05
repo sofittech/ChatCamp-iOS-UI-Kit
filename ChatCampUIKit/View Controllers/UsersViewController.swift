@@ -17,9 +17,9 @@ open class UsersViewController: UIViewController {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.rowHeight = UITableView.automaticDimension
-            tableView.estimatedRowHeight = 44
-            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
+            tableView.rowHeight = 70
+            tableView.estimatedRowHeight = 70
+            tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())
         }
     }
     
@@ -145,17 +145,19 @@ extension UsersViewController: UITableViewDataSource {
     }
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
-        cell.nameLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
+        let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.string(), for: indexPath) as! UserTableViewCell
 
         let user = users[indexPath.row]
-        cell.nameLabel.text = user.getDisplayName()
-        cell.messageLabel.text = ""
-        cell.unreadCountLabel.isHidden = true
+        cell.displayNameLabel.text = user.getDisplayName()
         if let avatarUrl = user.getAvatarUrl() {
             cell.avatarImageView?.sd_setImage(with: URL(string: avatarUrl), completed: nil)
         } else {
             cell.avatarImageView.setImageForName(string: user.getDisplayName() ?? "?", circular: true, textAttributes: nil)
+        }
+        if user.getIsOnline() ?? false {
+            cell.onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: Message.self), compatibleWith: nil)
+        } else {
+            cell.onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: Message.self), compatibleWith: nil)
         }
         
         return cell

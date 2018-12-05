@@ -213,6 +213,10 @@ extension GroupChannelsViewController: UITableViewDelegate {
 
 // MARK:- CCPChannelDelegate
 extension GroupChannelsViewController: CCPChannelDelegate {
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) {
+        // TODO:
+    }
+    
     public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
         if let index = channels.index(where: { (groupChannel) -> Bool in
             groupChannel.getId() == channel.getId()

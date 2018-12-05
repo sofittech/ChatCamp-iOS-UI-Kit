@@ -28,7 +28,7 @@ class CreateChannelViewController: UIViewController {
     var channel: CCPGroupChannel?
     fileprivate var existingParticipantsIds: [String] = []
     var isAddingParticipants = false
-    var participantsAdded: ((CCPGroupChannel) -> Void)?
+    var participantsAdded: (() -> Void)?
     var channelCreated: ((CCPGroupChannel, Sender) -> Void)?
     
     override func viewDidLoad() {
@@ -81,6 +81,7 @@ class CreateChannelViewController: UIViewController {
             progressHud.hide(animated: true)
             if error == nil {
                 guard let users = users else { return }
+                let filteredUsers = users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() })
                 if self.isAddingParticipants {
                     self.users.append(contentsOf: users.filter({
                         for id in self.existingParticipantsIds {
@@ -92,11 +93,11 @@ class CreateChannelViewController: UIViewController {
                         return true
                     }))
                 } else {
-                    self.users.append(contentsOf: users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() }))
+                    self.users.append(contentsOf: filteredUsers)
                 }
                 
                 DispatchQueue.main.async {
-                    self.viewModel.users = self.users.map { ParticipantViewModelItem(user: $0) }
+                    self.viewModel.users.append(contentsOf: filteredUsers.map { ParticipantViewModelItem(user: $0) })
                     self.loadingUsers = false
                     self.tableView?.reloadData()
                 }
@@ -111,14 +112,12 @@ class CreateChannelViewController: UIViewController {
     
     @IBAction func didTapOnCreate(_ sender: UIBarButtonItem) {
         if isAddingParticipants {
-            var userIds = existingParticipantsIds
-            userIds.append(contentsOf: viewModel.selectedItems.map { $0.userId })
+            let participants = viewModel.selectedItems.map { $0.userId }
             guard let groupChannel = channel else { return }
-            CCPGroupChannel.create(name: groupChannel.getName(), userIds: userIds, isDistinct: groupChannel.isDistinct()) { groupChannel, error in
+            groupChannel.inviteParticipants(participants: participants) { error in
                 if error == nil {
                     self.dismiss(animated: true, completion: {
-                        guard let channel = groupChannel else { return }
-                        self.participantsAdded?(channel)
+                        self.participantsAdded?()
                     })
                 } else {
                     self.showAlert(title: "Error!", message: "Some error occured, please try again.", actionText: "OK")

@@ -116,7 +116,6 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="f06-7R-wwt" secondAttribute="trailing" constant="16" id="0iV-wy-hcR"/>
                                                 <constraint firstItem="ApX-Y0-9Mp" firstAttribute="centerY" secondItem="Rg9-9a-VqX" secondAttribute="centerY" id="6Mi-B5-9Qd"/>
-                                                <constraint firstItem="E6m-TY-EnQ" firstAttribute="centerY" secondItem="Rg9-9a-VqX" secondAttribute="centerY" id="Fg8-jO-qay"/>
                                                 <constraint firstItem="E6m-TY-EnQ" firstAttribute="leading" secondItem="Rg9-9a-VqX" secondAttribute="leading" constant="16" id="H1b-dj-XpV"/>
                                                 <constraint firstItem="ApX-Y0-9Mp" firstAttribute="leading" secondItem="E6m-TY-EnQ" secondAttribute="trailing" constant="8" id="OYN-ud-kGa"/>
                                                 <constraint firstItem="E6m-TY-EnQ" firstAttribute="centerY" secondItem="Rg9-9a-VqX" secondAttribute="centerY" id="ZmA-7C-fEa"/>
