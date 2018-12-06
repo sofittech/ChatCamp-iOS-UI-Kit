@@ -30,9 +30,26 @@ class CreateChannelViewController: UIViewController {
     var isAddingParticipants = false
     var participantsAdded: (() -> Void)?
     var channelCreated: ((CCPGroupChannel, Sender) -> Void)?
-    
+    let searchController = UISearchController(searchResultsController: nil)
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            // Do nothing
+        }
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Users"
+        searchController.dimsBackgroundDuringPresentation = false
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = self.searchController
+        } else {
+            tableView?.tableHeaderView = searchController.searchBar
+        }
+        definesPresentationContext = true
         
         setupTableView()
         if isAddingParticipants {
@@ -110,6 +127,62 @@ class CreateChannelViewController: UIViewController {
         }
     }
     
+    fileprivate func refreshUsers(searchText: String?) {
+        usersQuery = CCPClient.createUserListQuery()
+        loadingUsers = true
+        if let text = searchText {
+            usersQuery.setDisplayNameSearch(text)
+        }
+        usersQuery.load(limit: usersToFetch) { [unowned self] (users, error) in
+            if error == nil {
+                guard let users = users else { return }
+                let filteredUsers = users.filter({ $0.getId() != CCPClient.getCurrentUser().getId() })
+                if self.isAddingParticipants {
+                    self.users = users.filter({
+                        for id in self.existingParticipantsIds {
+                            if id == $0.getId() {
+                                return false
+                            }
+                        }
+                        
+                        return true
+                    })
+                } else {
+                    self.users = filteredUsers
+                }
+                
+                DispatchQueue.main.async {
+                    self.viewModel.users = filteredUsers.map { ParticipantViewModelItem(user: $0) }
+                    self.loadingUsers = false
+                    self.tableView?.reloadData()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
+                    self.loadingUsers = false
+                }
+            }
+        }
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        if isFiltering() {
+            refreshUsers(searchText: searchText)
+        } else if searchController.isActive && searchBarIsEmpty() {
+            refreshUsers(searchText: nil)
+        } else if !searchController.isActive && searchBarIsEmpty() {
+            refreshUsers(searchText: nil)
+        }
+}
+    
     @IBAction func didTapOnCreate(_ sender: UIBarButtonItem) {
         if isAddingParticipants {
             let participants = viewModel.selectedItems.map { $0.userId }
@@ -154,6 +227,12 @@ class CreateChannelViewController: UIViewController {
     
     @IBAction func didTapOnCancel(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateChannelViewController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }
 

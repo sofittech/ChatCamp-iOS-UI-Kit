@@ -54,8 +54,12 @@ open class UsersViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 11.0, *) {
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            // Do nothing
+        }
         searchController.searchResultsUpdater = self
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search Users"
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
@@ -109,15 +113,6 @@ open class UsersViewController: UIViewController {
         refreshUsers(searchText: nil)
     }
     
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
-    
     fileprivate func refreshUsers(searchText: String?) {
         usersQuery = CCPClient.createUserListQuery()
         loadingUsers = true
@@ -156,6 +151,14 @@ open class UsersViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
     }
     
     func filterContentForSearchText(_ searchText: String) {
