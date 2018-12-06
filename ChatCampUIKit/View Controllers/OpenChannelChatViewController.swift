@@ -378,6 +378,11 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
     func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
     func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
 }
 
 extension OpenChannelChatViewController {

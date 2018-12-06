@@ -24,9 +24,11 @@ open class UsersViewController: UIViewController {
     }
     
     open var users: [CCPUser] = []
+    open var filteredUsers: [CCPUser] = []
     fileprivate var usersToFetch: Int = 20
     fileprivate var loadingUsers = false
     open var usersQuery: CCPUserListQuery!
+    let searchController = UISearchController(searchResultsController: nil)
     
     lazy var messageLabel: UILabel = {
         let messageLabel = UILabel()
@@ -52,6 +54,13 @@ open class UsersViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Users"
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        
+        tableView.tableHeaderView = searchController.searchBar
         tableView.addSubview(self.refreshControl)
         usersQuery = CCPClient.createUserListQuery()
         loadUsers(limit: usersToFetch)
@@ -97,15 +106,27 @@ open class UsersViewController: UIViewController {
     }
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        refreshUsers(searchText: nil)
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+    fileprivate func refreshUsers(searchText: String?) {
         usersQuery = CCPClient.createUserListQuery()
-        let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        progressHud.label.text = "Loading..."
-        progressHud.contentColor = .black
         loadingUsers = true
+        if let text = searchText {
+            usersQuery.setDisplayNameSearch(text)
+        }
         usersQuery.load(limit: usersToFetch) { [unowned self] (users, error) in
-            progressHud.hide(animated: true)
             if error == nil {
-                if users?.count ?? 0 <= 1 {
+                if users?.count ?? 0 == 0 {
                     self.messageLabel.frame = self.view.bounds
                     self.view.addSubview(self.messageLabel)
                     self.view.bringSubviewToFront(self.messageLabel)
@@ -134,6 +155,16 @@ open class UsersViewController: UIViewController {
                     }
                 }
             }
+        }
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        if isFiltering() {
+            refreshUsers(searchText: searchText)
+        } else if searchController.isActive && searchBarIsEmpty() {
+            refreshUsers(searchText: nil)
+        } else if !searchController.isActive && searchBarIsEmpty() {
+            refreshUsers(searchText: nil)
         }
     }
 }
@@ -191,5 +222,11 @@ extension UsersViewController {
         if (tableView.indexPathsForVisibleRows?.contains([0, users.count - 1]) ?? false) && !loadingUsers && users.count >= 19 {
             loadUsers(limit: usersToFetch)
         }
+    }
+}
+
+extension UsersViewController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }

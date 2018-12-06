@@ -213,9 +213,6 @@ extension GroupChannelsViewController: UITableViewDelegate {
 
 // MARK:- CCPChannelDelegate
 extension GroupChannelsViewController: CCPChannelDelegate {
-    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) {
-        // TODO:
-    }
     
     public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
         if let index = channels.index(where: { (groupChannel) -> Bool in
@@ -244,6 +241,12 @@ extension GroupChannelsViewController: CCPChannelDelegate {
     public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
     public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    public func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate

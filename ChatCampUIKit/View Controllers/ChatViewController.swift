@@ -274,9 +274,6 @@ extension ChatViewController: MessageImageDelegate {
 
 // MARK:- CCPChannelDelegate
 extension ChatViewController: CCPChannelDelegate {
-    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) {
-        // TODO:
-    }
     
     public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
@@ -360,6 +357,12 @@ extension ChatViewController: CCPChannelDelegate {
     public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
     public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    public func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate
