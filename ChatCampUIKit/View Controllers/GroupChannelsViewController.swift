@@ -25,10 +25,20 @@ open class GroupChannelsViewController: UIViewController {
         }
     }
     
-    fileprivate var loadingChannels = false
     open var channels: [CCPGroupChannel] = []
+    fileprivate var loadingChannels = false
     fileprivate var db: SQLiteDatabase!
     var groupChannelsQuery: CCPGroupChannelListQuery!
+    lazy var messageLabel: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.textColor = .black
+        messageLabel.center = view.center
+        messageLabel.text = "No Recent Converstions"
+        
+        return messageLabel
+    }()
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,18 +92,26 @@ open class GroupChannelsViewController: UIViewController {
         let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
         groupChannelsListQuery.load { (channels, error) in
             if error == nil {
-                guard let channels = channels else { return }
-                self.channels = channels
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingChannels = false
-                }
-                
-                do {
-                    try self.db.insertGroupChannels(channels: channels)
-                } catch {
-                    print(self.db.errorMessage)
+                if channels?.count == 0 {
+                    self.messageLabel.frame = self.view.bounds
+                    self.view.addSubview(self.messageLabel)
+                    self.view.bringSubviewToFront(self.messageLabel)
+                    self.tableView.tableFooterView = UIView()
+                } else {
+                    self.messageLabel.removeFromSuperview()
+                    guard let channels = channels else { return }
+                    self.channels = channels
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.loadingChannels = false
+                    }
+                    
+                    do {
+                        try self.db.insertGroupChannels(channels: channels)
+                    } catch {
+                        print(self.db.errorMessage)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
@@ -108,7 +126,13 @@ open class GroupChannelsViewController: UIViewController {
 // MARK:- Actions
 extension GroupChannelsViewController {
     @IBAction func didTapOnAddChannelFAB(_ sender: UIButton) {
-        let createChannelViewController = UIViewController.createChannelViewController()        
+        let createChannelViewController = UIViewController.createChannelViewController()
+        if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
+            viewController.channelCreated = { (channel, sender) in
+                let chatViewController = ChatViewController(channel: channel, sender: sender)   
+                self.navigationController?.pushViewController(chatViewController, animated: true)
+            }
+        }
         present(createChannelViewController, animated: true, completion: nil)
     }
 }
@@ -124,7 +148,7 @@ extension GroupChannelsViewController: UITableViewDataSource {
         
         let channel = channels[indexPath.row]
         
-        if channel.getParticipantsCount() == 2 && channel.isDistinct() {
+        if channel.getParticipantsCount() == 2 {
             let participants = channel.getParticipants()
             for participant in participants {
                 if participant.getId() != CCPClient.getCurrentUser().getId() {
@@ -189,6 +213,7 @@ extension GroupChannelsViewController: UITableViewDelegate {
 
 // MARK:- CCPChannelDelegate
 extension GroupChannelsViewController: CCPChannelDelegate {
+    
     public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
         if let index = channels.index(where: { (groupChannel) -> Bool in
             groupChannel.getId() == channel.getId()
@@ -216,6 +241,12 @@ extension GroupChannelsViewController: CCPChannelDelegate {
     public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
     public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    public func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate

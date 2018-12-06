@@ -15,6 +15,7 @@ import MobileCoreServices
 import AVFoundation
 
 public var currentChannelId = ""
+public var backgroundImage: UIImage?
 
 public class ChatViewController: MessagesViewController {
     fileprivate var participant: CCPParticipant?
@@ -51,6 +52,10 @@ public class ChatViewController: MessagesViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let image = backgroundImage {
+            setupBackground(with: image)
+        }
         
         setupNavigationItems()
         setupMessageInputBar()
@@ -104,8 +109,18 @@ public class ChatViewController: MessagesViewController {
         currentChannelId = ""
     }
     
+    fileprivate func setupBackground(with image: UIImage) {
+        var imageView : UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = image
+        imageView.center = view.center
+        messagesCollectionView.backgroundView = imageView
+    }
+    
     fileprivate func setupNavigationItems() {
-        if channel.getParticipantsCount() == 2 && channel.isDistinct() {
+        if channel.getParticipantsCount() == 2 {
             navigationController?.navigationBar.items?.first?.title = ""
             allParticipants = channel.getParticipants()
             for participant in allParticipants! {
@@ -201,7 +216,9 @@ public class ChatViewController: MessagesViewController {
             } else {
                 if isViewLoaded {
                     self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                    self.messagesCollectionView.scrollToBottom(animated: true)
+                    if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
                 }
             }
         }
@@ -213,7 +230,9 @@ public class ChatViewController: MessagesViewController {
             loadingDots.removeFromSuperview()
             mkMessages.removeLast()
             messagesCollectionView.reloadData()
-            messagesCollectionView.scrollToBottom(animated: false)
+            if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                messagesCollectionView.scrollToBottom(animated: false)
+            }
         }
     }
     
@@ -255,6 +274,7 @@ extension ChatViewController: MessageImageDelegate {
 
 // MARK:- CCPChannelDelegate
 extension ChatViewController: CCPChannelDelegate {
+    
     public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
         if channel.getId() == self.channel.getId() {
             if let c = channel as? CCPGroupChannel {
@@ -288,7 +308,12 @@ extension ChatViewController: CCPChannelDelegate {
             } else {
                 if isViewLoaded {
                     self.messagesCollectionView.insertSections(IndexSet([self.mkMessages.count - 1]))
-                    self.messagesCollectionView.scrollToBottom(animated: true)
+                    if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
+                    if message.getUser().getId() == self.sender.id {
+                        self.messagesCollectionView.scrollToBottom(animated: true)
+                    }
                 }
             }
             
@@ -332,6 +357,12 @@ extension ChatViewController: CCPChannelDelegate {
     public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
     public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    public func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    public func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
 }
 
 // MARK:- CCPConnectionDelegate
@@ -430,7 +461,7 @@ extension ChatViewController {
             
             DispatchQueue.main.async {
                 self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
+                self.messagesCollectionView.scrollToBottom()
             }
             if channel.getReadReceipt().count > 0 && channel.getReadReceipt().count == channel.getParticipants().count {
                 var r: Double = 0
@@ -475,7 +506,7 @@ extension ChatViewController {
                     
                     DispatchQueue.main.async {
                         self.messagesCollectionView.reloadData()
-                        self.messagesCollectionView.scrollToBottom(animated: true)
+                        self.messagesCollectionView.scrollToBottom()
                     }
                 }
             }
@@ -930,6 +961,10 @@ extension ChatViewController: MessageCellDelegate {
             break
         }
     }
+    
+    public func didSelectURL(_ url: URL) {
+        openWebView(url)
+    }
 }
 
 extension ChatViewController: UIDocumentInteractionControllerDelegate {
@@ -984,6 +1019,15 @@ extension ChatViewController: MessagesDataSource {
         }
         
         return dataSource.isFromCurrentSender(message: message) ? .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)) : .messageLeading(.zero)
+    }
+    
+    public func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let senderName = message.sender.displayName
+        let attributedString = NSMutableAttributedString(string: senderName)
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 14), range: NSString(string: senderName).range(of: senderName))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.darkGray, range: NSString(string: senderName).range(of: senderName))
+        
+        return attributedString
     }
 }
 
@@ -1111,8 +1155,9 @@ extension ChatViewController: MessagesDisplayDelegate {
                 } else {
                     avatarView.setImageForName(string: participant.getDisplayName() ?? "?", circular: true, textAttributes: nil)
                 }
+            } else {
+                avatarView.setImageForName(string: message.sender.displayName, circular: true, textAttributes: nil)
             }
-            
         }
         else {
             let ccpMessage = self.messages[indexPath.section]
@@ -1122,5 +1167,9 @@ extension ChatViewController: MessagesDisplayDelegate {
                 avatarView.setImageForName(string: ccpMessage.getUser().getDisplayName() ?? "?", circular: true, textAttributes: nil)
             }
         }
+    }
+    
+    public func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.address, .date, .phoneNumber, .url]
     }
 }

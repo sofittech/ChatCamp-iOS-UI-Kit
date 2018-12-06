@@ -52,7 +52,9 @@ extension ChannelProfileViewController {
         if section == 0 {
             return 1
         } else {
-            return participants?.count ?? 0
+            guard let participantCount = participants?.count else { return 0 }
+            
+            return participantCount + 1
         }
     }
     
@@ -67,16 +69,22 @@ extension ChannelProfileViewController {
             }
             cell.displayNameLabel.text = channel?.getName()
         } else {
-            if let avatarURL = participants?[indexPath.row].getAvatarUrl() {
-                cell.avatarImageView.sd_setImage(with: URL(string: avatarURL), completed: nil)
+            if indexPath.row == 0 {
+                cell.avatarImageView.image = UIImage(named: "add_participant", in: Bundle(for: Message.self), compatibleWith: nil)
+                cell.displayNameLabel.text = "Add Participants"
+                cell.displayNameLabel.textColor = UIColor.sendButtonBlue
             } else {
-                cell.avatarImageView.setImageForName(string: participants?[indexPath.row].getDisplayName() ?? "?", circular: true, textAttributes: nil)
-            }
-            cell.displayNameLabel.text = participants?[indexPath.row].getDisplayName()
-            if participants?[indexPath.row].getIsOnline() ?? false {
-                cell.onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: Message.self), compatibleWith: nil)
-            } else {
-                cell.onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: Message.self), compatibleWith: nil)
+                if let avatarURL = participants?[indexPath.row - 1].getAvatarUrl() {
+                    cell.avatarImageView.sd_setImage(with: URL(string: avatarURL), completed: nil)
+                } else {
+                    cell.avatarImageView.setImageForName(string: participants?[indexPath.row - 1].getDisplayName() ?? "?", circular: true, textAttributes: nil)
+                }
+                cell.displayNameLabel.text = participants?[indexPath.row - 1].getDisplayName()
+                if participants?[indexPath.row - 1].getIsOnline() ?? false {
+                    cell.onlineStatusImageView.image = UIImage(named: "online", in: Bundle(for: Message.self), compatibleWith: nil)
+                } else {
+                    cell.onlineStatusImageView.image = UIImage(named: "offline", in: Bundle(for: Message.self), compatibleWith: nil)
+                }
             }
         }
         
@@ -93,9 +101,30 @@ extension ChannelProfileViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            let profileViewController = UIViewController.profileViewController()
-            profileViewController.participant = participants?[indexPath.row]
-            self.navigationController?.pushViewController(profileViewController, animated: true)
+            if indexPath.row == 0 {
+                let createChannelViewController = UIViewController.createChannelViewController()
+                if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
+                    viewController.isAddingParticipants = true
+                    viewController.channel = self.channel
+                    viewController.participantsAdded = {
+                        guard let id = self.channel?.getId() else { return }
+                        CCPGroupChannel.get(groupChannelId: id, completionHandler: { (channel, error) in
+                            if error ==  nil {
+                                DispatchQueue.main.async {
+                                    self.channel = channel
+                                    self.participants = self.channel?.getParticipants()
+                                    self.tableView.reloadData()
+                                }
+                            }
+                        })
+                    }
+                }
+                present(createChannelViewController, animated: true, completion: nil)
+            } else {
+                let profileViewController = UIViewController.profileViewController()
+                profileViewController.participant = participants?[indexPath.row - 1]
+                self.navigationController?.pushViewController(profileViewController, animated: true)
+            }
         }
     }
 }

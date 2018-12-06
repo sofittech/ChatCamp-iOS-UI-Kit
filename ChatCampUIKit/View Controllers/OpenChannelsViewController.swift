@@ -18,18 +18,38 @@ open class OpenChannelsViewController: UIViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
-
         }
     }
     
     var channels: [CCPOpenChannel] = []
     fileprivate var loadingChannels = false
     var openChannelsQuery: CCPOpenChannelListQuery!
-
+    lazy var messageLabel: UILabel = {
+        let messageLabel = UILabel()
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.textColor = .black
+        messageLabel.center = view.center
+        messageLabel.text = "No Open Channels"
+        
+        return messageLabel
+    }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(OpenChannelsViewController.handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+        
+        return refreshControl
+    }()
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         openChannelsQuery = CCPOpenChannel.createOpenChannelListQuery()
+        tableView.addSubview(self.refreshControl)
         loadChannels()
     }
     
@@ -41,17 +61,73 @@ open class OpenChannelsViewController: UIViewController {
         openChannelsQuery.load() { [weak self] (channels, error) in
             progressHud.hide(animated: true)
             if error == nil {
-                guard let channels = channels else { return }
-                self?.channels.append(contentsOf: channels)
-                
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                    self?.loadingChannels = false
+                if channels?.count == 0 {
+                    guard let strongSelf = self else { return }
+                    strongSelf.messageLabel.frame = strongSelf.view.bounds
+                    strongSelf.view.addSubview(strongSelf.messageLabel)
+                    strongSelf.view.bringSubviewToFront(strongSelf.messageLabel)
+                    strongSelf.tableView.tableFooterView = UIView()
+                } else {
+                    self?.messageLabel.removeFromSuperview()
+                    guard let channels = channels else { return }
+                    self?.channels.append(contentsOf: channels)
+                    
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                        self?.loadingChannels = false
+                    }
+                }
+                if self?.refreshControl.isRefreshing ?? false {
+                    self?.refreshControl.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self?.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
                     self?.loadingChannels = false
+                    if self?.refreshControl.isRefreshing ?? false {
+                        self?.refreshControl.endRefreshing()
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        openChannelsQuery = CCPOpenChannel.createOpenChannelListQuery()
+        let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        progressHud.label.text = "Loading..."
+        progressHud.contentColor = .black
+        loadingChannels = true
+        openChannelsQuery.load() { [weak self] (channels, error) in
+            progressHud.hide(animated: true)
+            if error == nil {
+                if channels?.count == 0 {
+                    guard let strongSelf = self else { return }
+                    strongSelf.messageLabel.frame = strongSelf.view.bounds
+                    strongSelf.view.addSubview(strongSelf.messageLabel)
+                    strongSelf.view.bringSubviewToFront(strongSelf.messageLabel)
+                    strongSelf.tableView.tableFooterView = UIView()
+                } else {
+                    self?.channels.removeAll()
+                    self?.messageLabel.removeFromSuperview()
+                    guard let channels = channels else { return }
+                    self?.channels.append(contentsOf: channels)
+                    
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                        self?.loadingChannels = false
+                    }
+                }
+                if self?.refreshControl.isRefreshing ?? false {
+                    self?.refreshControl.endRefreshing()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
+                    self?.loadingChannels = false
+                    if self?.refreshControl.isRefreshing ?? false {
+                        self?.refreshControl.endRefreshing()
+                    }
                 }
             }
         }

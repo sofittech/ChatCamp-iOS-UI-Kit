@@ -10,7 +10,7 @@ import Foundation
 import SQLite3
 import ChatCamp
 
-enum SQLiteError: Error {
+public enum SQLiteError: Error {
     case OpenDatabase(message: String)
     case Prepare(message: String)
     case Step(message: String)
@@ -29,9 +29,9 @@ struct Channel {
     let groupChannel: NSString
 }
 
-class SQLiteDatabase {
+open class SQLiteDatabase {
     
-    var errorMessage: String {
+    public var errorMessage: String {
         if let errorPointer = sqlite3_errmsg(dbPointer) {
             let errorMessage = String(cString: errorPointer)
             return errorMessage
@@ -51,7 +51,7 @@ class SQLiteDatabase {
         print("Successfully closed connection to database.")
     }
     
-    static func open(path: String) throws -> SQLiteDatabase {
+    public static func open(path: String) throws -> SQLiteDatabase {
         var db: OpaquePointer? = nil
         // 1
         if sqlite3_open(path, &db) == SQLITE_OK {
@@ -152,6 +152,15 @@ extension SQLiteDatabase {
             
             print("Successfully inserted channel in DB.")
         }
+    }
+    
+    public func deleteGroupChannelsLocalStorage() throws {
+        let deleteSql = "DELETE FROM Channel"
+        let deleteStatement = try prepareStatement(sql: deleteSql)
+        guard sqlite3_step(deleteStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+        sqlite3_finalize(deleteStatement)
     }
     
     func getGroupChannels() -> [CCPGroupChannel]? {

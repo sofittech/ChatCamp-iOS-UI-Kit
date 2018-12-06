@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0935460A21B7EA1F00F618E6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */; };
+		0935460B21B7EA1F00F618E6 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */; };
+		097FDB8A21A3EED60027F2D4 /* add_participant.png in Resources */ = {isa = PBXBuildFile; fileRef = 097FDB8921A3EED60027F2D4 /* add_participant.png */; };
 		09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */; };
 		09925AFD20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */; };
 		0996E0772119B9A700DD7C1B /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0996E0762119B9A700DD7C1B /* Channel.storyboard */; };
@@ -146,6 +149,7 @@
 		09B2153E20E3CD9D004572DC /* MessageLabelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */; };
 		09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */; };
 		09B2154020E3CD9D004572DC /* MessagesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B2150020E3CD9D004572DC /* MessagesDataSource.swift */; };
+		09C867C321A7FEAC00214594 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C867C221A7FEAC00214594 /* WebViewController.swift */; };
 		09D0C341213EBA040068C09D /* block.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C33F213EBA040068C09D /* block.png */; };
 		09D0C342213EBA050068C09D /* block@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 09D0C340213EBA040068C09D /* block@2x.png */; };
 		09D0C344213EBBE20068C09D /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */; };
@@ -153,6 +157,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
+		097FDB8921A3EED60027F2D4 /* add_participant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_participant.png; sourceTree = "<group>"; };
 		09925AFA20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChatCamp.swift"; sourceTree = "<group>"; };
 		09925AFC20E65CDE00D3DEB8 /* UIStoryboard+ChatCamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+ChatCamp.swift"; sourceTree = "<group>"; };
 		0996E0762119B9A700DD7C1B /* Channel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Channel.storyboard; sourceTree = "<group>"; };
@@ -295,6 +302,7 @@
 		09B214FE20E3CD9D004572DC /* MessageLabelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLabelDelegate.swift; sourceTree = "<group>"; };
 		09B214FF20E3CD9D004572DC /* MessagesDisplayDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDisplayDelegate.swift; sourceTree = "<group>"; };
 		09B2150020E3CD9D004572DC /* MessagesDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesDataSource.swift; sourceTree = "<group>"; };
+		09C867C221A7FEAC00214594 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		09D0C33F213EBA040068C09D /* block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block.png; sourceTree = "<group>"; };
 		09D0C340213EBA040068C09D /* block@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "block@2x.png"; sourceTree = "<group>"; };
 		09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +326,7 @@
 		0996E0782119DEEA00DD7C1B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				097FDB8921A3EED60027F2D4 /* add_participant.png */,
 				09D0C340213EBA040068C09D /* block@2x.png */,
 				09D0C33F213EBA040068C09D /* block.png */,
 				0996E0D42119ED0700DD7C1B /* chat_image_placeholder.png */,
@@ -451,6 +460,8 @@
 				09B2148D20E3CD23004572DC /* LoadingDots.swift */,
 				09B2149220E3CD24004572DC /* LoadingDots.xib */,
 				09B2149120E3CD23004572DC /* RecordButton.swift */,
+				0935460821B7EA1F00F618E6 /* UserTableViewCell.swift */,
+				0935460921B7EA1F00F618E6 /* UserTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -480,6 +491,7 @@
 				09B2147020E3CCDF004572DC /* VideoViewController.swift */,
 				09B2147220E3CCDF004572DC /* ViewController.swift */,
 				09D0C343213EBBE20068C09D /* BlockedUsersViewController.swift */,
+				09C867C221A7FEAC00214594 /* WebViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -725,6 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09B2152A20E3CD9D004572DC /* AudioView.xib in Resources */,
+				0935460B21B7EA1F00F618E6 /* UserTableViewCell.xib in Resources */,
 				0996E0A62119E01E00DD7C1B /* offline.png in Resources */,
 				0996E0CE2119E2F500DD7C1B /* Dot25%.png in Resources */,
 				0996E0AF2119E03A00DD7C1B /* play@2x.png in Resources */,
@@ -751,6 +764,7 @@
 				09B2152820E3CD9D004572DC /* CustomMessageContentView.xib in Resources */,
 				0996E0D12119E34400DD7C1B /* cancel@2x.png in Resources */,
 				0996E0942119DFDF00DD7C1B /* flash@2x.png in Resources */,
+				097FDB8A21A3EED60027F2D4 /* add_participant.png in Resources */,
 				0996E08F2119DFCC00DD7C1B /* file@2x.png in Resources */,
 				0996E0972119DFEA00DD7C1B /* flashOutline.png in Resources */,
 				0996E0C42119E0C000DD7C1B /* tick-grey.png in Resources */,
@@ -880,6 +894,7 @@
 				09925AFB20E65CA400D3DEB8 /* UIViewController+ChatCamp.swift in Sources */,
 				09B2152E20E3CD9D004572DC /* InputBarItem.swift in Sources */,
 				09B2148B20E3CCF9004572DC /* DelayMethod.swift in Sources */,
+				0935460A21B7EA1F00F618E6 /* UserTableViewCell.swift in Sources */,
 				09B2148620E3CCE0004572DC /* ChatViewController.swift in Sources */,
 				09B2153A20E3CD9D004572DC /* MessageInputBarDelegate.swift in Sources */,
 				09B2152920E3CD9D004572DC /* DocumentMessageCell.swift in Sources */,
@@ -887,6 +902,7 @@
 				09B2149620E3CD24004572DC /* ChatTableViewCell.swift in Sources */,
 				09B214AE20E3CD63004572DC /* MessageContent.swift in Sources */,
 				09B2151820E3CD9D004572DC /* MessageKit+Availability.swift in Sources */,
+				09C867C321A7FEAC00214594 /* WebViewController.swift in Sources */,
 				09B2153F20E3CD9D004572DC /* MessagesDisplayDelegate.swift in Sources */,
 				09B2150F20E3CD9D004572DC /* NSConstraintLayoutSet.swift in Sources */,
 				09B2152320E3CD9D004572DC /* CustomMessageCell.swift in Sources */,

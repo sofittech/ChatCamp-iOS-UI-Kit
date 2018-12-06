@@ -58,6 +58,10 @@ class OpenChannelChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let image = backgroundImage {
+            setupBackground(with: image)
+        }
+        
         setupNavigationItems()
         setupMessageInputBar()
         setupNotifications()
@@ -129,6 +133,15 @@ extension OpenChannelChatViewController: MessagesDataSource {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
         return dataSource.isFromCurrentSender(message: message) ? .messageTrailing(.zero) : .messageLeading(.zero)
+    }
+    
+    public func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let senderName = message.sender.displayName
+        let attributedString = NSMutableAttributedString(string: senderName)
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 14), range: NSString(string: senderName).range(of: senderName))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSString(string: senderName).range(of: senderName))
+        
+        return attributedString
     }
 }
 
@@ -245,6 +258,10 @@ extension OpenChannelChatViewController: MessagesDisplayDelegate {
             avatarView.setImageForName(string: ccpMessage.getUser().getDisplayName() ?? "?", circular: true, textAttributes: nil)
         }
     }
+    
+    public func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.address, .date, .phoneNumber, .url]
+    }
 }
 
 // MARK:- MessageCellDelegate
@@ -280,6 +297,10 @@ extension OpenChannelChatViewController: MessageCellDelegate {
         default:
             break
         }
+    }
+    
+    public func didSelectURL(_ url: URL) {
+        openWebView(url)
     }
 }
 
@@ -325,7 +346,12 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
             mkMessage.delegate = self
             
             messagesCollectionView.insertSections(IndexSet([mkMessages.count - 1]))
-            messagesCollectionView.scrollToBottom(animated: true)
+            if messagesCollectionView.indexPathsForVisibleItems.contains([mkMessages.count - 1, 0]) {
+                messagesCollectionView.scrollToBottom(animated: true)
+            }
+            if message.getUser().getId() == self.sender.id {
+                self.messagesCollectionView.scrollToBottom(animated: true)
+            }
         }
         
         do {
@@ -343,13 +369,20 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
         // Not applicable
     }
     
-    public func channelDidUpdated(channel: CCPBaseChannel) { }
+    func channelDidUpdated(channel: CCPBaseChannel) { }
     
-    public func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
+    func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
     
-    public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
-    public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    
+    func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    
+    func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    
 }
 
 extension OpenChannelChatViewController {
@@ -476,6 +509,16 @@ extension OpenChannelChatViewController {
         messageInputBar.leftStackView.addSubview(audioButton)
     }
     
+    fileprivate func setupBackground(with image: UIImage) {
+        var imageView : UIImageView!
+        imageView = UIImageView(frame: view.bounds)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = image
+        imageView.center = view.center
+        messagesCollectionView.backgroundView = imageView
+    }
+    
     fileprivate func setupNavigationItems() {
         navigationController?.navigationBar.items?.first?.title = ""
         navigationItem.leftItemsSupplementBackButton = true
@@ -547,7 +590,7 @@ extension OpenChannelChatViewController {
 
             DispatchQueue.main.async {
                 self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
+                self.messagesCollectionView.scrollToBottom()
             }
         }
         
@@ -576,7 +619,7 @@ extension OpenChannelChatViewController {
                     
                     DispatchQueue.main.async {
                         self.messagesCollectionView.reloadData()
-                        self.messagesCollectionView.scrollToBottom(animated: true)
+                        self.messagesCollectionView.scrollToBottom()
                     }
                 }
             }

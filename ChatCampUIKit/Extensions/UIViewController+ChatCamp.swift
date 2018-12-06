@@ -45,6 +45,10 @@ extension UIViewController {
     public static func blockedUsersViewController() -> BlockedUsersViewController {
         return UIStoryboard.channel().instantiateViewController(withIdentifier: BlockedUsersViewController.string()) as! BlockedUsersViewController
     }
+    
+    static func webViewController() -> WebViewController {
+        return UIStoryboard.channel().instantiateViewController(withIdentifier: WebViewController.string()) as! WebViewController
+    }
 }
 
 // MARK:- Alerts
@@ -57,5 +61,12 @@ extension UIViewController {
         alertController.addAction(action)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    public func openWebView(_ url: URL) {
+        let webViewController = UIViewController.webViewController()
+        webViewController.url = url
+        
+        navigationController?.pushViewController(webViewController, animated: true)
     }
 }
