@@ -27,6 +27,8 @@ open class OpenChannelChatViewController: MessagesViewController {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     let progressView = UIProgressView()
+    public var enableAttachments = true
+    public var enableVoiceRecording = true
     
     init(channel: CCPOpenChannel, sender: Sender) {
         self.channel = channel
@@ -490,23 +492,33 @@ extension OpenChannelChatViewController {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
         messageInputBar.sendButton.setImage(UIImage(named: "chat_send_button", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         
-        let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
-        
-        attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
-            self.presentAlertController()
+        if enableAttachments {
+            let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
+            attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
+            
+            attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
+                self.presentAlertController()
+            }
+            messageInputBar.leftStackView.addSubview(attachmentButton)
         }
         
-        let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
-        
-        audioButton.onTouchUpInside { [unowned self] audioButton in
-            self.handleAudioMessageAction(audioButton: audioButton)
+        if enableVoiceRecording {
+            let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
+            
+            audioButton.onTouchUpInside { [unowned self] audioButton in
+                self.handleAudioMessageAction(audioButton: audioButton)
+            }
+            messageInputBar.leftStackView.addSubview(audioButton)
         }
         
-        messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
-        messageInputBar.leftStackView.addSubview(attachmentButton)
-        messageInputBar.leftStackView.addSubview(audioButton)
+        if enableAttachments && enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
+        } else if !enableAttachments && !enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 20, animated: false)
+        } else {
+            messageInputBar.setLeftStackViewWidthConstant(to: 40, animated: false)
+        }
     }
     
     fileprivate func setupBackground(with image: UIImage) {
