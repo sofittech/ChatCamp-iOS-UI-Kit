@@ -35,6 +35,8 @@ public class ChatViewController: MessagesViewController {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     let progressView = UIProgressView()
+    public var enableAttachments = true
+    public var enableVoiceRecording = true
     
     public init(channel: CCPGroupChannel, sender: Sender) {
         self.channel = channel
@@ -539,32 +541,39 @@ extension ChatViewController {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
         messageInputBar.sendButton.setImage(UIImage(named: "chat_send_button", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
         
-        let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
-        
-        attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
-            if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
-                self.presentUserBlockedAlert()
-            } else {
-                self.presentAlertController()
+        if enableAttachments {
+            let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
+            attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
+            attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
+                if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
+                    self.presentUserBlockedAlert()
+                } else {
+                    self.presentAlertController()
+                }
             }
+            messageInputBar.leftStackView.addSubview(attachmentButton)
         }
         
-        let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
-
-        
-        audioButton.onTouchUpInside { [unowned self] audioButton in
-            if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
-                self.presentUserBlockedAlert()
-            } else {
-                self.handleAudioMessageAction(audioButton: audioButton)
+        if enableVoiceRecording {
+            let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: ChatViewController.self), compatibleWith: nil), for: .normal)
+            audioButton.onTouchUpInside { [unowned self] audioButton in
+                if self.channel.getParticipantsCount() == 2 && self.participant?.isParticipantBlockedByMe() ?? false {
+                    self.presentUserBlockedAlert()
+                } else {
+                    self.handleAudioMessageAction(audioButton: audioButton)
+                }
             }
+            messageInputBar.leftStackView.addSubview(audioButton)
         }
         
-        messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
-        messageInputBar.leftStackView.addSubview(attachmentButton)
-        messageInputBar.leftStackView.addSubview(audioButton)
+        if enableAttachments && enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
+        } else if !enableAttachments && !enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 20, animated: false)
+        } else {
+            messageInputBar.setLeftStackViewWidthConstant(to: 40, animated: false)
+        }
     }
     
     fileprivate func presentAlertController() {

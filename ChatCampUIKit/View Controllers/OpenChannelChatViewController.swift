@@ -14,7 +14,7 @@ import Photos
 import MobileCoreServices
 import AVFoundation
 
-class OpenChannelChatViewController: MessagesViewController {
+open class OpenChannelChatViewController: MessagesViewController {
     
     fileprivate var db: SQLiteDatabase!
     fileprivate var channel: CCPOpenChannel
@@ -27,6 +27,8 @@ class OpenChannelChatViewController: MessagesViewController {
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     let progressView = UIProgressView()
+    public var enableAttachments = true
+    public var enableVoiceRecording = true
     
     init(channel: CCPOpenChannel, sender: Sender) {
         self.channel = channel
@@ -41,7 +43,7 @@ class OpenChannelChatViewController: MessagesViewController {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -55,7 +57,7 @@ class OpenChannelChatViewController: MessagesViewController {
         }
     }
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         if let image = backgroundImage {
@@ -89,13 +91,13 @@ class OpenChannelChatViewController: MessagesViewController {
         loadMessages(count: messageCount)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: OpenChannelChatViewController.string())
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         CCPClient.removeChannelDelegate(identifier: OpenChannelChatViewController.string())
@@ -105,15 +107,15 @@ class OpenChannelChatViewController: MessagesViewController {
 
 // MARK:- MessagesDataSource
 extension OpenChannelChatViewController: MessagesDataSource {
-    func currentSender() -> Sender {
+    public func currentSender() -> Sender {
         return sender
     }
     
-    func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
+    public func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
         return mkMessages.count
     }
     
-    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+    public func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
         return mkMessages[indexPath.section]
     }
     
@@ -128,7 +130,7 @@ extension OpenChannelChatViewController: MessagesDataSource {
         return attributedString
     }
     
-    func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
+    public func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
@@ -147,15 +149,15 @@ extension OpenChannelChatViewController: MessagesDataSource {
 
 // MARK:- MessagesLayoutDelegate
 extension OpenChannelChatViewController: MessagesLayoutDelegate {
-    func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
     
-    func widthForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func widthForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return view.bounds.width / 2
     }
     
-    func heightForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
         switch message.data {
         case .photo(let image):
@@ -167,11 +169,11 @@ extension OpenChannelChatViewController: MessagesLayoutDelegate {
         }
     }
     
-    func widthForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func widthForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return view.bounds.width / 2
     }
     
-    func heightForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+    public func heightForImageInCustom(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         switch message.data {
         case .custom(let metadata):
             let image = metadata["Image"] as! UIImage
@@ -186,7 +188,7 @@ extension OpenChannelChatViewController: MessagesLayoutDelegate {
 
 // MARK:- MessagesDisplayDelegate
 extension OpenChannelChatViewController: MessagesDisplayDelegate {
-    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+    public func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let message = mkMessages[indexPath.section]
         
         switch message.data {
@@ -250,7 +252,7 @@ extension OpenChannelChatViewController: MessagesDisplayDelegate {
         }
     }
     
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+    public func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         let ccpMessage = self.messages[indexPath.section]
         if let avatarUrl = ccpMessage.getUser().getAvatarUrl() {
             avatarView.sd_setImage(with: URL(string: avatarUrl), completed: nil)
@@ -266,7 +268,7 @@ extension OpenChannelChatViewController: MessagesDisplayDelegate {
 
 // MARK:- MessageCellDelegate
 extension OpenChannelChatViewController: MessageCellDelegate {
-    func didTapMessage(in cell: MessageCollectionViewCell) {
+    public func didTapMessage(in cell: MessageCollectionViewCell) {
         let indexPath = messagesCollectionView.indexPath(for: cell)!
         let message = mkMessages[indexPath.section]
         
@@ -306,7 +308,7 @@ extension OpenChannelChatViewController: MessageCellDelegate {
 
 // MARK:- MessageInputBarDelegate
 extension OpenChannelChatViewController: MessageInputBarDelegate {
-    func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+    public func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
         inputBar.inputTextView.text = ""
         channel.sendMessage(text: text) { [unowned self] (message, error) in
             inputBar.inputTextView.text = ""
@@ -337,7 +339,7 @@ extension OpenChannelChatViewController: MessageImageDelegate {
 
 // MARK:- CCPChannelDelegate
 extension OpenChannelChatViewController: CCPChannelDelegate {
-    func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
+    public func channelDidReceiveMessage(channel: CCPBaseChannel, message: CCPMessage) {
         if channel.getId() == self.channel.getId() {
             let mkMessage = Message(fromCCPMessage: message)
             mkMessages.append(mkMessage)
@@ -361,27 +363,27 @@ extension OpenChannelChatViewController: CCPChannelDelegate {
         }
     }
     
-    func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
+    public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
         // Not applicable
     }
     
-    func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
+    public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
         // Not applicable
     }
     
-    func channelDidUpdated(channel: CCPBaseChannel) { }
+    public func channelDidUpdated(channel: CCPBaseChannel) { }
     
-    func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
+    public func onTotalGroupChannelCount(count: Int, totalCountFilterParams: TotalCountFilterParams) { }
     
-    func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    public func onGroupChannelParticipantJoined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
-    func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    public func onGroupChannelParticipantLeft(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
-    func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
+    public func onGroupChannelParticipantDeclined(groupChannel: CCPGroupChannel, participant: CCPUser) { }
     
-    func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
+    public func onGroupChannelMessageUpdated(groupChannel: CCPGroupChannel, message: CCPMessage) { }
     
-    func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
+    public func onOpenChannelMessageUpdated(openChannel: CCPOpenChannel, message: CCPMessage) { }
     
 }
 
@@ -446,7 +448,7 @@ extension OpenChannelChatViewController {
 
 // MARK: UIDocumentMenuDelegate, UIDocumentPickerDelegate
 extension OpenChannelChatViewController: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    public func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
@@ -490,23 +492,33 @@ extension OpenChannelChatViewController {
         messageInputBar.sendButton.setTitle(nil, for: .normal)
         messageInputBar.sendButton.setImage(UIImage(named: "chat_send_button", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
         
-        let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
-        attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
-        
-        attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
-            self.presentAlertController()
+        if enableAttachments {
+            let attachmentButton = InputBarButtonItem(frame: CGRect(x: 40, y: 0, width: 30, height: 30))
+            attachmentButton.setImage(UIImage(named: "attachment", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
+            
+            attachmentButton.onTouchUpInside { [unowned self] attachmentButton in
+                self.presentAlertController()
+            }
+            messageInputBar.leftStackView.addSubview(attachmentButton)
         }
         
-        let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
-        
-        audioButton.onTouchUpInside { [unowned self] audioButton in
-            self.handleAudioMessageAction(audioButton: audioButton)
+        if enableVoiceRecording {
+            let audioButton = InputBarButtonItem(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            audioButton.setImage(UIImage(named: "microphone", in: Bundle(for: OpenChannelChatViewController.self), compatibleWith: nil), for: .normal)
+            
+            audioButton.onTouchUpInside { [unowned self] audioButton in
+                self.handleAudioMessageAction(audioButton: audioButton)
+            }
+            messageInputBar.leftStackView.addSubview(audioButton)
         }
         
-        messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
-        messageInputBar.leftStackView.addSubview(attachmentButton)
-        messageInputBar.leftStackView.addSubview(audioButton)
+        if enableAttachments && enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 80, animated: false)
+        } else if !enableAttachments && !enableVoiceRecording {
+            messageInputBar.setLeftStackViewWidthConstant(to: 20, animated: false)
+        } else {
+            messageInputBar.setLeftStackViewWidthConstant(to: 40, animated: false)
+        }
     }
     
     fileprivate func setupBackground(with image: UIImage) {
