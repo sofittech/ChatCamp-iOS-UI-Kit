@@ -62,6 +62,7 @@ open class UsersViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search Users"
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
         tableView.tableHeaderView = searchController.searchBar
