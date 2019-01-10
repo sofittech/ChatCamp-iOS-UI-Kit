@@ -10,14 +10,16 @@ import UIKit
 import ChatCamp
 import SDWebImage
 
-open class GroupChannelsViewController: UIViewController {
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.delegate = self
-            tableView.dataSource = self
-            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
-        }
-    }
+open class GroupChannelsViewController: UITableViewController {
+    
+//    var tableView: UITableView! {
+//        didSet {
+//            tableView.delegate = self
+//            tableView.dataSource = self
+//            setupTableView()
+//        }
+//    }
+    
     @IBOutlet weak var addChannelFAB: UIButton! {
         didSet {
             addChannelFAB.layer.cornerRadius = 30
@@ -42,6 +44,8 @@ open class GroupChannelsViewController: UIViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupTableView()
         
         do {
             let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -74,6 +78,10 @@ open class GroupChannelsViewController: UIViewController {
         
         CCPClient.removeChannelDelegate(identifier: GroupChannelsViewController.string())
         CCPClient.removeConnectionDelegate(identifier: GroupChannelsViewController.string())
+    }
+    
+    fileprivate func setupTableView() {
+        tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
     }
     
     fileprivate func loadChannelsFromLocalStorage() {
@@ -138,12 +146,12 @@ extension GroupChannelsViewController {
 }
 
 // MARK:- UITableViewDataSource
-extension GroupChannelsViewController: UITableViewDataSource {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension GroupChannelsViewController {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return channels.count
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         
         let channel = channels[indexPath.row]
@@ -198,8 +206,8 @@ extension GroupChannelsViewController: UITableViewDataSource {
 }
 
 // MARK:- UITableViewDelegate
-extension GroupChannelsViewController: UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension GroupChannelsViewController {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
         
@@ -260,7 +268,7 @@ extension GroupChannelsViewController: CCPConnectionDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension GroupChannelsViewController {
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    override open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
             loadingChannels = true
             groupChannelsQuery.load { (channels, error) in

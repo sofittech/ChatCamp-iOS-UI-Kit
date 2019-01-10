@@ -11,17 +11,17 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-open class UsersViewController: UIViewController {
+open class UsersViewController: UITableViewController {
 
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.delegate = self
-            tableView.dataSource = self
-            tableView.rowHeight = 70
-            tableView.estimatedRowHeight = 70
-            tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())
-        }
-    }
+//    @IBOutlet weak var tableView: UITableView! {
+//        didSet {
+//            tableView.delegate = self
+//            tableView.dataSource = self
+//            tableView.rowHeight = 70
+//            tableView.estimatedRowHeight = 70
+//            tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())
+//        }
+//    }
     
     open var users: [CCPUser] = []
     open var filteredUsers: [CCPUser] = []
@@ -41,19 +41,30 @@ open class UsersViewController: UIViewController {
         return messageLabel
     }()
     
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action:
-            #selector(UsersViewController.handleRefresh(_:)),
-                                 for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
-        
-        return refreshControl
-    }()
-
+//    lazy var refreshControl: UIRefreshControl = {
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action:
+//            #selector(UsersViewController.handleRefresh(_:)),
+//                                 for: UIControl.Event.valueChanged)
+//        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+//
+//        return refreshControl
+//    }()
+    
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupTableView()
+        setupRefereshControl()
+        
         if #available(iOS 11.0, *) {
             navigationItem.hidesSearchBarWhenScrolling = false
         } else {
@@ -66,9 +77,26 @@ open class UsersViewController: UIViewController {
         definesPresentationContext = true
         
         tableView.tableHeaderView = searchController.searchBar
-        tableView.addSubview(self.refreshControl)
         usersQuery = CCPClient.createUserListQuery()
         loadUsers(limit: usersToFetch)
+    }
+    
+    fileprivate func setupTableView() {
+//        tableView.delegate = self
+//        tableView.dataSource = self
+        tableView.rowHeight = 70
+        tableView.estimatedRowHeight = 70
+        tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())
+    }
+    
+    fileprivate func setupRefereshControl() {
+        self.refreshControl = UIRefreshControl()
+        guard let pullToRefreshControl = self.refreshControl else { return }
+        pullToRefreshControl.addTarget(self, action:
+        #selector(UsersViewController.handleRefresh(_:)),
+        for: UIControl.Event.valueChanged)
+        pullToRefreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+        tableView.addSubview(pullToRefreshControl)
     }
     
     fileprivate func loadUsers(limit: Int) {
@@ -95,15 +123,15 @@ open class UsersViewController: UIViewController {
                     }
                 }
                 
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
+                if self.refreshControl?.isRefreshing ?? false {
+                    self.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
                     self.loadingUsers = false
-                    if self.refreshControl.isRefreshing {
-                        self.refreshControl.endRefreshing()
+                    if self.refreshControl?.isRefreshing ?? false {
+                        self.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -139,15 +167,15 @@ open class UsersViewController: UIViewController {
                     }
                 }
                 
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
+                if self.refreshControl?.isRefreshing ?? false {
+                    self.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
                     self.loadingUsers = false
-                    if self.refreshControl.isRefreshing {
-                        self.refreshControl.endRefreshing()
+                    if self.refreshControl?.isRefreshing ?? false {
+                        self.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -174,12 +202,12 @@ open class UsersViewController: UIViewController {
 }
 
 // MARK:- UITableViewDataSource
-extension UsersViewController: UITableViewDataSource {
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension UsersViewController {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.string(), for: indexPath) as! UserTableViewCell
 
         let user = users[indexPath.row]
@@ -200,8 +228,8 @@ extension UsersViewController: UITableViewDataSource {
 }
 
 // MARK:- UITableViewDelegate
-extension UsersViewController: UITableViewDelegate {
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension UsersViewController {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = users[indexPath.row]
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
@@ -222,7 +250,7 @@ extension UsersViewController: UITableViewDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension UsersViewController {
-    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    override open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, users.count - 1]) ?? false) && !loadingUsers && users.count >= 19 {
             loadUsers(limit: usersToFetch)
         }

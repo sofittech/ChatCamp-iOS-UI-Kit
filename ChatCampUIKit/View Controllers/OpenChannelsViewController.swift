@@ -11,15 +11,15 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-open class OpenChannelsViewController: UIViewController {
+open class OpenChannelsViewController: UITableViewController {
     
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.delegate = self
-            tableView.dataSource = self
-            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
-        }
-    }
+//    @IBOutlet weak var tableView: UITableView! {
+//        didSet {
+//            tableView.delegate = self
+//            tableView.dataSource = self
+//            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
+//        }
+//    }
     
     var channels: [CCPOpenChannel] = []
     fileprivate var loadingChannels = false
@@ -35,22 +35,38 @@ open class OpenChannelsViewController: UIViewController {
         return messageLabel
     }()
     
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action:
-            #selector(OpenChannelsViewController.handleRefresh(_:)),
-                                 for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
-        
-        return refreshControl
-    }()
+//    lazy var refreshControl: UIRefreshControl = {
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.addTarget(self, action:
+//            #selector(OpenChannelsViewController.handleRefresh(_:)),
+//                                 for: UIControl.Event.valueChanged)
+//        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+//
+//        return refreshControl
+//    }()
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTableView()
+        setupRefereshControl()
+
         openChannelsQuery = CCPOpenChannel.createOpenChannelListQuery()
-        tableView.addSubview(self.refreshControl)
         loadChannels()
+    }
+    
+    fileprivate func setupTableView() {
+        tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
+    }
+    
+    fileprivate func setupRefereshControl() {
+        self.refreshControl = UIRefreshControl()
+        guard let pullToRefreshControl = self.refreshControl else { return }
+        pullToRefreshControl.addTarget(self, action:
+            #selector(OpenChannelsViewController.handleRefresh(_:)),
+                                       for: UIControl.Event.valueChanged)
+        pullToRefreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+        tableView.addSubview(pullToRefreshControl)
     }
     
     fileprivate func loadChannels() {
@@ -77,15 +93,15 @@ open class OpenChannelsViewController: UIViewController {
                         self?.loadingChannels = false
                     }
                 }
-                if self?.refreshControl.isRefreshing ?? false {
-                    self?.refreshControl.endRefreshing()
+                if self?.refreshControl?.isRefreshing ?? false {
+                    self?.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self?.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
                     self?.loadingChannels = false
-                    if self?.refreshControl.isRefreshing ?? false {
-                        self?.refreshControl.endRefreshing()
+                    if self?.refreshControl?.isRefreshing ?? false {
+                        self?.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -118,15 +134,15 @@ open class OpenChannelsViewController: UIViewController {
                         self?.loadingChannels = false
                     }
                 }
-                if self?.refreshControl.isRefreshing ?? false {
-                    self?.refreshControl.endRefreshing()
+                if self?.refreshControl?.isRefreshing ?? false {
+                    self?.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self?.showAlert(title: "Can't Load Open Channels", message: "Unable to load Open Channels right now. Please try later.", actionText: "Ok")
                     self?.loadingChannels = false
-                    if self?.refreshControl.isRefreshing ?? false {
-                        self?.refreshControl.endRefreshing()
+                    if self?.refreshControl?.isRefreshing ?? false {
+                        self?.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -135,12 +151,12 @@ open class OpenChannelsViewController: UIViewController {
 }
 
 // MARK:- UITableViewDataSource
-extension OpenChannelsViewController: UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension OpenChannelsViewController {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return channels.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         cell.nameLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         
@@ -159,8 +175,8 @@ extension OpenChannelsViewController: UITableViewDataSource {
 }
 
 // MARK:- UITableViewDelegate
-extension OpenChannelsViewController: UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension OpenChannelsViewController {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userID = CCPClient.getCurrentUser().getId()
         let username = CCPClient.getCurrentUser().getDisplayName()
         
@@ -182,7 +198,7 @@ extension OpenChannelsViewController: UITableViewDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension OpenChannelsViewController {
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    override open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, channels.count - 1]) ?? false) && !loadingChannels && channels.count >= 20 {
             loadChannels()
         }
