@@ -30,7 +30,7 @@ open class OpenChannelChatViewController: MessagesViewController {
     public var enableAttachments = true
     public var enableVoiceRecording = true
     
-    init(channel: CCPOpenChannel, sender: Sender) {
+    public init(channel: CCPOpenChannel, sender: Sender) {
         self.channel = channel
         self.sender = sender
         previousMessagesQuery = channel.createPreviousMessageListQuery()
