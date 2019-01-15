@@ -13,14 +13,6 @@ import MBProgressHUD
 
 open class OpenChannelsViewController: UITableViewController {
     
-//    @IBOutlet weak var tableView: UITableView! {
-//        didSet {
-//            tableView.delegate = self
-//            tableView.dataSource = self
-//            tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.string())
-//        }
-//    }
-    
     var channels: [CCPOpenChannel] = []
     fileprivate var loadingChannels = false
     var openChannelsQuery: CCPOpenChannelListQuery!
@@ -34,16 +26,6 @@ open class OpenChannelsViewController: UITableViewController {
         
         return messageLabel
     }()
-    
-//    lazy var refreshControl: UIRefreshControl = {
-//        let refreshControl = UIRefreshControl()
-//        refreshControl.addTarget(self, action:
-//            #selector(OpenChannelsViewController.handleRefresh(_:)),
-//                                 for: UIControl.Event.valueChanged)
-//        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
-//
-//        return refreshControl
-//    }()
     
     override open func viewDidLoad() {
         super.viewDidLoad()

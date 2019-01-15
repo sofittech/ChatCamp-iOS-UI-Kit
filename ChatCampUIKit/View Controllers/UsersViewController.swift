@@ -12,16 +12,6 @@ import SDWebImage
 import MBProgressHUD
 
 open class UsersViewController: UITableViewController {
-
-//    @IBOutlet weak var tableView: UITableView! {
-//        didSet {
-//            tableView.delegate = self
-//            tableView.dataSource = self
-//            tableView.rowHeight = 70
-//            tableView.estimatedRowHeight = 70
-//            tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())
-//        }
-//    }
     
     open var users: [CCPUser] = []
     open var filteredUsers: [CCPUser] = []
@@ -40,24 +30,6 @@ open class UsersViewController: UITableViewController {
         
         return messageLabel
     }()
-    
-//    lazy var refreshControl: UIRefreshControl = {
-//        let refreshControl = UIRefreshControl()
-//        refreshControl.addTarget(self, action:
-//            #selector(UsersViewController.handleRefresh(_:)),
-//                                 for: UIControl.Event.valueChanged)
-//        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
-//
-//        return refreshControl
-//    }()
-    
-    public init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,8 +54,6 @@ open class UsersViewController: UITableViewController {
     }
     
     fileprivate func setupTableView() {
-//        tableView.delegate = self
-//        tableView.dataSource = self
         tableView.rowHeight = 70
         tableView.estimatedRowHeight = 70
         tableView.register(UINib(nibName: String(describing: UserTableViewCell.self), bundle: Bundle(for: UserTableViewCell.self)), forCellReuseIdentifier: UserTableViewCell.string())

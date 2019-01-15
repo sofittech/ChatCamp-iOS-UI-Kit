@@ -11,17 +11,7 @@ import ChatCamp
 import SDWebImage
 import MBProgressHUD
 
-open class BlockedUsersViewController: UIViewController {
-
-    @IBOutlet weak var tableView: UITableView! {
-        didSet {
-            tableView.delegate = self
-            tableView.dataSource = self
-            tableView.rowHeight = UITableView.automaticDimension
-            tableView.estimatedRowHeight = 44
-            tableView?.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.identifier)
-        }
-    }
+open class BlockedUsersViewController: UITableViewController {
     
     var users: [CCPUser] = []
     fileprivate var usersToFetch: Int = 20
@@ -38,24 +28,32 @@ open class BlockedUsersViewController: UIViewController {
         return messageLabel
     }()
     
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action:
-            #selector(BlockedUsersViewController.handleRefresh(_:)),
-                                 for: UIControl.Event.valueChanged)
-        refreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
-        
-        return refreshControl
-    }()
-    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Blocked Users"
         
-        tableView.addSubview(self.refreshControl)
+        setupTableView()
+        setupRefereshControl()
+        
         usersQuery = CCPClient.createBlockedUserListQuery()
         loadUsers(limit: usersToFetch)
+    }
+    
+    fileprivate func setupTableView() {
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 44
+        tableView.register(UINib(nibName: String(describing: ChatTableViewCell.self), bundle: Bundle(for: ChatTableViewCell.self)), forCellReuseIdentifier: ChatTableViewCell.identifier)
+    }
+    
+    fileprivate func setupRefereshControl() {
+        self.refreshControl = UIRefreshControl()
+        guard let pullToRefreshControl = self.refreshControl else { return }
+        pullToRefreshControl.addTarget(self, action:
+            #selector(BlockedUsersViewController.handleRefresh(_:)),
+                                       for: UIControl.Event.valueChanged)
+        pullToRefreshControl.tintColor = UIColor(red: 48/255, green: 58/255, blue: 165/255, alpha: 1.0)
+        tableView.addSubview(pullToRefreshControl)
     }
     
     fileprivate func loadUsers(limit: Int) {
@@ -82,15 +80,15 @@ open class BlockedUsersViewController: UIViewController {
                     }
                 }
                 
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
+                if self.refreshControl?.isRefreshing ?? false {
+                    self.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
                     self.loadingUsers = false
-                    if self.refreshControl.isRefreshing {
-                        self.refreshControl.endRefreshing()
+                    if self.refreshControl?.isRefreshing ?? false {
+                        self.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -123,15 +121,15 @@ open class BlockedUsersViewController: UIViewController {
                     }
                 }
                 
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
+                if self.refreshControl?.isRefreshing ?? false {
+                    self.refreshControl?.endRefreshing()
                 }
             } else {
                 DispatchQueue.main.async {
                     self.showAlert(title: "Can't Load Users", message: "Unable to load Users right now. Please try later.", actionText: "Ok")
                     self.loadingUsers = false
-                    if self.refreshControl.isRefreshing {
-                        self.refreshControl.endRefreshing()
+                    if self.refreshControl?.isRefreshing ?? false {
+                        self.refreshControl?.endRefreshing()
                     }
                 }
             }
@@ -140,12 +138,12 @@ open class BlockedUsersViewController: UIViewController {
 }
 
 // MARK:- UITableViewDataSource
-extension BlockedUsersViewController: UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension BlockedUsersViewController {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.string(), for: indexPath) as! ChatTableViewCell
         cell.nameLabel.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         
@@ -165,8 +163,8 @@ extension BlockedUsersViewController: UITableViewDataSource {
 }
 
 // MARK:- UITableViewDelegate
-extension BlockedUsersViewController: UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension BlockedUsersViewController {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = users[indexPath.row]
         let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
         CCPClient.unblockUser(userId: user.getId()) { (participant, error) in
@@ -183,7 +181,7 @@ extension BlockedUsersViewController: UITableViewDelegate {
 
 // MARK:- ScrollView Delegate Methods
 extension BlockedUsersViewController {
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    override open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (tableView.indexPathsForVisibleRows?.contains([0, users.count - 1]) ?? false) && !loadingUsers && users.count >= (usersToFetch - 1) {
             loadUsers(limit: usersToFetch)
         }
