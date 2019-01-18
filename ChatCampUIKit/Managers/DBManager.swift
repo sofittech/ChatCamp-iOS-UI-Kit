@@ -26,6 +26,8 @@ struct Chat {
 }
 
 struct Channel {
+    let id: NSString
+    let timestamp: Int32
     let groupChannel: NSString
 }
 
@@ -127,6 +129,29 @@ extension SQLiteDatabase {
         print("Successfully inserted row.")
     }
     
+    func updateGroupChannel(channel: CCPGroupChannel) throws {
+        let channel = Channel(id: channel.getId() as NSString,
+                              timestamp: Int32(channel.getLastMessage()?.getInsertedAt() ?? 0),
+                              groupChannel: (channel.serialize() ?? "") as NSString)
+        let insertSql = "INSERT OR REPLACE INTO Channel (id, timestamp, groupChannel) VALUES (?, ?, ?);"
+        let insertStatement = try prepareStatement(sql: insertSql)
+        defer {
+            sqlite3_finalize(insertStatement)
+        }
+        
+        guard sqlite3_bind_text(insertStatement, 1, channel.id.utf8String, -1, nil) == SQLITE_OK  &&
+            sqlite3_bind_int(insertStatement, 2, channel.timestamp) == SQLITE_OK  &&
+            sqlite3_bind_text(insertStatement, 3, channel.groupChannel.utf8String, -1, nil) == SQLITE_OK else {
+                throw SQLiteError.Bind(message: errorMessage)
+        }
+        
+        guard sqlite3_step(insertStatement) == SQLITE_DONE else {
+            throw SQLiteError.Step(message: errorMessage)
+        }
+        
+        print("Successfully updated channel in DB.")
+    }
+    
     func insertGroupChannels(channels: [CCPGroupChannel]) throws {
         let deleteSql = "DELETE FROM Channel"
         let deleteStatement = try prepareStatement(sql: deleteSql)
@@ -135,14 +160,18 @@ extension SQLiteDatabase {
         }
         sqlite3_finalize(deleteStatement)
         for channel in channels {
-            let channel = Channel(groupChannel: channel.serialize() as! NSString)
-            let insertSql = "INSERT OR REPLACE INTO Channel (groupChannel) VALUES (?);"
+            let channel = Channel(id: channel.getId() as NSString,
+                                  timestamp: Int32(channel.getLastMessage()?.getInsertedAt() ?? 0),
+                                  groupChannel: (channel.serialize() ?? "") as NSString)
+            let insertSql = "INSERT OR REPLACE INTO Channel (id, timestamp, groupChannel) VALUES (?, ?, ?);"
             let insertStatement = try prepareStatement(sql: insertSql)
             defer {
                 sqlite3_finalize(insertStatement)
             }
             
-            guard sqlite3_bind_text(insertStatement, 1, channel.groupChannel.utf8String, -1, nil) == SQLITE_OK else {
+            guard sqlite3_bind_text(insertStatement, 1, channel.id.utf8String, -1, nil) == SQLITE_OK  &&
+                sqlite3_bind_int(insertStatement, 2, channel.timestamp) == SQLITE_OK  &&
+                sqlite3_bind_text(insertStatement, 3, channel.groupChannel.utf8String, -1, nil) == SQLITE_OK else {
                 throw SQLiteError.Bind(message: errorMessage)
             }
             
@@ -164,7 +193,7 @@ extension SQLiteDatabase {
     }
     
     func getGroupChannels() -> [CCPGroupChannel]? {
-        let querySql = "SELECT * FROM Channel"
+        let querySql = "SELECT * FROM Channel ORDER BY timestamp DESC"
         
         guard let queryStatement = try? prepareStatement(sql: querySql) else {
             return nil
@@ -177,7 +206,7 @@ extension SQLiteDatabase {
         var groupChannels = [CCPGroupChannel]()
         
         while (sqlite3_step(queryStatement) == SQLITE_ROW) {
-            let queryResult = sqlite3_column_text(queryStatement, 0)
+            let queryResult = sqlite3_column_text(queryStatement, 2)
             let data = String(cString: queryResult!) as NSString
             let groupChannel = CCPGroupChannel.createfromSerializedData(jsonString: data as String)
             groupChannels.append(groupChannel!)
@@ -224,11 +253,9 @@ extension SQLiteDatabase {
             
             let cm = CCPMessage.createfromSerializedData(jsonString: data as String)
             m.append(cm!)
-            
         }
         
         return m
-        
     }
 }
 
@@ -257,8 +284,11 @@ extension Channel: SQLTable {
     static var createStatement: String {
         return """
         CREATE TABLE IF NOT EXISTS Channel(
+        id TEXT PRIMARY KEY NOT NULL,
+        timestamp INT NOT NULL,
         groupChannel TEXT NOT NULL
-        );
+        ); CREATE IF NOT EXISTS INDEX id_1 Chat(id);
+        CREATE IF NOT EXISTS INDEX timestamp_2 Chat(timestamp);
         """
     }
 }

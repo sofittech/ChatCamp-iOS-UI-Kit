@@ -47,7 +47,6 @@ open class GroupChannelsViewController: UITableViewController {
         }
         
         groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
-        loadChannelsFromLocalStorage()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +55,7 @@ open class GroupChannelsViewController: UITableViewController {
         setupNavigationBar()
         CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
         CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: GroupChannelsViewController.string())
+        loadChannelsFromLocalStorage()
         refreshChannels()
     }
     
@@ -64,6 +64,32 @@ open class GroupChannelsViewController: UITableViewController {
         
         CCPClient.removeChannelDelegate(identifier: GroupChannelsViewController.string())
         CCPClient.removeConnectionDelegate(identifier: GroupChannelsViewController.string())
+    }
+}
+
+// MARK:- Private Utility Methods
+extension GroupChannelsViewController {    
+    @objc fileprivate func addButtonTapped() {
+        let createChannelViewController = UIViewController.createChannelViewController()
+        if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
+            viewController.channelCreated = { (channel, sender) in
+                let chatViewController = ChatViewController(channel: channel, sender: sender)
+                self.navigationController?.pushViewController(chatViewController, animated: true)
+            }
+        }
+        present(createChannelViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func updateGroupChannel(_ channel: CCPBaseChannel) {
+        channels.insert(channel as! CCPGroupChannel, at: 0)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        do {
+            try self.db.updateGroupChannel(channel: channel as! CCPGroupChannel)
+        } catch {
+            print(self.db.errorMessage)
+        }
     }
     
     fileprivate func setupTableView() {
@@ -85,7 +111,7 @@ open class GroupChannelsViewController: UITableViewController {
         }
     }
     
-    func refreshChannels() {
+    fileprivate func refreshChannels() {
         loadingChannels = true
         let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
         groupChannelsListQuery.load { (channels, error) in
@@ -118,20 +144,6 @@ open class GroupChannelsViewController: UITableViewController {
                 }
             }
         }
-    }
-}
-
-// MARK:- Actions
-extension GroupChannelsViewController {    
-    @objc fileprivate func addButtonTapped() {
-        let createChannelViewController = UIViewController.createChannelViewController()
-        if let viewController = createChannelViewController.topViewController as? CreateChannelViewController {
-            viewController.channelCreated = { (channel, sender) in
-                let chatViewController = ChatViewController(channel: channel, sender: sender)
-                self.navigationController?.pushViewController(chatViewController, animated: true)
-            }
-        }
-        present(createChannelViewController, animated: true, completion: nil)
     }
 }
 
@@ -217,20 +229,15 @@ extension GroupChannelsViewController: CCPChannelDelegate {
             groupChannel.getId() == channel.getId()
         }) {
             channels.remove(at: index)
-            channels.insert(channel as! CCPGroupChannel, at: 0)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            updateGroupChannel(channel)
+        } else {
+            updateGroupChannel(channel)
         }
     }
     
-    public func channelDidChangeTypingStatus(channel: CCPBaseChannel) {
-        // Not applicable
-    }
+    public func channelDidChangeTypingStatus(channel: CCPBaseChannel) { }
     
-    public func channelDidUpdateReadStatus(channel: CCPBaseChannel) {
-        // Not applicable
-    }
+    public func channelDidUpdateReadStatus(channel: CCPBaseChannel) { }
     
     public func channelDidUpdated(channel: CCPBaseChannel) { }
     
