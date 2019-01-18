@@ -355,6 +355,12 @@ extension ChatViewController: CCPChannelDelegate {
                 }
             }
         }
+        
+        do {
+            try self.db.updateGroupChannel(channel: channel as! CCPGroupChannel)
+        } catch {
+            print(self.db.errorMessage)
+        }
     }
     
     public func channelDidUpdated(channel: CCPBaseChannel) { }
