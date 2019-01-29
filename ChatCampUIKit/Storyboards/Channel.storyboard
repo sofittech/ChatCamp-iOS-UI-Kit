@@ -11,32 +11,30 @@
     </dependencies>
     <scenes>
         <!--Blocked Users View Controller-->
-        <scene sceneID="dfv-sL-5hX">
+        <scene sceneID="0K6-I5-jPG">
             <objects>
-                <viewController storyboardIdentifier="BlockedUsersViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ROY-Zu-0cb" customClass="BlockedUsersViewController" customModule="ChatCampUIKit" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8t4-Ms-75o">
+                <tableViewController storyboardIdentifier="BlockedUsersViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gbL-jb-ibK" customClass="BlockedUsersViewController" customModule="ChatCampUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fgB-Z4-NGE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bge-Qz-bXO">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="bge-Qz-bXO" firstAttribute="leading" secondItem="be6-UX-QPQ" secondAttribute="leading" id="Q89-KT-Pwt"/>
-                            <constraint firstItem="bge-Qz-bXO" firstAttribute="top" secondItem="be6-UX-QPQ" secondAttribute="top" id="Rcm-G1-tIM"/>
-                            <constraint firstItem="be6-UX-QPQ" firstAttribute="trailing" secondItem="bge-Qz-bXO" secondAttribute="trailing" id="pWC-pC-9Xu"/>
-                            <constraint firstItem="be6-UX-QPQ" firstAttribute="bottom" secondItem="bge-Qz-bXO" secondAttribute="bottom" id="z7q-bG-dmo"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="be6-UX-QPQ"/>
-                    </view>
-                    <connections>
-                        <outlet property="tableView" destination="bge-Qz-bXO" id="u8Y-xm-hzJ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qww-w9-Akm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cQd-Wu-dKi">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cQd-Wu-dKi" id="wEm-DA-uza">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="gbL-jb-ibK" id="4P0-Z8-Ldo"/>
+                            <outlet property="delegate" destination="gbL-jb-ibK" id="7qT-8r-BAg"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sf5-qe-hfy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2356" y="842"/>
         </scene>
