@@ -56,6 +56,13 @@ open class BlockedUsersViewController: UITableViewController {
         tableView.addSubview(pullToRefreshControl)
     }
     
+    fileprivate func addNoRecordLabel() {
+        messageLabel.frame = self.view.bounds
+        view.addSubview(self.messageLabel)
+        view.bringSubviewToFront(self.messageLabel)
+        tableView.tableFooterView = UIView()
+    }
+    
     fileprivate func loadUsers(limit: Int) {
         let progressHud = MBProgressHUD.showAdded(to: self.view, animated: true)
         progressHud.label.text = "Loading..."
@@ -65,10 +72,7 @@ open class BlockedUsersViewController: UITableViewController {
             progressHud.hide(animated: true)
             if error == nil {
                 if users?.count == 0 && self.users.count == 0 {
-                    self.messageLabel.frame = self.view.bounds
-                    self.view.addSubview(self.messageLabel)
-                    self.view.bringSubviewToFront(self.messageLabel)
-                    self.tableView.tableFooterView = UIView()
+                    self.addNoRecordLabel()
                 } else {
                     self.messageLabel.removeFromSuperview()
                     guard let users = users else { return }
@@ -105,10 +109,7 @@ open class BlockedUsersViewController: UITableViewController {
             progressHud.hide(animated: true)
             if error == nil {
                 if users?.count == 0 {
-                    self.messageLabel.frame = self.view.bounds
-                    self.view.addSubview(self.messageLabel)
-                    self.view.bringSubviewToFront(self.messageLabel)
-                    self.tableView.tableFooterView = UIView()
+                    self.addNoRecordLabel()
                 } else {
                     self.users.removeAll()
                     self.messageLabel.removeFromSuperview()
@@ -172,6 +173,9 @@ extension BlockedUsersViewController {
             if error == nil {
                 self.users.remove(at: indexPath.row)
                 tableView.reloadData()
+                if self.users.count == 0 {
+                    self.addNoRecordLabel()
+                }
             }
         }
         
