@@ -45,18 +45,22 @@ open class GroupChannelsViewController: UITableViewController {
         } catch SQLiteError.OpenDatabase(let message) {
             print("Unable to open database. Verify that you created the directory described in the Getting Started section.")
         }
-        
-        groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        groupChannelsQuery = CCPGroupChannel.createGroupChannelListQuery()
         setupNavigationBar()
-        CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
-        CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: GroupChannelsViewController.string())
         loadChannelsFromLocalStorage()
         refreshChannels()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        CCPClient.addChannelDelegate(channelDelegate: self, identifier: GroupChannelsViewController.string())
+        CCPClient.addConnectionDelegate(connectionDelegate: self, identifier: GroupChannelsViewController.string())
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
@@ -75,6 +79,7 @@ extension GroupChannelsViewController {
             viewController.channelCreated = { (channel, sender) in
                 let chatViewController = ChatViewController(channel: channel, sender: sender)
                 self.navigationController?.pushViewController(chatViewController, animated: true)
+                self.updateGroupChannel(channel)
             }
         }
         present(createChannelViewController, animated: true, completion: nil)
@@ -98,23 +103,22 @@ extension GroupChannelsViewController {
     
     fileprivate func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addButtonTapped))
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addButtonTapped))
     }
     
     fileprivate func loadChannelsFromLocalStorage() {
         if let loadedChannels = self.db.getGroupChannels() {
             if loadedChannels.count > 0 {
                 self.channels = loadedChannels
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             }
         }
     }
     
     fileprivate func refreshChannels() {
         loadingChannels = true
-        let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
-        groupChannelsListQuery.load { (channels, error) in
+//        let groupChannelsListQuery = CCPGroupChannel.createGroupChannelListQuery()
+        groupChannelsQuery.load { (channels, error) in
             if error == nil {
                 if channels?.count == 0 {
                     self.messageLabel.frame = self.view.bounds
