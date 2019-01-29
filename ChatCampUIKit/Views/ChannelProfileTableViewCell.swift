@@ -29,4 +29,11 @@ class ChannelProfileTableViewCell: UITableViewCell {
         displayNameLabel.text = displayName
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        displayNameLabel.text = nil
+        displayNameLabel.textColor = nil
+        onlineStatusImageView.image = nil
+    }
 }
