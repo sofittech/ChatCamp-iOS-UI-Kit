@@ -7,7 +7,7 @@ s.name = "ChatCampUIKit"
 s.summary = "ChatCamp iOS UI Kit"
 s.description  = "UI Kit for ChatCamp iOS SDK"
 s.requires_arc = true
-s.version = "4.2.8"
+s.version = "4.2.9"
 s.license = { :type => "MIT", :file => "LICENSE" }
 s.authors = {"Saurabh Gupta" => "saurabh.gupta@iflylabs.com", "Shashwat Srivastava"=>"shashwat@iflylabs.com", "Shubham Gupta"=>"shubham@iflylabs.com"}
 s.homepage = "https://chatcamp.io"
