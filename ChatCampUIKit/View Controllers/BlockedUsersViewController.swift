@@ -64,7 +64,7 @@ open class BlockedUsersViewController: UITableViewController {
         usersQuery.load(limit: limit) { [unowned self] (users, error) in
             progressHud.hide(animated: true)
             if error == nil {
-                if users?.count == 0 {
+                if users?.count == 0 && self.users.count == 0 {
                     self.messageLabel.frame = self.view.bounds
                     self.view.addSubview(self.messageLabel)
                     self.view.bringSubviewToFront(self.messageLabel)

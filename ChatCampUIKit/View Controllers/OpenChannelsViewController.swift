@@ -59,7 +59,7 @@ open class OpenChannelsViewController: UITableViewController {
         openChannelsQuery.load() { [weak self] (channels, error) in
             progressHud.hide(animated: true)
             if error == nil {
-                if channels?.count == 0 {
+                if channels?.count == 0 && self?.channels.count == 0 {
                     guard let strongSelf = self else { return }
                     strongSelf.messageLabel.frame = strongSelf.view.bounds
                     strongSelf.view.addSubview(strongSelf.messageLabel)

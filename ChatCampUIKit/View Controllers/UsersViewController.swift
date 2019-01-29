@@ -77,7 +77,7 @@ open class UsersViewController: UITableViewController {
         usersQuery.load(limit: limit) { [unowned self] (users, error) in
             progressHud.hide(animated: true)
             if error == nil {
-                if users?.count ?? 0 <= 1 {
+                if users?.count ?? 0 <= 1 && self.users.count == 0 {
                     self.messageLabel.frame = self.view.bounds
                     self.view.addSubview(self.messageLabel)
                     self.view.bringSubviewToFront(self.messageLabel)
