@@ -183,7 +183,13 @@ extension UsersViewController {
         let user = users[indexPath.row]
         cell.displayNameLabel.text = user.getDisplayName()
         if let avatarUrl = user.getAvatarUrl() {
-            cell.avatarImageView?.sd_setImage(with: URL(string: avatarUrl), completed: nil)
+            if (avatarUrl.contains("http")){
+                cell.avatarImageView?.sd_setImage(with: URL(string: avatarUrl), completed: nil)
+            }
+            else{
+                cell.avatarImageView?.sd_setImage(with: URL(string: "https://www.moonfolio.io/\(avatarUrl)"), completed: nil)
+            }
+            
         } else {
             cell.avatarImageView.setImageForName(string: user.getDisplayName() ?? "?", circular: true, textAttributes: nil)
         }
